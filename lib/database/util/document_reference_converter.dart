@@ -13,18 +13,12 @@ class DocumentSerializer
 }
 
 class DocumentReferenceConverter
-    implements JsonConverter<DocumentReference?, Map<String, dynamic>?> {
+    implements JsonConverter<DocumentReference?, DocumentReference?> {
   const DocumentReferenceConverter();
 
   @override
-  DocumentReference? fromJson(Map<String, dynamic>? json) {
-    if (json == null) return null;
-    return FirebaseFirestore.instance.doc(json['path'] as String);
-  }
+  DocumentReference? fromJson(DocumentReference? docRef) => docRef;
 
   @override
-  Map<String, dynamic>? toJson(DocumentReference? docRef) {
-    if (docRef == null) return null;
-    return {'path': docRef.path};
-  }
+  DocumentReference? toJson(DocumentReference? docRef) => docRef;
 }

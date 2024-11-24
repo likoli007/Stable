@@ -11,14 +11,13 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
           .map((e) => const DocumentSerializer()
               .fromJson(e as DocumentReference<Object?>))
           .toList(),
-      deadline: json['deadline'] == null
-          ? null
-          : DateTime.parse(json['deadline'] as String),
+      deadline: _$JsonConverterFromJson<Timestamp, DateTime>(
+          json['deadline'], const TimestampConverter().fromJson),
       description: json['description'] as String,
       isDone: json['isDone'] as bool,
       name: json['name'] as String,
       repeat: const DocumentReferenceConverter()
-          .fromJson(json['repeat'] as Map<String, dynamic>?),
+          .fromJson(json['repeat'] as DocumentReference<Object?>?),
       subtasks: (json['subtasks'] as List<dynamic>?)
           ?.map((e) => const DocumentSerializer()
               .fromJson(e as DocumentReference<Object?>))
@@ -28,7 +27,8 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
 Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
       'assignees':
           instance.assignees.map(const DocumentSerializer().toJson).toList(),
-      'deadline': instance.deadline?.toIso8601String(),
+      'deadline': _$JsonConverterToJson<Timestamp, DateTime>(
+          instance.deadline, const TimestampConverter().toJson),
       'description': instance.description,
       'isDone': instance.isDone,
       'name': instance.name,
@@ -36,3 +36,15 @@ Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
       'subtasks':
           instance.subtasks?.map(const DocumentSerializer().toJson).toList(),
     };
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) =>
+    json == null ? null : fromJson(json as Json);
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) =>
+    value == null ? null : toJson(value);
