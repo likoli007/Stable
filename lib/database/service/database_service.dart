@@ -42,4 +42,9 @@ class DatabaseService<T> {
         .map((documentSnapshot) => documentSnapshot.data())
         .toList();
   }
+
+  /// Returns a stream of all documents in the collection
+  Stream<List<T>> observeDocuments() {
+    return _collectionReference.snapshots().map(_mapQuerySnapshotToData);
+  }
 }
