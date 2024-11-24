@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final CollectionReference collection =
-        FirebaseFirestore.instance.collection('Test');
+        FirebaseFirestore.instance.collection('User');
 
     return Scaffold(
       body: StreamBuilder<QuerySnapshot>(
@@ -99,8 +99,8 @@ class _MyHomePageState extends State<MyHomePage> {
             itemBuilder: (context, index) {
               var doc = data.docs[index];
               return ListTile(
-                title: Text(doc['Name']),
-                subtitle: Text(doc['Surname']),
+                title: Text(doc['name']),
+                subtitle: Text(doc['surname']),
               );
             },
           );
