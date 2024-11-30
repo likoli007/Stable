@@ -1,13 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get_it/get_it.dart';
+import 'package:stable/database/service/database_service.dart';
+import 'package:stable/page/task_view.dart';
+import 'package:stable/service/task_service.dart';
 import 'firebase_options.dart';
+import 'model/Task.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  GetIt.instance.registerSingleton(
+    DatabaseService<Task>('Task',
+        fromJson: Task.fromJson, toJson: (task) => task.toJson()),
+  );
+  GetIt.instance
+      .registerSingleton(TaskService(GetIt.instance<DatabaseService<Task>>()));
   runApp(const MyApp());
 }
 
@@ -38,7 +50,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: TaskView(),
     );
   }
 }
@@ -78,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final CollectionReference collection =
-        FirebaseFirestore.instance.collection('Test');
+        FirebaseFirestore.instance.collection('User');
 
     return Scaffold(
       body: StreamBuilder<QuerySnapshot>(
@@ -99,8 +111,8 @@ class _MyHomePageState extends State<MyHomePage> {
             itemBuilder: (context, index) {
               var doc = data.docs[index];
               return ListTile(
-                title: Text(doc['Name']),
-                subtitle: Text(doc['Surname']),
+                title: Text(doc['name']),
+                subtitle: Text(doc['surname']),
               );
             },
           );
