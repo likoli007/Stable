@@ -6,7 +6,7 @@ import 'package:stable/database/service/database_service.dart';
 import 'package:stable/page/task_view.dart';
 import 'package:stable/service/task_service.dart';
 import 'firebase_options.dart';
-import 'model/Task.dart';
+import 'model/task/task.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

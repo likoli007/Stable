@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/service/task_service.dart';
 
-import '../model/Task.dart';
+import '../model/task/task.dart';
 import 'add_task_page.dart';
 
 class TaskView extends StatelessWidget {
