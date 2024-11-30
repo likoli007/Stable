@@ -1,0 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:stable/database/util/document_reference_converter.dart';
+
+part 'household.g.dart';
+
+@JsonSerializable(explicitToJson: true, includeIfNull: true)
+class Household {
+  @DocumentReferenceConverter()
+  DocumentReference? admin;
+  @DocumentSerializer()
+  final List<DocumentReference> inhabitants;
+  String name;
+  @DocumentSerializer()
+  final List<DocumentReference> tasks;
+  @DocumentSerializer()
+  final List<DocumentReference> taskHistory;
+
+  Household({
+    required this.admin,
+    this.inhabitants = const [],
+    required this.name,
+    this.tasks = const [],
+    this.taskHistory = const [],
+  });
+
+  factory Household.fromJson(Map<String, dynamic> json) =>
+      _$HouseholdFromJson(json);
+  Map<String, dynamic> toJson() => _$HouseholdToJson(this);
+}
