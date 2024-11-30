@@ -2,20 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:stable/database/util/document_reference_converter.dart';
 
-part 'user.g.dart';
+part 'inhabitant.g.dart';
 
 @JsonSerializable(explicitToJson: true, includeIfNull: true)
-class User {
+class Inhabitant {
   String name;
   String surname;
   String photo;
 
-  User({
+  Inhabitant({
     required this.name,
     required this.surname,
-    this.photo = "",
+    this.photo = "", // TODO change to default photo
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  factory Inhabitant.fromJson(Map<String, dynamic> json) =>
+      _$InhabitantFromJson(json);
+  Map<String, dynamic> toJson() => _$InhabitantToJson(this);
 }
