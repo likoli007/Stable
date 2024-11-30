@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stable/model/task/task.dart';
 import 'package:stable/service/task_service.dart';
 
-import '../model/Task.dart';
-import 'add_task_page.dart';
+import 'package:stable/page/task/add_task_page.dart';
 
 class TaskView extends StatelessWidget {
   TaskView({Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stable/database/service/database_service.dart';
-import 'package:stable/model/Task.dart';
+import 'package:stable/model/task/task.dart';
 
 class TaskService {
   final DatabaseService<Task> _taskRepository;
