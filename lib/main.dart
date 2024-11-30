@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/database/service/database_service.dart';
-import 'package:stable/page/task_view.dart';
+import 'package:stable/page/task/task_view.dart';
 import 'package:stable/service/task_service.dart';
-import 'firebase_options.dart';
-import 'model/task/task.dart';
+import 'package:stable/firebase_options.dart';
+import 'package:stable/model/task/task.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
