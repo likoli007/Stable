@@ -21,6 +21,26 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   DateTime _selectedDeadline = DateTime.now();
 
+  List<Map<String, dynamic>> _subtasks = [];
+
+  void _addSubtaskField() {
+    setState(() {
+      _subtasks.add({'description': '', 'isDone': false});
+    });
+  }
+
+  void _updateSubtask(int index, String name) {
+    setState(() {
+      _subtasks[index]['description'] = name;
+    });
+  }
+
+  void _toggleSubtaskCompletion(int index) {
+    setState(() {
+      _subtasks[index]['isDone'] = !_subtasks[index]['isDone'];
+    });
+  }
+
   // function for helping user pick their own deadline date
   // TODO: move to its own spot?
   Future<void> _pickDeadline() async {
@@ -51,7 +71,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           isDone: _isDone,
           deadline: _selectedDeadline,
           repeat: null,
-          subtasks: null);
+          subtasks: _subtasks);
 
       Navigator.pop(context);
     } else {
@@ -113,6 +133,42 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   child: const Text('Pick Deadline'),
                 ),
               ],
+            ),
+            const SizedBox(height: 16),
+            const Text('Subtasks:'),
+            const SizedBox(height: 8),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: _subtasks.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == _subtasks.length) {
+                    return TextButton(
+                      onPressed: _addSubtaskField,
+                      child: const Text('Add Subtask'),
+                    );
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            onChanged: (value) => _updateSubtask(index, value),
+                            decoration: InputDecoration(
+                              labelText: 'Subtask ${index + 1}',
+                            ),
+                          ),
+                        ),
+                        Checkbox(
+                          value: _subtasks[index]['isDone'],
+                          onChanged: (value) => _toggleSubtaskCompletion(index),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
             ElevatedButton(
               onPressed: () {

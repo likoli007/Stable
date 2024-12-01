@@ -6,13 +6,13 @@ part of 'subtask.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SubTask _$SubTaskFromJson(Map<String, dynamic> json) => SubTask(
+Subtask _$SubtaskFromJson(Map<String, dynamic> json) => Subtask(
       id: json['id'] as String,
       description: json['description'] as String,
       isDone: json['isDone'] as bool,
     );
 
-Map<String, dynamic> _$SubTaskToJson(SubTask instance) => <String, dynamic>{
+Map<String, dynamic> _$SubtaskToJson(Subtask instance) => <String, dynamic>{
       'description': instance.description,
       'isDone': instance.isDone,
     };

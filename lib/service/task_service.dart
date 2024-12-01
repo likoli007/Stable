@@ -2,10 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stable/database/service/database_service.dart';
 import 'package:stable/model/task/task.dart';
 
+import '../model/subtask/subtask.dart';
+
 class TaskService {
   final DatabaseService<Task> _taskRepository;
+  final DatabaseService<Subtask> _subTaskRepository;
 
-  const TaskService(this._taskRepository);
+  const TaskService(this._taskRepository, this._subTaskRepository);
 
   Future<List<Task>> getTasks() {
     final taskStream = _taskRepository.getAllDocuments();
@@ -19,6 +22,19 @@ class TaskService {
     return null;
   }
 
+  Future<DocumentReference?> addSubTask(
+      {required String description, required bool isDone}) async {
+    Subtask subtask =
+        Subtask(id: "template", description: description, isDone: isDone);
+
+    DocumentReference newSubTaskReference =
+        await _subTaskRepository.add(subtask);
+
+    return newSubTaskReference;
+  }
+
+  //Future<List<Subtask>> getTaskSubTasks() {}
+
   Future<String?> addTask(
       {required List<DocumentReference>? assignees,
       required String? name,
@@ -26,7 +42,7 @@ class TaskService {
       required bool? isDone,
       required DateTime? deadline,
       required DocumentReference? repeat,
-      required List<DocumentReference>? subtasks}) async {
+      required List<Map<String, dynamic>>? subtasks}) async {
     //TODO validation checks and document reference handling
     DocumentReference defaultReference =
         FirebaseFirestore.instance.doc('users/defaultReference');
@@ -39,6 +55,23 @@ class TaskService {
     }
 
     List<DocumentReference> defaultReferenceList = [defaultReference];
+
+    List<DocumentReference> subtaskReferences = [];
+    if (subtasks != null) {
+      for (int i = 0; i < subtasks.length; i++) {
+        bool subIsDone = subtasks[i]['isDone'];
+        String subDescription = subtasks[i]['description'];
+        //TODO: checking of descriptions
+
+        DocumentReference? ref =
+            await addSubTask(description: subDescription, isDone: subIsDone);
+
+        if (ref != null) {
+          subtaskReferences.add(ref);
+        }
+      }
+    }
+
     Task newTask = Task(
         id: "discard",
         assignees: defaultReferenceList,
@@ -47,7 +80,7 @@ class TaskService {
         deadline: deadline,
         isDone: isDone,
         repeat: defaultReference,
-        subtasks: defaultReferenceList);
+        subtasks: subtaskReferences);
 
     await _taskRepository.add(newTask);
     return null;

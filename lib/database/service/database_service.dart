@@ -20,8 +20,8 @@ class DatabaseService<T> {
   //TODO: add relevant functions as app is built
 
   // create document operation
-  Future<void> add(T data) async {
-    await _collectionReference.add(data);
+  Future<DocumentReference> add(T data) async {
+    return await _collectionReference.add(data);
   }
 
   Future<void> updateDocument(String id, Map<String, dynamic> fields) async {
