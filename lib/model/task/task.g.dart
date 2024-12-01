@@ -26,7 +26,6 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
     );
 
 Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
-      'id': instance.id,
       'assignees':
           instance.assignees.map(const DocumentSerializer().toJson).toList(),
       'deadline': _$JsonConverterToJson<Timestamp, DateTime>(
