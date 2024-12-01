@@ -17,6 +17,7 @@ class ProfileSettingsPage extends StatelessWidget {
           ElevatedButton(
               onPressed: () {
                 _auth.signOut();
+                Navigator.pushReplacementNamed(context, '/');
               },
               child: const Text("Log out")),
         ],
