@@ -5,8 +5,14 @@ import 'package:stable/page/profile/profile_settings_page.dart';
 class PageTemplate extends StatelessWidget {
   final String title;
   final Widget child;
+  final FloatingActionButton? floatingActionButton;
 
-  const PageTemplate({super.key, required this.title, required this.child});
+  PageTemplate({
+    super.key,
+    required this.title,
+    required this.child,
+    FloatingActionButton? this.floatingActionButton,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +30,7 @@ class PageTemplate extends StatelessWidget {
           },
         ),
       ]),
+      floatingActionButton: floatingActionButton,
       body: Padding(
         padding: const EdgeInsets.all(STANDARD_GAP),
         child: child,
