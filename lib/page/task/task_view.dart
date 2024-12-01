@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stable/common/widget/page_template.dart';
 import 'package:stable/model/task/task.dart';
 import 'package:stable/service/task_service.dart';
 
@@ -13,11 +14,9 @@ class TaskView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("building");
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tasks'),
-      ),
-      body: StreamBuilder<List<Task>>(
+    return PageTemplate(
+      title: 'Tasks',
+      child: StreamBuilder<List<Task>>(
         stream: _taskProvider.getTasksStream(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
