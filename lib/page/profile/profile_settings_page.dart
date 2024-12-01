@@ -20,6 +20,20 @@ class ProfileSettingsPage extends StatelessWidget {
                 Navigator.pushReplacementNamed(context, '/');
               },
               child: const Text("Log out")),
+          FutureBuilder<String?>(
+            future: _auth.getUserName(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else if (snapshot.hasData) {
+                return Text(snapshot.data ?? 'Error');
+              } else {
+                return Text('No name');
+              }
+            },
+          ),
         ],
       ),
     );

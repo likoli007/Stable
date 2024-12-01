@@ -20,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
     _auth.googleSignInPlugin.userDataEvents
         ?.listen((GoogleSignInUserData? userData) {
       if (userData != null) {
+        _auth.googleAccount = userData;
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => TaskView()),
