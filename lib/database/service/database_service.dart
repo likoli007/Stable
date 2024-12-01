@@ -24,6 +24,10 @@ class DatabaseService<T> {
     await _collectionReference.add(data);
   }
 
+  Future<void> updateDocument(String id, Map<String, dynamic> fields) async {
+    await _collectionReference.doc(id).update(fields);
+  }
+
   // get a list of all documents in collection
   Future<List<T>> getAllDocuments() async {
     final documentsSnapshot = await _collectionReference.get();

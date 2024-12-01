@@ -6,6 +6,8 @@ part 'task.g.dart';
 
 @JsonSerializable(explicitToJson: true, includeIfNull: true)
 class Task {
+  @JsonKey(includeToJson: false)
+  String id;
   @DocumentSerializer()
   final List<DocumentReference> assignees;
   @TimestampConverter()
@@ -19,6 +21,7 @@ class Task {
   List<DocumentReference>? subtasks;
 
   Task({
+    required this.id,
     required this.assignees,
     this.deadline,
     required this.description,
@@ -28,6 +31,14 @@ class Task {
     this.subtasks,
   });
 
+  /// Factory constructor for creating a Task from Firestore
+  factory Task.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data()!;
+    return _$TaskFromJson({
+      ...data,
+      'id': doc.id,
+    });
+  }
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
   Map<String, dynamic> toJson() => _$TaskToJson(this);
 }

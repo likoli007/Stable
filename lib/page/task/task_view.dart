@@ -32,20 +32,28 @@ class TaskView extends StatelessWidget {
           stream: _taskProvider.getTasksStream(), builder: taskViewBuilder),
     );
   }
-}
 
-Widget taskViewBuilder(BuildContext context, List<Task> data) {
-  final tasks = data;
-  print(tasks.length);
-  return ListView.builder(
-    itemCount: tasks.length,
-    itemBuilder: (context, index) {
-      final task = tasks[index];
-      return ListTile(
-        title: Text(task.name),
-        subtitle: Text(task.description),
-        trailing: Icon(task.isDone ? Icons.check_circle : Icons.circle),
-      );
-    },
-  );
+  // Builder function passed to PageTemplate
+  Widget taskViewBuilder(BuildContext context, List<Task> data) {
+    final tasks = data;
+    print(tasks.length);
+    return ListView.builder(
+      itemCount: tasks.length,
+      itemBuilder: (context, index) {
+        final task = tasks[index];
+        return ListTile(
+          title: Text(task.name),
+          subtitle: Text(task.description),
+          trailing: IconButton(
+            icon: Icon(task.isDone ? Icons.check_circle : Icons.circle),
+            onPressed: () => setDone(tasks[index]),
+          ),
+        );
+      },
+    );
+  }
+
+  setDone(Task t) {
+    _taskProvider.setDone(t);
+  }
 }

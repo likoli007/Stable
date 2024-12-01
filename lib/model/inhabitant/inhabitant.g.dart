@@ -12,7 +12,8 @@ Inhabitant _$InhabitantFromJson(Map<String, dynamic> json) => Inhabitant(
       photo: json['photo'] as String? ?? "",
     );
 
-Map<String, dynamic> _$InhabitantToJson(Inhabitant instance) => <String, dynamic>{
+Map<String, dynamic> _$InhabitantToJson(Inhabitant instance) =>
+    <String, dynamic>{
       'name': instance.name,
       'surname': instance.surname,
       'photo': instance.photo,

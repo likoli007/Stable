@@ -12,6 +12,13 @@ class TaskService {
     return taskStream;
   }
 
+  Future<void>? setDone(Task t) {
+    t.isDone = !t.isDone;
+    Map<String, dynamic> doneField = {"isDone": t.isDone};
+    _taskRepository.updateDocument(t.id, doneField);
+    return null;
+  }
+
   Future<String?> addTask(
       {required List<DocumentReference>? assignees,
       required String? name,
@@ -33,6 +40,7 @@ class TaskService {
 
     List<DocumentReference> defaultReferenceList = [defaultReference];
     Task newTask = Task(
+        id: "discard",
         assignees: defaultReferenceList,
         name: name,
         description: description,
