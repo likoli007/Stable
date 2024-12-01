@@ -81,12 +81,25 @@ class TaskView extends StatelessWidget {
             onPressed: () => setDone(task),
           ),
           children: [
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () => editTask(context, task),
+            ),
             LoadingStreamBuilder<List<Subtask>>(
                 stream: _taskProvider.getTaskSubTasksStream(task),
                 builder: subTaskViewBuilder),
           ],
         );
       },
+    );
+  }
+
+  void editTask(BuildContext context, Task task) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddTaskPage(task: task, isEditing: true),
+      ),
     );
   }
 

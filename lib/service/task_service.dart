@@ -44,6 +44,27 @@ class TaskService {
     return _subTaskRepository.observeDocumentsByIds(t.subtasks);
   }
 
+  Future<String?> updateTask(Task? t) async {
+    if (t != null) {
+      _taskRepository.updateEntity(t.id, t);
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getRelevantSubtasks(Task t) async {
+    List<Map<String, dynamic>> result = [];
+    List<DocumentReference> subtaskRefs = t.subtasks ?? [];
+    List<Subtask> subtaskList =
+        await _subTaskRepository.getDocumentsByIds(subtaskRefs);
+
+    for (int i = 0; i < subtaskList.length; i++) {
+      result.add({
+        "description": subtaskList[i].description,
+        "isDone": subtaskList[i].isDone
+      });
+    }
+    return result;
+  }
+
   Future<String?> addTask(
       {required List<DocumentReference>? assignees,
       required String? name,

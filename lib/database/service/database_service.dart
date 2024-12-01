@@ -24,6 +24,10 @@ class DatabaseService<T> {
     return await _collectionReference.add(data);
   }
 
+  Future<void> updateEntity(String id, T newEntity) async {
+    await _collectionReference.doc(id).set(newEntity);
+  }
+
   Future<void> updateDocument(String id, Map<String, dynamic> fields) async {
     await _collectionReference.doc(id).update(fields);
   }
@@ -38,12 +42,12 @@ class DatabaseService<T> {
     List<T> result = [];
     if (refs != null) {
       for (int i = 0; i < refs.length; i++) {
-        final documentData =
-            await _collectionReference.doc(refs[i] as String).get();
-        T? data = documentData.data();
-        if (data != null) {
-          result.add(data);
-        }
+        final documentData = await _collectionReference
+            .where(FieldPath.documentId, whereIn: refs)
+            .get(); //await _collectionReference.doc(refs[i]).get();
+        result = documentData.docs
+            .map((documentSnapshot) => documentSnapshot.data())
+            .toList();
       }
     }
     return result;

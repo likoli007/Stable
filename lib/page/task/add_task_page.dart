@@ -4,8 +4,13 @@ import 'package:get_it/get_it.dart';
 
 import 'package:stable/service/task_service.dart';
 
+import '../../model/task/task.dart';
+
 class AddTaskPage extends StatefulWidget {
-  AddTaskPage({Key? key}) : super(key: key);
+  final Task? task;
+  final bool isEditing;
+
+  AddTaskPage({Key? key, this.task, this.isEditing = false}) : super(key: key);
 
   @override
   State<AddTaskPage> createState() => _AddTaskPageState();
@@ -14,14 +19,36 @@ class AddTaskPage extends StatefulWidget {
 class _AddTaskPageState extends State<AddTaskPage> {
   final _taskProvider = GetIt.instance<TaskService>();
 
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
 
   bool _isDone = false;
 
   DateTime _selectedDeadline = DateTime.now();
 
   List<Map<String, dynamic>> _subtasks = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    _nameController = TextEditingController(text: widget.task?.name ?? '');
+    _descriptionController =
+        TextEditingController(text: widget.task?.description ?? '');
+    _isDone = widget.task?.isDone ?? false;
+    _selectedDeadline = widget.task?.deadline ?? DateTime.now();
+
+    _loadSubtasks();
+  }
+
+  Future<void> _loadSubtasks() async {
+    if (widget.task?.subtasks != null) {
+      var newSubtasks = await _taskProvider.getRelevantSubtasks(widget.task!);
+      setState(() {
+        _subtasks = newSubtasks;
+      });
+    }
+  }
 
   void _addSubtaskField() {
     setState(() {
@@ -55,6 +82,27 @@ class _AddTaskPageState extends State<AddTaskPage> {
       setState(() {
         _selectedDeadline = pickedDate;
       });
+    }
+  }
+
+  void _changeTask() {
+    if (widget.task != null) {
+      widget.task?.isDone = _isDone;
+      //TODO: widget.task?.subtasks = _taskProvider.addMissingSubtasks(_subtasks);
+      widget.task?.description = _descriptionController.text;
+      widget.task?.name = _nameController.text;
+      widget.task?.deadline = _selectedDeadline;
+      //TODO: widget.task?.assignees
+      //TODO: widget.task?.repeat
+      _taskProvider.updateTask(widget.task);
+    }
+  }
+
+  void _handleActionButton() {
+    if (widget.isEditing) {
+      _changeTask();
+    } else {
+      _addTask();
     }
   }
 
@@ -156,7 +204,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           child: TextField(
                             onChanged: (value) => _updateSubtask(index, value),
                             decoration: InputDecoration(
-                              labelText: 'Subtask ${index + 1}',
+                              labelText: widget.isEditing
+                                  ? _subtasks[index]['description']
+                                  : 'Subtask ${index + 1}',
                             ),
                           ),
                         ),
@@ -172,7 +222,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                _addTask();
+                _handleActionButton();
               },
               child: const Text('Add Task'),
             ),
