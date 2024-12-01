@@ -6,5 +6,8 @@ class JoinHouseholdPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container();
+    // TODO add text field for household code
+    // TODO add button to join household
+    // TODO add create household button
   }
 }

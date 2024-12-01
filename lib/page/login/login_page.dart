@@ -38,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
       title: "Login",
       child: Column(
         children: [
+          // TODO Add introduction to the app
           ElevatedButton(
             onPressed: () {
               Navigator.pushReplacement(
@@ -45,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
                 MaterialPageRoute(builder: (context) => TaskView()),
               );
             },
-            child: Text("Skip login"),
+            child: Text("Skip login"), // TODO Remove this button
           ),
           Container(
             width: 300,

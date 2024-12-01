@@ -11,7 +11,9 @@ class AppWrapper extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors
+                  .deepPurple), // TODO change color scheme and introduce dark theme
           useMaterial3: true,
         ),
         initialRoute: '/',

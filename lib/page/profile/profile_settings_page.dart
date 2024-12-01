@@ -17,10 +17,12 @@ class ProfileSettingsPage extends StatelessWidget {
           ElevatedButton(
               onPressed: () {
                 _auth.signOut();
-                Navigator.pushReplacementNamed(context, '/');
+                Navigator.pushReplacementNamed(
+                    context, '/'); // TODO remove the option to get back
               },
               child: const Text("Log out")),
           FutureBuilder<String?>(
+            // TODO rewrite with loading stream builder
             future: _auth.getUserName(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -34,6 +36,13 @@ class ProfileSettingsPage extends StatelessWidget {
               }
             },
           ),
+          // TODO add googleAccount profile picture
+          // TODO add invite to household button
+          // TODO add leave household button
+          // TODO add see household statistics button
+          // TODO add manage household button if user is admin
+          // TODO change theme button with fancy LERP animation
+          // TODO popup like in Google apps?
         ],
       ),
     );

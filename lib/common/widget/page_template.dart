@@ -12,6 +12,7 @@ class PageTemplate extends StatelessWidget {
     required this.title,
     required this.child,
     FloatingActionButton? this.floatingActionButton,
+    // TODO add option to hide iconButton in the AppBar
   });
 
   @override
@@ -19,7 +20,8 @@ class PageTemplate extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(title), centerTitle: true, actions: [
         IconButton(
-          icon: const Icon(Icons.settings),
+          icon: const Icon(
+              Icons.settings), // TODO change to googleAccount profile picture
           onPressed: () {
             Navigator.push(
               context,
