@@ -5,6 +5,7 @@ import 'package:google_sign_in_web/google_sign_in_web.dart';
 import 'package:google_sign_in_platform_interface/src/types.dart';
 
 class AuthService {
+  late GoogleSignInUserData? googleAccount;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     clientId: dotenv.env['GOOGLE_CLIENT_ID'],
@@ -14,43 +15,33 @@ class AuthService {
 
   AuthService() {
     googleSignInPlugin.initWithParams(SignInInitParameters(
-      scopes: ['email', 'profile', 'https://www.googleapis.com/auth/calendar'],
+      scopes: [
+        'email',
+        'profile',
+        'https://www.googleapis.com/auth/calendar', // For future use of adding tasks to Google Calendar
+      ],
       signInOption: SignInOption.standard,
       clientId: dotenv.env['GOOGLE_CLIENT_ID'],
       forceCodeForRefreshToken: false,
     ));
   }
 
-  Future<User?> signInWithGoogle() async {
+  Future<GoogleSignInAccount?> signOut() async {
     try {
-      final GoogleSignInAccount? googleUser =
-          await _googleSignIn.signInSilently();
-      if (googleUser == null) {
-        return null; // The user canceled the sign-in
-      }
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      UserCredential result = await _auth.signInWithCredential(credential);
-      return result.user;
+      googleAccount = null; // Clear the current user
+      return await _googleSignIn.signOut();
     } catch (e) {
       print(e.toString()); // TODO: Handle error
       return null;
     }
   }
 
-  // Sign out
-  Future<GoogleSignInAccount?> signOut() async {
-    try {
-      return await _googleSignIn.signOut();
-    } catch (e) {
-      print(e.toString()); // TODO: Handle error
-      return null;
-    }
+  Future<String?> getUserName() async {
+    print('Google User: $googleAccount'); // Debug print
+    return googleAccount?.displayName;
+  }
+
+  Future<String?> getUserProfilePicture() async {
+    return googleAccount?.photoUrl;
   }
 }
