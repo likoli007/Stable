@@ -34,6 +34,32 @@ class DatabaseService<T> {
     return _mapQuerySnapshotToData(documentsSnapshot);
   }
 
+  Future<List<T>> getDocumentsByIds(List<DocumentReference>? refs) async {
+    List<T> result = [];
+    if (refs != null) {
+      for (int i = 0; i < refs.length; i++) {
+        final documentData =
+            await _collectionReference.doc(refs[i] as String).get();
+        T? data = documentData.data();
+        if (data != null) {
+          result.add(data);
+        }
+      }
+    }
+    return result;
+  }
+
+  Stream<List<T>> observeDocumentsByIds(List<DocumentReference>? refs) {
+    if (refs == null || refs.isEmpty) {
+      return Stream.value([]);
+    }
+
+    return _collectionReference
+        .where(FieldPath.documentId, whereIn: refs)
+        .snapshots()
+        .map(_mapQuerySnapshotToData);
+  }
+
   // get a specific JSON document by id
   Future<T?> getDocument(String id) async {
     final documentData = await _collectionReference.doc(id).get();

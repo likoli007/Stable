@@ -22,6 +22,13 @@ class TaskService {
     return null;
   }
 
+  Future<void>? setDoneSubtask(Subtask s) {
+    s.isDone = !s.isDone;
+    Map<String, dynamic> doneField = {"isDone": s.isDone};
+    _subTaskRepository.updateDocument(s.id, doneField);
+    return null;
+  }
+
   Future<DocumentReference?> addSubTask(
       {required String description, required bool isDone}) async {
     Subtask subtask =
@@ -33,7 +40,9 @@ class TaskService {
     return newSubTaskReference;
   }
 
-  //Future<List<Subtask>> getTaskSubTasks() {}
+  Stream<List<Subtask>> getTaskSubTasksStream(Task t) {
+    return _subTaskRepository.observeDocumentsByIds(t.subtasks);
+  }
 
   Future<String?> addTask(
       {required List<DocumentReference>? assignees,
