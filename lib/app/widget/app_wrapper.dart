@@ -18,6 +18,7 @@ class AppWrapper extends StatelessWidget {
         routes: {
           '/': (context) => LoginPage(),
           '/home': (context) => TaskView(),
+          //TODO: Add routes
         });
   }
 }
