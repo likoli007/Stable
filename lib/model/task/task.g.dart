@@ -7,6 +7,7 @@ part of 'task.dart';
 // **************************************************************************
 
 Task _$TaskFromJson(Map<String, dynamic> json) => Task(
+      id: json['id'] as String,
       assignees: (json['assignees'] as List<dynamic>)
           .map((e) => const DocumentSerializer()
               .fromJson(e as DocumentReference<Object?>))

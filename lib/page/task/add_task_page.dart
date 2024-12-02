@@ -4,8 +4,14 @@ import 'package:get_it/get_it.dart';
 
 import 'package:stable/service/task_service.dart';
 
+import '../../model/subtask/subtask.dart';
+import '../../model/task/task.dart';
+
 class AddTaskPage extends StatefulWidget {
-  AddTaskPage({Key? key}) : super(key: key);
+  final Task? task;
+  final bool isEditing;
+
+  AddTaskPage({Key? key, this.task, this.isEditing = false}) : super(key: key);
 
   @override
   State<AddTaskPage> createState() => _AddTaskPageState();
@@ -14,12 +20,54 @@ class AddTaskPage extends StatefulWidget {
 class _AddTaskPageState extends State<AddTaskPage> {
   final _taskProvider = GetIt.instance<TaskService>();
 
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
 
   bool _isDone = false;
 
   DateTime _selectedDeadline = DateTime.now();
+
+  List<Subtask> _subtasks = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    _nameController = TextEditingController(text: widget.task?.name ?? '');
+    _descriptionController =
+        TextEditingController(text: widget.task?.description ?? '');
+    _isDone = widget.task?.isDone ?? false;
+    _selectedDeadline = widget.task?.deadline ?? DateTime.now();
+
+    _loadSubtasks();
+  }
+
+  Future<void> _loadSubtasks() async {
+    if (widget.task?.subtasks != null) {
+      var newSubtasks = await _taskProvider.getRelevantSubtasks(widget.task!);
+      setState(() {
+        _subtasks = newSubtasks;
+      });
+    }
+  }
+
+  void _addSubtaskField() {
+    setState(() {
+      _subtasks.add(new Subtask(id: "", description: "", isDone: false));
+    });
+  }
+
+  void _updateSubtask(int index, String name) {
+    setState(() {
+      _subtasks[index].description = name;
+    });
+  }
+
+  void _toggleSubtaskCompletion(int index) {
+    setState(() {
+      _subtasks[index].isDone = !_subtasks[index].isDone;
+    });
+  }
 
   // function for helping user pick their own deadline date
   // TODO: move to its own spot?
@@ -38,6 +86,28 @@ class _AddTaskPageState extends State<AddTaskPage> {
     }
   }
 
+  Future<void> _changeTask() async {
+    if (widget.task != null) {
+      widget.task?.isDone = _isDone;
+      widget.task?.subtasks =
+          await _taskProvider.setNewSubtasks(widget.task!, _subtasks);
+      widget.task?.description = _descriptionController.text;
+      widget.task?.name = _nameController.text;
+      widget.task?.deadline = _selectedDeadline;
+      //TODO: widget.task?.assignees
+      //TODO: widget.task?.repeat
+      _taskProvider.updateTask(widget.task);
+    }
+  }
+
+  void _handleActionButton() {
+    if (widget.isEditing) {
+      _changeTask();
+    } else {
+      _addTask();
+    }
+  }
+
   void _addTask() {
     final name = _nameController.text;
     final description = _descriptionController.text;
@@ -51,7 +121,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           isDone: _isDone,
           deadline: _selectedDeadline,
           repeat: null,
-          subtasks: null);
+          subtasks: _subtasks);
 
       Navigator.pop(context);
     } else {
@@ -114,9 +184,47 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 ),
               ],
             ),
+            const SizedBox(height: 16),
+            const Text('Subtasks:'),
+            const SizedBox(height: 8),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: _subtasks.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == _subtasks.length) {
+                    return TextButton(
+                      onPressed: _addSubtaskField,
+                      child: const Text('Add Subtask'),
+                    );
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            onChanged: (value) => _updateSubtask(index, value),
+                            decoration: InputDecoration(
+                              labelText: widget.isEditing
+                                  ? _subtasks[index].description
+                                  : 'Subtask ${index + 1}',
+                            ),
+                          ),
+                        ),
+                        Checkbox(
+                          value: _subtasks[index].isDone,
+                          onChanged: (value) => _toggleSubtaskCompletion(index),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
             ElevatedButton(
               onPressed: () {
-                _addTask();
+                _handleActionButton();
               },
               child: const Text('Add Task'),
             ),

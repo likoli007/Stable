@@ -6,6 +6,8 @@ part 'task.g.dart';
 
 @JsonSerializable(explicitToJson: true, includeIfNull: true)
 class Task {
+  @JsonKey(includeToJson: false)
+  String id;
   @DocumentSerializer()
   final List<DocumentReference> assignees;
   @TimestampConverter()
@@ -19,6 +21,7 @@ class Task {
   List<DocumentReference>? subtasks;
 
   Task({
+    required this.id,
     required this.assignees,
     this.deadline,
     required this.description,

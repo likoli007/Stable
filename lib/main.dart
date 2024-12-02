@@ -10,6 +10,8 @@ import 'package:stable/service/task_service.dart';
 import 'package:stable/firebase_options.dart';
 import 'package:stable/model/task/task.dart';
 
+import 'model/subtask/subtask.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -26,8 +28,13 @@ Future<void> main() async {
     DatabaseService<Task>('Task',
         fromJson: Task.fromJson, toJson: (task) => task.toJson()),
   );
-  GetIt.instance
-      .registerSingleton(TaskService(GetIt.instance<DatabaseService<Task>>()));
+
+  GetIt.instance.registerSingleton(DatabaseService<Subtask>('Subtask',
+      fromJson: Subtask.fromJson, toJson: (subtask) => subtask.toJson()));
+
+  GetIt.instance.registerSingleton(TaskService(
+      GetIt.instance<DatabaseService<Task>>(),
+      GetIt.instance<DatabaseService<Subtask>>()));
 
   // Start Firebase Authentication service
   GetIt.instance.registerSingleton(AuthService());
