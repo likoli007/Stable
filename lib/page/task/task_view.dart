@@ -7,7 +7,7 @@ import 'package:stable/service/task_service.dart';
 
 import 'package:stable/page/task/add_task_page.dart';
 
-import '../../model/subtask/subtask.dart';
+import 'package:stable/model/subtask/subtask.dart';
 
 class TaskView extends StatelessWidget {
   TaskView({Key? key}) : super(key: key);
@@ -104,10 +104,10 @@ class TaskView extends StatelessWidget {
   }
 
   setDone(Task t) {
-    _taskProvider.setDone(t);
+    _taskProvider.setIsDoneTask(t);
   }
 
   setSubtaskDone(Subtask s) {
-    _taskProvider.setDoneSubtask(s);
+    _taskProvider.setIsDoneSubtask(s);
   }
 }

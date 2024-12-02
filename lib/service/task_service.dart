@@ -15,22 +15,24 @@ class TaskService {
     return taskStream;
   }
 
-  Future<void>? setDone(Task t) {
+  Future<void>? setIsDoneTask(Task t) {
     t.isDone = !t.isDone;
     Map<String, dynamic> doneField = {"isDone": t.isDone};
     _taskRepository.updateDocument(t.id, doneField);
     return null;
   }
 
-  Future<void>? setDoneSubtask(Subtask s) {
+  Future<void>? setIsDoneSubtask(Subtask s) {
     s.isDone = !s.isDone;
     Map<String, dynamic> doneField = {"isDone": s.isDone};
     _subTaskRepository.updateDocument(s.id, doneField);
     return null;
   }
 
-  Future<DocumentReference?> addSubTask(
-      {required String description, required bool isDone}) async {
+  Future<DocumentReference?> addSubTask({
+    required String description,
+    required bool isDone,
+  }) async {
     Subtask subtask =
         Subtask(id: "template", description: description, isDone: isDone);
 
@@ -44,25 +46,18 @@ class TaskService {
     return _subTaskRepository.observeDocumentsByIds(t.subtasks);
   }
 
-  Future<String?> updateTask(Task? t) async {
+  Future<void> updateTask(Task? t) async {
     if (t != null) {
       _taskRepository.updateEntity(t.id, t);
     }
   }
 
-  Future<List<Map<String, dynamic>>> getRelevantSubtasks(Task t) async {
-    List<Map<String, dynamic>> result = [];
+  Future<List<Subtask>> getRelevantSubtasks(Task t) async {
     List<DocumentReference> subtaskRefs = t.subtasks ?? [];
     List<Subtask> subtaskList =
         await _subTaskRepository.getDocumentsByIds(subtaskRefs);
 
-    for (int i = 0; i < subtaskList.length; i++) {
-      result.add({
-        "description": subtaskList[i].description,
-        "isDone": subtaskList[i].isDone
-      });
-    }
-    return result;
+    return subtaskList;
   }
 
   Future<String?> addTask(
@@ -72,7 +67,7 @@ class TaskService {
       required bool? isDone,
       required DateTime? deadline,
       required DocumentReference? repeat,
-      required List<Map<String, dynamic>>? subtasks}) async {
+      required List<Subtask>? subtasks}) async {
     //TODO validation checks and document reference handling
     DocumentReference defaultReference =
         FirebaseFirestore.instance.doc('users/defaultReference');
@@ -89,8 +84,8 @@ class TaskService {
     List<DocumentReference> subtaskReferences = [];
     if (subtasks != null) {
       for (int i = 0; i < subtasks.length; i++) {
-        bool subIsDone = subtasks[i]['isDone'];
-        String subDescription = subtasks[i]['description'];
+        bool subIsDone = subtasks[i].isDone;
+        String subDescription = subtasks[i].description;
         //TODO: checking of descriptions
 
         DocumentReference? ref =
@@ -112,8 +107,20 @@ class TaskService {
         repeat: defaultReference,
         subtasks: subtaskReferences);
 
-    await _taskRepository.add(newTask);
+    DocumentReference newId = await _taskRepository.add(newTask);
+    newTask.id = newId.toString();
     return null;
+  }
+
+  Future<List<DocumentReference<Object?>>> setNewSubtasks(
+      Task t, List<Subtask> subtaskList) async {
+    List<DocumentReference> result = [];
+    for (int i = 0; i < subtaskList.length; i++) {
+      DocumentReference ref = await _subTaskRepository.setOrUpdate(
+          subtaskList[i], subtaskList[i].id);
+      result.add(ref);
+    }
+    return result;
   }
 
   Stream<List<Task>> getTasksStream() {

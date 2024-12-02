@@ -17,9 +17,8 @@ class DatabaseService<T> {
               toFirestore: (value, _) => _serializeJsonDocument(value, toJson),
             );
 
-  //TODO: add relevant functions as app is built
+  // TODO: add relevant functions as app is built
 
-  // create document operation
   Future<DocumentReference> add(T data) async {
     return await _collectionReference.add(data);
   }
@@ -32,7 +31,6 @@ class DatabaseService<T> {
     await _collectionReference.doc(id).update(fields);
   }
 
-  // get a list of all documents in collection
   Future<List<T>> getAllDocuments() async {
     final documentsSnapshot = await _collectionReference.get();
     return _mapQuerySnapshotToData(documentsSnapshot);
@@ -44,7 +42,7 @@ class DatabaseService<T> {
       for (int i = 0; i < refs.length; i++) {
         final documentData = await _collectionReference
             .where(FieldPath.documentId, whereIn: refs)
-            .get(); //await _collectionReference.doc(refs[i]).get();
+            .get();
         result = documentData.docs
             .map((documentSnapshot) => documentSnapshot.data())
             .toList();
@@ -64,20 +62,26 @@ class DatabaseService<T> {
         .map(_mapQuerySnapshotToData);
   }
 
-  // get a specific JSON document by id
   Future<T?> getDocument(String id) async {
     final documentData = await _collectionReference.doc(id).get();
     return documentData.data();
   }
 
-  // util function to turn a snapshot of a firebase query to a list
   List<T> _mapQuerySnapshotToData(QuerySnapshot<T> snapshot) {
     return snapshot.docs
         .map((documentSnapshot) => documentSnapshot.data())
         .toList();
   }
 
-  /// Returns a stream of all documents in the collection
+  Future<DocumentReference> setOrUpdate(T newEntity, String entityId) async {
+    if (entityId.isNotEmpty) {
+      await updateEntity(entityId, newEntity);
+      return _collectionReference.doc(entityId);
+    } else {
+      return add(newEntity);
+    }
+  }
+
   Stream<List<T>> observeDocuments() {
     return _collectionReference.snapshots().map(_mapQuerySnapshotToData);
   }

@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 
 import 'package:stable/service/task_service.dart';
 
+import '../../model/subtask/subtask.dart';
 import '../../model/task/task.dart';
 
 class AddTaskPage extends StatefulWidget {
@@ -26,7 +27,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   DateTime _selectedDeadline = DateTime.now();
 
-  List<Map<String, dynamic>> _subtasks = [];
+  List<Subtask> _subtasks = [];
 
   @override
   void initState() {
@@ -52,19 +53,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   void _addSubtaskField() {
     setState(() {
-      _subtasks.add({'description': '', 'isDone': false});
+      _subtasks.add(new Subtask(id: "", description: "", isDone: false));
     });
   }
 
   void _updateSubtask(int index, String name) {
     setState(() {
-      _subtasks[index]['description'] = name;
+      _subtasks[index].description = name;
     });
   }
 
   void _toggleSubtaskCompletion(int index) {
     setState(() {
-      _subtasks[index]['isDone'] = !_subtasks[index]['isDone'];
+      _subtasks[index].isDone = !_subtasks[index].isDone;
     });
   }
 
@@ -85,10 +86,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
     }
   }
 
-  void _changeTask() {
+  Future<void> _changeTask() async {
     if (widget.task != null) {
       widget.task?.isDone = _isDone;
-      //TODO: widget.task?.subtasks = _taskProvider.addMissingSubtasks(_subtasks);
+      widget.task?.subtasks =
+          await _taskProvider.setNewSubtasks(widget.task!, _subtasks);
       widget.task?.description = _descriptionController.text;
       widget.task?.name = _nameController.text;
       widget.task?.deadline = _selectedDeadline;
@@ -205,13 +207,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             onChanged: (value) => _updateSubtask(index, value),
                             decoration: InputDecoration(
                               labelText: widget.isEditing
-                                  ? _subtasks[index]['description']
+                                  ? _subtasks[index].description
                                   : 'Subtask ${index + 1}',
                             ),
                           ),
                         ),
                         Checkbox(
-                          value: _subtasks[index]['isDone'],
+                          value: _subtasks[index].isDone,
                           onChanged: (value) => _toggleSubtaskCompletion(index),
                         ),
                       ],

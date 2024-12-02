@@ -31,14 +31,6 @@ class Task {
     this.subtasks,
   });
 
-  /// Factory constructor for creating a Task from Firestore
-  factory Task.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
-    final data = doc.data()!;
-    return _$TaskFromJson({
-      ...data,
-      'id': doc.id,
-    });
-  }
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
   Map<String, dynamic> toJson() => _$TaskToJson(this);
 }
