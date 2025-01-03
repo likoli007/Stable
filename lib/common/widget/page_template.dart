@@ -7,6 +7,7 @@ class PageTemplate extends StatelessWidget {
   final Widget child;
   final FloatingActionButton? floatingActionButton;
   bool showProfileButton;
+  bool showBackButton;
 
   PageTemplate({
     super.key,
@@ -14,27 +15,33 @@ class PageTemplate extends StatelessWidget {
     required this.child,
     FloatingActionButton? this.floatingActionButton,
     bool this.showProfileButton = true,
+    bool this.showBackButton = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title), centerTitle: true, actions: [
-        showProfileButton
-            ? IconButton(
-                icon: const Icon(Icons
-                    .settings), // TODO change to googleAccount profile picture
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfileSettingsPage(),
-                    ),
-                  );
-                },
-              )
-            : Container(),
-      ]),
+      appBar: AppBar(
+        title: Text(title),
+        centerTitle: true,
+        automaticallyImplyLeading: showBackButton,
+        actions: [
+          showProfileButton
+              ? IconButton(
+                  icon: const Icon(Icons
+                      .settings), // TODO change to googleAccount profile picture
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileSettingsPage(),
+                      ),
+                    );
+                  },
+                )
+              : Container(),
+        ],
+      ),
       floatingActionButton: floatingActionButton,
       body: Padding(
         padding: const EdgeInsets.all(STANDARD_GAP),

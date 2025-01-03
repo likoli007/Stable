@@ -9,6 +9,7 @@ class IntroductionPage extends StatelessWidget {
     return PageTemplate(
       title: "Welcome to the Stable!",
       showProfileButton: false,
+      showBackButton: false,
       child: Column(
         children: [
           // TODO Add introduction to the app
