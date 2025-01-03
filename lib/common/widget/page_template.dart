@@ -6,31 +6,34 @@ class PageTemplate extends StatelessWidget {
   final String title;
   final Widget child;
   final FloatingActionButton? floatingActionButton;
+  bool showProfileButton;
 
   PageTemplate({
     super.key,
     required this.title,
     required this.child,
     FloatingActionButton? this.floatingActionButton,
-    // TODO add option to hide iconButton in the AppBar
+    bool this.showProfileButton = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(title), centerTitle: true, actions: [
-        IconButton(
-          icon: const Icon(
-              Icons.settings), // TODO change to googleAccount profile picture
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProfileSettingsPage(),
-              ),
-            );
-          },
-        ),
+        showProfileButton
+            ? IconButton(
+                icon: const Icon(Icons
+                    .settings), // TODO change to googleAccount profile picture
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileSettingsPage(),
+                    ),
+                  );
+                },
+              )
+            : Container(),
       ]),
       floatingActionButton: floatingActionButton,
       body: Padding(

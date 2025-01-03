@@ -12,6 +12,7 @@ class ProfileSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageTemplate(
       title: 'Profile Settings',
+      showProfileButton: false,
       child: Row(
         children: [
           UserAvatar(
