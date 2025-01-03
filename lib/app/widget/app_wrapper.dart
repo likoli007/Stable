@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stable/page/home/home_page.dart';
+import 'package:stable/page/household/household_page.dart';
 import 'package:stable/page/login/login_page.dart';
 import 'package:stable/page/task/task_view.dart';
 
@@ -19,7 +20,9 @@ class AppWrapper extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => LoginPage(),
-          '/home': (context) => TaskView(),
+          '/home': (context) => HomePage(),
+          '/tasks': (context) => TaskView(),
+          '/household': (context) => HouseholdPage(),
           //TODO: Add routes
         });
   }
