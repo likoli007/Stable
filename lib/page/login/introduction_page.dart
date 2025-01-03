@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/common/widget/page_template.dart';
 import 'package:stable/page/login/register_page.dart';
 import 'package:stable/page/task/task_view.dart';
@@ -7,11 +8,10 @@ class IntroductionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageTemplate(
-      title: "Welcome to the Stable!",
-      showProfileButton: false,
-      showBackButton: false,
-      child: Column(
-        children: [
+        title: "Welcome to the Stable!",
+        showProfileButton: false,
+        showBackButton: false,
+        child: Column(children: [
           // TODO Add introduction to the app
           ElevatedButton(
             onPressed: () {
@@ -20,19 +20,46 @@ class IntroductionPage extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => TaskView()),
               );
             },
-            child: Text("Skip login"), // TODO Remove this button
+            child: Text(
+                "Skip login (TEMP BUTTON, DELETE!)"), // TODO Remove this button
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RegisterScreen()),
-              );
-            },
-            child: Text('Register with OAuth'),
-          )
-        ],
-      ),
-    );
+          Spacer(),
+          //TODO Add image of a stable
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Column(
+                children: [
+                  SizedBox(height: STANDARD_GAP),
+                  Text(
+                    "Household tasks? No problem.",
+                    textAlign: TextAlign.left,
+                    textScaler: TextScaler.linear(HEADLINE_SCALER),
+                  ),
+                  Text(
+                    "Dirty dishes, laundry, or piled-up trash? "
+                    "Create tasks, assign them to your household members, and keep track of their progress. "
+                    "Just sit back and relax — Stable will take care of the rest.",
+                    textAlign: TextAlign.left,
+                    textScaler: TextScaler.linear(INFO_PARAGRAPH_SCALER),
+                  ),
+                ],
+              ),
+              SizedBox(height: STANDARD_GAP),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegisterScreen()),
+                    );
+                  },
+                  child: Text('Enter the Stable'),
+                ),
+              ),
+            ],
+          ),
+        ]));
   }
 }
