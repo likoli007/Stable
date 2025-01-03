@@ -3,11 +3,12 @@ import 'package:stable/common/widget/page_template.dart';
 import 'package:stable/page/login/register_page.dart';
 import 'package:stable/page/task/task_page.dart';
 
-class LoginPage extends StatelessWidget {
+class IntroductionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageTemplate(
-      title: "Login",
+      title: "Welcome to the Stable!",
+      showProfileButton: false,
       child: Column(
         children: [
           // TODO Add introduction to the app
