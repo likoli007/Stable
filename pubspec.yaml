@@ -38,9 +38,9 @@ dependencies:
   firebase_core: ^3.7.0
   cloud_firestore: ^5.4.5
   firebase_auth: ^5.3.2
+  firebase_ui_auth: ^1.16.0
+  firebase_ui_oauth_google: ^1.4.0
   google_sign_in: ^6.2.2
-  google_sign_in_web: ^0.12.4+3
-  google_sign_in_all_platforms_interface: ^0.0.5
   get_it: ^8.0.2
   flutter_dotenv: ^5.2.1
 
@@ -98,3 +98,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+  fonts:
+    - family: SocialIcons
+      fonts:
+        - asset: packages/firebase_ui_auth/fonts/SocialIcons.ttf
+
+  assets:
+    - .env
