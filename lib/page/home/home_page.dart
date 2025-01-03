@@ -8,6 +8,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageTemplate(
       title: "Household Name Placeholder",
+      showBackButton: false,
       child: ElevatedButton(
         onPressed: () {
           Navigator.pushReplacementNamed(context, '/tasks');
