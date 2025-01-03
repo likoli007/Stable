@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stable/page/home/home_page.dart';
 import 'package:stable/page/household/household_page.dart';
-import 'package:stable/page/login/login_page.dart';
+import 'package:stable/page/login/introduction_page.dart';
 import 'package:stable/page/task/task_view.dart';
 
 class AppWrapper extends StatelessWidget {
@@ -19,7 +19,7 @@ class AppWrapper extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => LoginPage(),
+          '/': (context) => IntroductionPage(),
           '/home': (context) => HomePage(),
           '/tasks': (context) => TaskView(),
           '/household': (context) => HouseholdPage(),
