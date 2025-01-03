@@ -1,12 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:stable/authentication/auth_service.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:stable/common/widget/page_template.dart';
 
 class ProfileSettingsPage extends StatelessWidget {
   ProfileSettingsPage({Key? key}) : super(key: key);
-
-  final AuthService _auth = GetIt.instance<AuthService>();
 
   @override
   Widget build(BuildContext context) {
@@ -14,16 +14,19 @@ class ProfileSettingsPage extends StatelessWidget {
       title: 'Profile Settings',
       child: Row(
         children: [
+          UserAvatar(
+            size: 100,
+            auth: FirebaseAuth.instance,
+          ),
           ElevatedButton(
-              onPressed: () {
-                _auth.signOut();
-                Navigator.pushReplacementNamed(
-                    context, '/'); // TODO remove the option to get back
-              },
-              child: const Text("Log out")),
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushReplacementNamed(context, '/');
+            },
+            child: const Text("Log out"),
+          ),
           FutureBuilder<String?>(
-            // TODO rewrite with loading stream builder
-            future: _auth.getUserName(),
+            future: _fetchUserName(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return CircularProgressIndicator();
@@ -36,6 +39,7 @@ class ProfileSettingsPage extends StatelessWidget {
               }
             },
           ),
+
           // TODO add googleAccount profile picture
           // TODO add invite to household button
           // TODO add leave household button
@@ -46,5 +50,10 @@ class ProfileSettingsPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<String?> _fetchUserName() async {
+    final user = FirebaseAuth.instance.currentUser;
+    return user?.displayName;
   }
 }
