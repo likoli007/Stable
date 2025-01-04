@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
-import 'package:stable/page/profile/profile_settings_page.dart';
+import 'package:stable/common/widget/profile_bottom_sheet.dart';
 
 class PageTemplate extends StatelessWidget {
   final String title;
@@ -28,18 +30,20 @@ class PageTemplate extends StatelessWidget {
         actions: [
           showProfileButton
               ? IconButton(
-                  icon: const Icon(Icons
-                      .settings), // TODO change to googleAccount profile picture
+                  icon: UserAvatar(
+                    size: 40,
+                    auth: FirebaseAuth.instance,
+                  ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfileSettingsPage(),
-                      ),
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return ProfileBottomSheet();
+                      },
                     );
                   },
                 )
-              : Container(),
+              : Container(), //TODO is there a better way to hide the profile button?
         ],
       ),
       floatingActionButton: floatingActionButton,
