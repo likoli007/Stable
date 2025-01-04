@@ -25,5 +25,7 @@ class AppWrapper extends StatelessWidget {
           '/household': (context) => HouseholdPage(),
           //TODO: Add routes
         });
+    //TODO: Add responsive design for landscape desktop users
+    //TODO: Add theme switcher (and color buttons)
   }
 }
