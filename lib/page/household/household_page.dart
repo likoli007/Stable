@@ -16,6 +16,8 @@ class HouseholdPage extends StatelessWidget {
         child: buildHouseholdOverviewPage(context));
     // TODO add rotary task overview and settings
     // TODO add unassigned task list (for inhabitants to claim)
+    //TODO invitation system
+    //TODO household management shortcut (only visible to admin)
   }
 
   Widget buildHouseholdOverviewPage(BuildContext context) {
