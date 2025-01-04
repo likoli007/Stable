@@ -8,5 +8,7 @@ class HouseholdPage extends StatelessWidget {
     return Container();
     // TODO add rotary task overview and settings
     // TODO add unassigned task list (for inhabitants to claim)
+    //TODO invitation system
+    //TODO household management shortcut (only visible to admin)
   }
 }
