@@ -10,6 +10,7 @@ import '../../common/widget/loading_stream_builder.dart';
 import '../../model/household/household.dart';
 import '../../model/inhabitant/inhabitant.dart';
 import '../../service/inhabitant_service.dart';
+import '../household/add_household_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -38,12 +39,13 @@ class HomePage extends StatelessWidget {
     //TODO: if inhabitant is null, something went horribly wrong somewhere
 
     int householdCount = data!.households.length;
+    print(householdCount);
     return householdCount == 0
-        ? buildDefaultHomePage()
+        ? buildDefaultHomePage(context)
         : buildHouseholdListPage(data.households);
   }
 
-  Widget buildDefaultHomePage() {
+  Widget buildDefaultHomePage(BuildContext context) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -58,7 +60,12 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                // TODO: Navigate to a screen where the user can create a new household
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddHouseholdPage(),
+                  ),
+                );
               },
               child: const Text('Create a New Household'),
             ),
