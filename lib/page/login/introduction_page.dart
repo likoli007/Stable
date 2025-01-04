@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
+import 'package:stable/common/widget/full_width_button.dart';
 import 'package:stable/common/widget/page_template.dart';
 import 'package:stable/page/login/register_page.dart';
 import 'package:stable/page/task/task_page.dart';
@@ -33,14 +34,12 @@ class IntroductionPage extends StatelessWidget {
                   SizedBox(height: STANDARD_GAP),
                   Text(
                     "Household tasks? No problem.",
-                    textAlign: TextAlign.left,
                     textScaler: TextScaler.linear(HEADLINE_SCALER),
                   ),
                   Text(
                     "Dirty dishes, laundry, or piled-up trash? "
                     "Create tasks, assign them to your household members, and keep track of their progress. "
                     "Just sit back and relax — Stable will take care of the rest.",
-                    textAlign: TextAlign.left,
                     textScaler: TextScaler.linear(INFO_PARAGRAPH_SCALER),
                   ),
                 ],
@@ -48,14 +47,16 @@ class IntroductionPage extends StatelessWidget {
               SizedBox(height: STANDARD_GAP),
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
+                child: FullWidthButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => RegisterScreen()),
                     );
                   },
-                  child: Text('Enter the Stable'),
+                  icon: Icon(Icons.bedroom_baby),
+                  label: "Enter the Stable",
+                  alignment: Alignment.center,
                 ),
               ),
             ],
