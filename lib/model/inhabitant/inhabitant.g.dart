@@ -10,13 +10,16 @@ Inhabitant _$InhabitantFromJson(Map<String, dynamic> json) => Inhabitant(
       name: json['name'] as String,
       surname: json['surname'] as String,
       photo: json['photo'] as String? ?? "",
-    )..households =
-        (json['households'] as List<dynamic>).map((e) => e as String).toList();
+    )..households = (json['households'] as List<dynamic>)
+        .map((e) => const DocumentSerializer()
+            .fromJson(e as DocumentReference<Object?>))
+        .toList();
 
 Map<String, dynamic> _$InhabitantToJson(Inhabitant instance) =>
     <String, dynamic>{
       'name': instance.name,
       'surname': instance.surname,
       'photo': instance.photo,
-      'households': instance.households,
+      'households':
+          instance.households.map(const DocumentSerializer().toJson).toList(),
     };

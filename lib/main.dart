@@ -7,12 +7,15 @@ import 'package:get_it/get_it.dart';
 import 'package:stable/app/widget/app_wrapper.dart';
 import 'package:stable/database/service/database_service.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
+import 'package:stable/service/household_service.dart';
 import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/service/task_service.dart';
 import 'package:stable/firebase_options.dart';
 import 'package:stable/model/task/task.dart';
 
 import 'package:stable/model/subtask/subtask.dart';
+
+import 'model/household/household.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +53,12 @@ Future<void> main() async {
 
   GetIt.instance.registerSingleton(
       UserService(GetIt.instance<DatabaseService<Inhabitant>>()));
+
+  GetIt.instance.registerSingleton(DatabaseService<Household>('Household',
+      fromJson: Household.fromJson, toJson: (household) => household.toJson()));
+
+  GetIt.instance.registerSingleton(
+      HouseholdService(GetIt.instance<DatabaseService<Household>>()));
 
   runApp(const AppWrapper());
 }

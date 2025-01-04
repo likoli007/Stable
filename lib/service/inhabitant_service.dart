@@ -10,8 +10,8 @@ class UserService {
   Stream<List<Inhabitant>> getIhabitantsStream() =>
       _inhabitantRepository.observeDocuments();
 
-  Future<List<Inhabitant>> getInhabitant(int id) =>
-      _inhabitantRepository.getAllDocuments(); //TODO search only wanted id
+  Future<Inhabitant?> getInhabitant(String id) =>
+      _inhabitantRepository.getDocument(id); //TODO search only wanted id
 
   // TODO updateInhabitant(inhabitantId)
 
