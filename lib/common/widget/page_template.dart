@@ -8,8 +8,8 @@ class PageTemplate extends StatelessWidget {
   final String title;
   final Widget child;
   final FloatingActionButton? floatingActionButton;
-  bool showProfileButton;
-  bool showBackButton;
+  final bool showProfileButton;
+  final bool showBackButton;
 
   PageTemplate({
     super.key,
