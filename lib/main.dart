@@ -6,6 +6,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/app/widget/app_wrapper.dart';
 import 'package:stable/database/service/database_service.dart';
+import 'package:stable/model/inhabitant/inhabitant.dart';
+import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/service/task_service.dart';
 import 'package:stable/firebase_options.dart';
 import 'package:stable/model/task/task.dart';
@@ -41,6 +43,13 @@ Future<void> main() async {
   GetIt.instance.registerSingleton(TaskService(
       GetIt.instance<DatabaseService<Task>>(),
       GetIt.instance<DatabaseService<Subtask>>()));
+
+  GetIt.instance.registerSingleton(DatabaseService<Inhabitant>('User',
+      fromJson: Inhabitant.fromJson,
+      toJson: (inhabitant) => inhabitant.toJson()));
+
+  GetIt.instance.registerSingleton(
+      UserService(GetIt.instance<DatabaseService<Inhabitant>>()));
 
   runApp(const AppWrapper());
 }

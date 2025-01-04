@@ -15,6 +15,15 @@ class UserService {
 
   // TODO updateInhabitant(inhabitantId)
 
+  void createInhabitantFromAuth({
+    required String displayName,
+    required String uid,
+  }) async {
+    Inhabitant newInhabitant = Inhabitant(name: displayName, surname: '');
+
+    await _inhabitantRepository.updateEntity(uid, newInhabitant);
+  }
+
   void createInhabitant({
     required String name,
     required String surname,
