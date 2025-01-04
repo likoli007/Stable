@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:get_it/get_it.dart';
+import 'package:stable/auth/firebase_auth_service.dart';
+import 'package:stable/common/util/shared_ui_constants.dart';
 
 class ProfileBottomSheet extends StatelessWidget {
   ProfileBottomSheet({Key? key}) : super(key: key);
+  final FirebaseAuthService _auth = GetIt.instance<FirebaseAuthService>();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+    return Container(
+      width: double.infinity,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -23,20 +27,7 @@ class ProfileBottomSheet extends StatelessWidget {
             },
             child: const Text("Log out"),
           ),
-          FutureBuilder<String?>(
-            future: _fetchUserName(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else if (snapshot.hasData) {
-                return Text(snapshot.data ?? 'Error');
-              } else {
-                return Text('No name');
-              }
-            },
-          ),
+          Text(_auth.userName),
           ElevatedButton(
             onPressed: () {
               //TODO implement invitation system
@@ -67,13 +58,9 @@ class ProfileBottomSheet extends StatelessWidget {
             },
             child: const Text("Change theme"),
           ),
+          const SizedBox(width: STANDARD_GAP),
         ],
       ),
     );
-  }
-
-  Future<String?> _fetchUserName() async {
-    final user = FirebaseAuth.instance.currentUser;
-    return user?.displayName; //TODO refactor to auth class
   }
 }
