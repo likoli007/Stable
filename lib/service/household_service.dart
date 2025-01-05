@@ -10,6 +10,11 @@ class HouseholdService {
   Stream<List<Household>> getHouseholdsStream() =>
       _householdRepository.observeDocuments();
 
+  Stream<List<Household>> getHouseholdsStreamByIds(
+      List<DocumentReference> ids) {
+    return _householdRepository.observeDocumentsByIds(ids);
+  }
+
   Future<List<Household>> getHousehold(int id) =>
       _householdRepository.getAllDocuments(); //TODO search only wanted id
 
@@ -17,15 +22,17 @@ class HouseholdService {
 
   // TODO removeInhabitant(inhabitantId, householdId)
 
-  void createHousehold({
+  Future<DocumentReference> createHousehold({
     required String userId,
     required String name,
   }) async {
     DocumentReference defaultReference =
         FirebaseFirestore.instance.doc('users/defaultReference');
 
-    await _householdRepository.add(Household(
-      admin: defaultReference,
+    DocumentReference ref = FirebaseFirestore.instance.doc('users/$userId');
+
+    return await _householdRepository.add(Household(
+      admin: ref,
       name: name,
     ));
   }

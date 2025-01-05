@@ -10,10 +10,32 @@ class UserService {
   Stream<List<Inhabitant>> getIhabitantsStream() =>
       _inhabitantRepository.observeDocuments();
 
-  Future<List<Inhabitant>> getInhabitant(int id) =>
-      _inhabitantRepository.getAllDocuments(); //TODO search only wanted id
+  Future<Inhabitant?> getInhabitant(String id) async =>
+      await _inhabitantRepository.getDocument(id); //TODO search only wanted id
 
+  Stream<Inhabitant?> getInhabitantStream(String id) {
+    return _inhabitantRepository.observeDocument(id);
+  }
   // TODO updateInhabitant(inhabitantId)
+
+  Future<void> addHouseholdToInhabitant(
+      {required String uid, required DocumentReference newRef}) async {
+    Inhabitant? user = await _inhabitantRepository.getDocument(uid);
+
+    if (user != null) {
+      user.households.add(newRef);
+      _inhabitantRepository.updateEntity(uid, user);
+    }
+  }
+
+  void createInhabitantFromAuth({
+    required String displayName,
+    required String uid,
+  }) async {
+    Inhabitant newInhabitant = Inhabitant(name: displayName, surname: '');
+
+    await _inhabitantRepository.updateEntity(uid, newInhabitant);
+  }
 
   void createInhabitant({
     required String name,
