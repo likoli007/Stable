@@ -11,6 +11,7 @@ import '../../model/household/household.dart';
 import '../../model/inhabitant/inhabitant.dart';
 import '../../service/inhabitant_service.dart';
 import '../household/add_household_page.dart';
+import '../household/household_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -22,13 +23,11 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageTemplate(
       title: "Household Name Placeholder",
-      child: LoadingFutureBuilder(
-          future: _userProvider
-              .getInhabitant(FirebaseAuth.instance.currentUser!.uid),
+      child: LoadingStreamBuilder(
+          stream: _userProvider
+              .getInhabitantStream(FirebaseAuth.instance.currentUser!.uid),
           builder: homePageBuilder),
     );
-    //return FutureBuilder(future: _userProvider.getInhabitant(FirebaseAuth.instance.currentUser!.uid), builder: builder)
-
     // TODO add welcome message
     // TODO add an overview of the household (unfinished repeating tasks, rotary tasks)
     // TODO add a center floating button to quickly add a new task
@@ -96,7 +95,12 @@ class HomePage extends StatelessWidget {
         return ListTile(
           title: Text(household.name),
           onTap: () {
-            //TODO: Navigate to household details screen or perform another action
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HouseholdPage(household: household),
+              ),
+            );
           },
         );
       },

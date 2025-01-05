@@ -13,6 +13,9 @@ class UserService {
   Future<Inhabitant?> getInhabitant(String id) async =>
       await _inhabitantRepository.getDocument(id); //TODO search only wanted id
 
+  Stream<Inhabitant?> getInhabitantStream(String id) {
+    return _inhabitantRepository.observeDocument(id);
+  }
   // TODO updateInhabitant(inhabitantId)
 
   Future<void> addHouseholdToInhabitant(

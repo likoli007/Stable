@@ -51,6 +51,13 @@ class DatabaseService<T> {
     return result;
   }
 
+  Stream<T?> observeDocument(String id) {
+    return _collectionReference
+        .doc(id)
+        .snapshots()
+        .map((documentSnapshot) => documentSnapshot.data());
+  }
+
   Stream<List<T>> observeDocumentsByIds(List<DocumentReference>? refs) {
     if (refs == null || refs.isEmpty) {
       return Stream.value([]);

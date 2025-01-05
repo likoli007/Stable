@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stable/common/widget/page_template.dart';
 import 'package:stable/page/login/register_page.dart';
-import 'package:stable/page/task/task_view.dart';
+import 'package:stable/page/task/task_page.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -15,7 +15,7 @@ class LoginPage extends StatelessWidget {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => TaskView()),
+                MaterialPageRoute(builder: (context) => TaskPage()),
               );
             },
             child: Text("Skip login"), // TODO Remove this button

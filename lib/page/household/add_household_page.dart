@@ -51,7 +51,7 @@ class _AddHouseholdPageState extends State<AddHouseholdPage> {
               _textController.clear();
               Navigator.pop(context);
             },
-            child: const Text('Add Task'),
+            child: const Text('Add Household'),
           ),
         ],
       ),

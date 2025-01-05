@@ -9,8 +9,8 @@ import 'package:stable/page/task/add_task_page.dart';
 
 import 'package:stable/model/subtask/subtask.dart';
 
-class TaskView extends StatelessWidget {
-  TaskView({Key? key}) : super(key: key);
+class TaskPage extends StatelessWidget {
+  TaskPage({Key? key}) : super(key: key);
 
   final _taskProvider = GetIt.instance<TaskService>();
 
