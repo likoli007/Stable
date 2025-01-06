@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
+import 'package:material_you_dynamic_theme/material_you_dynamic_theme.dart';
+
 import 'package:stable/app/widget/app_wrapper.dart';
 import 'package:stable/auth/firebase_auth_service.dart';
+import 'package:stable/common/theme/theme_provider.dart';
 import 'package:stable/database/service/database_service.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/service/household_service.dart';
 import 'package:stable/service/inhabitant_service.dart';
+import 'package:stable/service/settings_controller.dart';
 import 'package:stable/service/task_service.dart';
 import 'package:stable/firebase_options.dart';
 import 'package:stable/model/task/task.dart';
-
 import 'package:stable/model/subtask/subtask.dart';
-
 import 'package:stable/model/household/household.dart';
 
 Future<void> main() async {
@@ -60,5 +62,9 @@ Future<void> main() async {
   GetIt.instance.registerSingleton(
       HouseholdService(GetIt.instance<DatabaseService<Household>>()));
 
-  runApp(AppWrapper());
+  // Theming
+  GetIt.instance.registerSingleton(SettingsController());
+  GetIt.instance.registerSingleton(ThemeProvider());
+
+  runAppDynamic(home: AppWrapper());
 }

@@ -28,6 +28,7 @@ class PageTemplate extends StatelessWidget {
         title: Text(title),
         centerTitle: true,
         automaticallyImplyLeading: showBackButton,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         actions: [
           Visibility(
             visible: showProfileButton,
@@ -54,6 +55,7 @@ class PageTemplate extends StatelessWidget {
         child: child,
       ),
       bottomNavigationBar: BottomNavigation(),
+      // TODO body: pages[currentPageIndex],
     );
   }
 }
