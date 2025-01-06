@@ -5,14 +5,12 @@ import 'package:get_it/get_it.dart';
 import 'package:stable/common/widget/page_template.dart';
 import 'package:stable/service/household_service.dart';
 
-import '../../common/widget/loading_future_builder.dart';
-import '../../common/widget/loading_stream_builder.dart';
-import '../../model/household/household.dart';
-import '../../model/inhabitant/inhabitant.dart';
-import '../../service/inhabitant_service.dart';
-import '../household/add_household_page.dart';
-import '../household/household_page.dart';
-// TODO replace with package imports
+import 'package:stable/common/widget/loading_stream_builder.dart';
+import 'package:stable/model/household/household.dart';
+import 'package:stable/model/inhabitant/inhabitant.dart';
+import 'package:stable/service/inhabitant_service.dart';
+import 'package:stable/page/household/add_household_page.dart';
+import 'package:stable/page/household/household_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);

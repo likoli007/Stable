@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stable/page/home/home_page.dart';
 import 'package:stable/page/household/household_page.dart';
-import 'package:stable/page/task/task_view.dart';
+import 'package:stable/page/task/task_page.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
@@ -14,9 +14,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
   int currentPageIndex = 0;
 
   final List<Widget> pages = [
-    const HomePage(),
-    const HouseholdPage(),
-    TaskView(),
+    HomePage(),
+    // TODO const HouseholdPage(household: null,),
+    TaskPage(),
   ];
 
   void _onItemTapped(int index) {
