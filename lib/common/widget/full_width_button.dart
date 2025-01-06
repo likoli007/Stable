@@ -19,7 +19,7 @@ class FullWidthButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        icon: icon,
+        icon: icon != null ? Icon(icon!.icon, color: Theme.of(context).colorScheme.onPrimary) : null,
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           alignment: alignment,
