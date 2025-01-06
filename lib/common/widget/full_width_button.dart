@@ -23,8 +23,13 @@ class FullWidthButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           alignment: alignment,
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
         ),
-        label: Text(label),
+        label: Text(
+          label,
+          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+        ),
       ),
     );
   }
