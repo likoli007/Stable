@@ -25,67 +25,9 @@ class ProfileBottomSheet extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: Column(children: [
-                Row(
-                  children: [
-                    UserAvatar(
-                      size: 100,
-                      auth: FirebaseAuth.instance,
-                    ),
-                    SizedBox(width: STANDARD_GAP),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _auth.userName,
-                          textScaler: TextScaler.linear(NAME_SCALER),
-                        ),
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            FirebaseAuth.instance.signOut();
-                            Navigator.pushReplacementNamed(context, '/');
-                          },
-                          icon: Icon(Icons.logout, color: Colors.white),
-                          style: ButtonStyle(
-                            backgroundColor:
-                                WidgetStateProperty.all(Colors.red),
-                            foregroundColor:
-                                WidgetStateProperty.all(Colors.white),
-                          ),
-                          label: Text("Log out"),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                _buildProfileSection(context),
                 SizedBox(height: STANDARD_GAP),
-                FullWidthButton(
-                  label: "Household statistics",
-                  icon: Icon(Icons.bar_chart),
-                  onPressed: () {
-                    //TODO implement household statistics
-                  },
-                ),
-                FullWidthButton(
-                  label: "Invite to household",
-                  icon: Icon(Icons.person_add_alt_1),
-                  onPressed: () {
-                    //TODO implement invitation system
-                  },
-                ),
-                FullWidthButton(
-                  label: "Manage household",
-                  icon: Icon(Icons.manage_accounts),
-                  onPressed: () {
-                    //TODO implement household management (only visible to admin)
-                  },
-                ),
-                FullWidthButton(
-                  label: "Leave household",
-                  icon: Icon(Icons.no_meeting_room),
-                  onPressed: () {
-                    //TODO implement leaving household
-                  },
-                ),
+                _buildHouseholdButtonsSection(),
                 SizedBox(height: STANDARD_GAP),
                 _buildThemeModeToggleButtons(context),
               ]),
@@ -93,6 +35,74 @@ class ProfileBottomSheet extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildProfileSection(BuildContext context) {
+    return Row(
+      children: [
+        UserAvatar(
+          size: 100,
+          auth: FirebaseAuth.instance,
+        ),
+        SizedBox(width: STANDARD_GAP),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _auth.userName,
+              textScaler: TextScaler.linear(NAME_SCALER),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+                Navigator.pushReplacementNamed(context, '/');
+              },
+              icon: Icon(Icons.logout, color: Colors.white),
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(Colors.red),
+                foregroundColor: WidgetStateProperty.all(Colors.white),
+              ),
+              label: Text("Log out"),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHouseholdButtonsSection() {
+    return Column(
+      children: [
+        FullWidthButton(
+          label: "Household statistics",
+          icon: Icon(Icons.bar_chart),
+          onPressed: () {
+            //TODO implement household statistics
+          },
+        ),
+        FullWidthButton(
+          label: "Invite to household",
+          icon: Icon(Icons.person_add_alt_1),
+          onPressed: () {
+            //TODO implement invitation system
+          },
+        ),
+        FullWidthButton(
+          label: "Manage household",
+          icon: Icon(Icons.manage_accounts),
+          onPressed: () {
+            //TODO implement household management (only visible to admin)
+          },
+        ),
+        FullWidthButton(
+          label: "Leave household",
+          icon: Icon(Icons.no_meeting_room),
+          onPressed: () {
+            //TODO implement leaving household
+          },
+        ),
+      ],
     );
   }
 
