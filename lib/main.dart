@@ -14,8 +14,7 @@ import 'package:stable/model/task/task.dart';
 
 import 'package:stable/model/subtask/subtask.dart';
 
-import 'model/household/household.dart';
-//TODO package import
+import 'package:stable/model/household/household.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,5 +60,5 @@ Future<void> main() async {
   GetIt.instance.registerSingleton(
       HouseholdService(GetIt.instance<DatabaseService<Household>>()));
 
-  runApp(const AppWrapper());
+  runApp(AppWrapper());
 }
