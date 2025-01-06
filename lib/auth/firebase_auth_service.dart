@@ -9,7 +9,7 @@ class FirebaseAuthService {
   late final String userName;
 
   FirebaseAuthService() {
-    _firebaseAuth = FirebaseAuth.instance;
+    firebaseAuth = FirebaseAuth.instance;
     // Initialize Firebase Auth providers
     // For Google sign-in, you need to add the client ID to .env file
     // Client ID can be found in the Google Cloud Console
