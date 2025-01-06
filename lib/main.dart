@@ -30,12 +30,17 @@ Future<void> main() async {
         fromJson: Task.fromJson, toJson: (task) => task.toJson()),
   );
 
-  GetIt.instance.registerSingleton(DatabaseService<Subtask>('Subtask',
-      fromJson: Subtask.fromJson, toJson: (subtask) => subtask.toJson()));
+  GetIt.instance.registerSingleton(
+    DatabaseService<Subtask>(
+      'Subtask',
+      fromJson: Subtask.fromJson,
+      toJson: (subtask) => subtask.toJson(),
+    ),
+  );
 
   GetIt.instance.registerSingleton(TaskService(
       GetIt.instance<DatabaseService<Task>>(),
       GetIt.instance<DatabaseService<Subtask>>()));
 
-  runApp(const AppWrapper());
+  runApp(AppWrapper());
 }
