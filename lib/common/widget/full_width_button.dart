@@ -7,12 +7,12 @@ class FullWidthButton extends StatelessWidget {
   final Alignment alignment;
 
   const FullWidthButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.onPressed,
-    this.icon = null,
+    this.icon,
     this.alignment = Alignment.centerLeft,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
