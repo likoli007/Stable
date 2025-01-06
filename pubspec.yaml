@@ -107,4 +107,4 @@ flutter:
         - asset: packages/firebase_ui_auth/fonts/SocialIcons.ttf
 
   assets:
-    - .env
+    - assets/.env
