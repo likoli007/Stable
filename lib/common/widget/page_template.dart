@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
+import 'package:stable/common/widget/bottom_navigation.dart';
 import 'package:stable/common/widget/profile_bottom_sheet.dart';
 
 class PageTemplate extends StatelessWidget {
@@ -28,22 +29,23 @@ class PageTemplate extends StatelessWidget {
         centerTitle: true,
         automaticallyImplyLeading: showBackButton,
         actions: [
-          showProfileButton
-              ? IconButton(
-                  icon: UserAvatar(
-                    size: 40,
-                    auth: FirebaseAuth.instance,
-                  ),
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return ProfileBottomSheet();
-                      },
-                    );
+          Visibility(
+            visible: showProfileButton,
+            child: IconButton(
+              icon: UserAvatar(
+                size: 40,
+                auth: FirebaseAuth.instance,
+              ),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return ProfileBottomSheet();
                   },
-                )
-              : Container(), //TODO is there a better way to hide the profile button?
+                );
+              },
+            ),
+          ),
         ],
       ),
       floatingActionButton: floatingActionButton,
@@ -51,6 +53,7 @@ class PageTemplate extends StatelessWidget {
         padding: const EdgeInsets.all(STANDARD_GAP),
         child: child,
       ),
+      bottomNavigationBar: BottomNavigation(),
     );
   }
 }
