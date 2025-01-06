@@ -124,38 +124,60 @@ class ProfileBottomSheet extends StatelessWidget {
         final settings = settingsSnapshot.data!;
         final themeMode = settings.themeMode;
 
-        return ToggleButtons(
-          onPressed: (buttonIndex) {
-            if (buttonIndex >= 0 && buttonIndex < THEME_MODES.length) {
-              _settingsController.updateThemeMode(THEME_MODES[buttonIndex]);
-            }
-          },
-          borderRadius: toggleButtonsTheme?.borderRadius,
-          selectedBorderColor: toggleButtonsTheme?.selectedBorderColor,
-          fillColor: toggleButtonsTheme?.fillColor,
-          isSelected: THEME_MODES.map((mode) => themeMode == mode).toList(),
-          children: THEME_MODES.map((mode) {
-            final titleWithIcon = switch (mode) {
-              ThemeMode.system => (title: 'System', icon: Icons.settings),
-              ThemeMode.dark => (title: 'Dark', icon: Icons.nightlight_round),
-              ThemeMode.light => (title: 'Light', icon: Icons.wb_sunny),
-            };
+        return SizedBox(
+          width: double.infinity,
+          child: Row(
+            children: [
+              ToggleButtons(
+                onPressed: (buttonIndex) {
+                  if (buttonIndex >= 0 && buttonIndex < THEME_MODES.length) {
+                    _settingsController
+                        .updateThemeMode(THEME_MODES[buttonIndex]);
+                  }
+                },
+                borderRadius: toggleButtonsTheme?.borderRadius,
+                selectedBorderColor: toggleButtonsTheme?.selectedBorderColor,
+                fillColor: toggleButtonsTheme?.fillColor,
+                isSelected:
+                    THEME_MODES.map((mode) => themeMode == mode).toList(),
+                children: THEME_MODES.map((mode) {
+                  final titleWithIcon = switch (mode) {
+                    ThemeMode.system => (title: 'System', icon: Icons.settings),
+                    ThemeMode.dark => (
+                        title: 'Dark',
+                        icon: Icons.nightlight_round
+                      ),
+                    ThemeMode.light => (title: 'Light', icon: Icons.wb_sunny),
+                  };
 
-            return _buildThemeModeToggleButton(
-                title: titleWithIcon.title, icon: titleWithIcon.icon);
-          }).toList(),
+                  return _buildThemeModeToggleButton(
+                    context: context,
+                    title: titleWithIcon.title,
+                    icon: titleWithIcon.icon,
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
         );
       },
     );
   }
 
   Widget _buildThemeModeToggleButton(
-      {required String title, required IconData icon}) {
+      {required BuildContext context,
+      required String title,
+      required IconData icon}) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: STANDARD_GAP),
+      padding: EdgeInsets.symmetric(
+          horizontal: (MediaQuery.of(context).size.width - 2 * STANDARD_GAP) /
+              14), // TODO Rewrite for screen width
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
         children: [
           Icon(icon),
+          SizedBox(width: STANDARD_GAP / 2),
           Text(title),
         ],
       ),
