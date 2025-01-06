@@ -66,5 +66,5 @@ Future<void> main() async {
   GetIt.instance.registerSingleton(SettingsController());
   GetIt.instance.registerSingleton(ThemeProvider());
 
-  runApp(AppWrapper());
+  runAppDynamic(home: AppWrapper());
 }
