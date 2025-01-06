@@ -31,7 +31,9 @@ class TaskPage extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
       child: LoadingStreamBuilder<List<Task>>(
-          stream: _taskProvider.getTasksStream(), builder: taskViewBuilder),
+        stream: _taskProvider.getTasksStream(),
+        builder: taskViewBuilder,
+      ),
     );
   }
 
