@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:stable/auth/firebase_auth_service.dart';
 import 'package:stable/page/home/home_page.dart';
 import 'package:stable/page/household/household_page.dart';
 import 'package:stable/page/login/introduction_page.dart';
 import 'package:stable/page/task/task_page.dart';
 
 class AppWrapper extends StatelessWidget {
-  const AppWrapper({super.key});
+  AppWrapper({super.key});
+
+  final FirebaseAuthService _auth = GetIt.instance<FirebaseAuthService>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +21,7 @@ class AppWrapper extends StatelessWidget {
                   .deepPurple), // TODO change color scheme and introduce dark theme
           useMaterial3: true,
         ),
-        initialRoute: '/',
+        initialRoute: _auth.user == null ? '/' : '/home',
         routes: {
           '/': (context) => IntroductionPage(),
           '/home': (context) => HomePage(),

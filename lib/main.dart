@@ -15,6 +15,7 @@ import 'package:stable/model/task/task.dart';
 import 'package:stable/model/subtask/subtask.dart';
 
 import 'model/household/household.dart';
+//TODO package import
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,8 +36,13 @@ Future<void> main() async {
         fromJson: Task.fromJson, toJson: (task) => task.toJson()),
   );
 
-  GetIt.instance.registerSingleton(DatabaseService<Subtask>('Subtask',
-      fromJson: Subtask.fromJson, toJson: (subtask) => subtask.toJson()));
+  GetIt.instance.registerSingleton(
+    DatabaseService<Subtask>(
+      'Subtask',
+      fromJson: Subtask.fromJson,
+      toJson: (subtask) => subtask.toJson(),
+    ),
+  );
 
   GetIt.instance.registerSingleton(TaskService(
       GetIt.instance<DatabaseService<Task>>(),
