@@ -3,12 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/auth/firebase_auth_service.dart';
+import 'package:stable/common/theme/toggle_buttons_theme.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/common/widget/full_width_button.dart';
+import 'package:stable/service/settings_controller.dart';
 
 class ProfileBottomSheet extends StatelessWidget {
   ProfileBottomSheet({Key? key}) : super(key: key);
   final FirebaseAuthService _auth = GetIt.instance<FirebaseAuthService>();
+  final _settingsController = GetIt.instance<SettingsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -84,17 +87,67 @@ class ProfileBottomSheet extends StatelessWidget {
                   },
                 ),
                 SizedBox(height: STANDARD_GAP),
-                FullWidthButton(
-                  label: "Change theme",
-                  icon: Icon(Icons.color_lens),
-                  onPressed: () {
-                    // TODO change theme button with fancy LERP animation
-                  },
-                ),
+                _buildThemeModeToggleButtons(context),
               ]),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildThemeModeToggleButtons(BuildContext context) {
+    final toggleButtonsTheme =
+        Theme.of(context).extension<CustomToggleButtonsTheme>();
+
+    return StreamBuilder(
+      stream: _settingsController.settingsStream,
+      builder: (context, settingsSnapshot) {
+        if (settingsSnapshot.hasError) {
+          return Text('Error: ${settingsSnapshot.error}');
+        }
+
+        if (!settingsSnapshot.hasData) {
+          return CircularProgressIndicator();
+        }
+
+        final settings = settingsSnapshot.data!;
+        final themeMode = settings.themeMode;
+
+        return ToggleButtons(
+          onPressed: (buttonIndex) {
+            if (buttonIndex >= 0 && buttonIndex < THEME_MODES.length) {
+              _settingsController.updateThemeMode(THEME_MODES[buttonIndex]);
+            }
+          },
+          borderRadius: toggleButtonsTheme?.borderRadius,
+          selectedBorderColor: toggleButtonsTheme?.selectedBorderColor,
+          fillColor: toggleButtonsTheme?.fillColor,
+          isSelected: THEME_MODES.map((mode) => themeMode == mode).toList(),
+          children: THEME_MODES.map((mode) {
+            final titleWithIcon = switch (mode) {
+              ThemeMode.system => (title: 'System', icon: Icons.settings),
+              ThemeMode.dark => (title: 'Dark', icon: Icons.nightlight_round),
+              ThemeMode.light => (title: 'Light', icon: Icons.wb_sunny),
+            };
+
+            return _buildThemeModeToggleButton(
+                title: titleWithIcon.title, icon: titleWithIcon.icon);
+          }).toList(),
+        );
+      },
+    );
+  }
+
+  Widget _buildThemeModeToggleButton(
+      {required String title, required IconData icon}) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: STANDARD_GAP),
+      child: Row(
+        children: [
+          Icon(icon),
+          Text(title),
+        ],
       ),
     );
   }
