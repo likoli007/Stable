@@ -12,6 +12,7 @@ import '../../model/inhabitant/inhabitant.dart';
 import '../../service/inhabitant_service.dart';
 import '../household/add_household_page.dart';
 import '../household/household_page.dart';
+// TODO replace with package imports
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -23,6 +24,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageTemplate(
       title: "Household Name Placeholder",
+      showBackButton: false,
       child: LoadingStreamBuilder(
           stream: _userProvider
               .getInhabitantStream(FirebaseAuth.instance.currentUser!.uid),

@@ -1,10 +1,9 @@
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/app/widget/app_wrapper.dart';
+import 'package:stable/auth/firebase_auth_service.dart';
 import 'package:stable/database/service/database_service.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/service/household_service.dart';
@@ -16,6 +15,7 @@ import 'package:stable/model/task/task.dart';
 import 'package:stable/model/subtask/subtask.dart';
 
 import 'model/household/household.dart';
+//TODO package import
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,11 +28,7 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Initialize Firebase Auth providers
-  // For Google sign-in, you need to add the client ID to .env file
-  // Client ID can be found in the Google Cloud Console
-  FirebaseUIAuth.configureProviders([
-    GoogleProvider(clientId: dotenv.env['GOOGLE_CLIENT_ID']!),
-  ]);
+  GetIt.instance.registerSingleton<FirebaseAuthService>(FirebaseAuthService());
 
   // Register Firestore documents
   GetIt.instance.registerSingleton(
@@ -40,8 +36,13 @@ Future<void> main() async {
         fromJson: Task.fromJson, toJson: (task) => task.toJson()),
   );
 
-  GetIt.instance.registerSingleton(DatabaseService<Subtask>('Subtask',
-      fromJson: Subtask.fromJson, toJson: (subtask) => subtask.toJson()));
+  GetIt.instance.registerSingleton(
+    DatabaseService<Subtask>(
+      'Subtask',
+      fromJson: Subtask.fromJson,
+      toJson: (subtask) => subtask.toJson(),
+    ),
+  );
 
   GetIt.instance.registerSingleton(TaskService(
       GetIt.instance<DatabaseService<Task>>(),

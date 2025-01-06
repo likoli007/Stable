@@ -34,5 +34,6 @@ class RegisterScreen extends StatelessWidget {
         }),
       ],
     );
+    // TODO Preserve the user after closing the app
   }
 }
