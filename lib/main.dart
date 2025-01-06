@@ -22,7 +22,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Load the .env file located in the assets folder
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: "assets/.env");
 
   // Initialize Firebase platform
   WidgetsFlutterBinding.ensureInitialized();
