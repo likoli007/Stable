@@ -89,7 +89,6 @@ class HouseholdTaskPage extends StatelessWidget {
   // Builder function passed to PageTemplate
   Widget taskViewBuilder(BuildContext context, List<Task> data) {
     final tasks = data;
-    print(tasks.length);
     return ListView.builder(
       itemCount: tasks.length,
       itemBuilder: (context, index) {

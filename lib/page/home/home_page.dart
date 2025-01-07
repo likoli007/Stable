@@ -38,7 +38,6 @@ class HomePage extends StatelessWidget {
     //TODO: if inhabitant is null, something went horribly wrong somewhere
 
     int householdCount = data!.households.length;
-    print(householdCount);
     return householdCount == 0
         ? buildDefaultHomePage(context)
         : buildHouseholdListPage(data.households);
