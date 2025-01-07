@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stable/common/util/shared_ui_constants.dart';
 
 import '../../common/widget/page_template.dart';
 import '../../model/household/household.dart';
@@ -13,14 +14,14 @@ class HouseholdPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageTemplate(
         title: "${household.name} overview",
-        child: buildHouseholdOverviewPage(context));
+        child: _buildHouseholdOverviewPage(context));
     // TODO add rotary task overview and settings
     // TODO add unassigned task list (for inhabitants to claim)
     //TODO invitation system
     //TODO household management shortcut (only visible to admin)
   }
 
-  Widget buildHouseholdOverviewPage(BuildContext context) {
+  Widget _buildHouseholdOverviewPage(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -32,44 +33,45 @@ class HouseholdPage extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 40),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: () {
-              //TODO: setting page
-            },
-            icon: const Icon(Icons.settings),
-            label: const Text('Settings'),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              textStyle: const TextStyle(fontSize: 18),
-            ),
-          ),
-        ),
-        const SizedBox(height: 20),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HouseholdTaskPage(
-                    householdRef: household.id,
-                  ),
-                ),
-              );
-            },
-            icon: const Icon(Icons.task),
-            label: const Text('View Tasks'),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              textStyle: const TextStyle(fontSize: 18),
-            ),
-          ),
-        ),
+        const SizedBox(height: STANDARD_GAP),
+        _buildSettingsButton(),
+        const SizedBox(height: STANDARD_GAP),
+        _buildTaskOverviewButton(context),
       ],
     );
+  }
+
+  Widget _buildButton(String text, Icon icon, Function onPressed) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        onPressed: () {
+          onPressed.call();
+        },
+        icon: icon,
+        label: Text(text),
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: STANDARD_GAP),
+          textStyle: const TextStyle(fontSize: 18),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTaskOverviewButton(BuildContext context) {
+    return _buildButton("View Tasks", const Icon(Icons.task), () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HouseholdTaskPage(
+            householdReference: household.id,
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget _buildSettingsButton() {
+    return _buildButton("Settings", const Icon(Icons.settings), () {});
   }
 }

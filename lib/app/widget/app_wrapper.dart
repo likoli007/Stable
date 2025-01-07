@@ -41,6 +41,7 @@ class AppWrapper extends StatelessWidget {
       routes: {
         '/': (context) => IntroductionPage(),
         '/home': (context) => HomePage(),
+        '/tasks': (context) => UserTaskPage(),
         //'/tasks': (context) => HouseholdTaskPage(),
         //TODO '/household': (context) => HouseholdPage(),
         //TODO: Add routes
