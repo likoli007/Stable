@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/common/widget/loading_stream_builder.dart';
@@ -9,31 +10,49 @@ import 'package:stable/page/task/add_task_page.dart';
 
 import 'package:stable/model/subtask/subtask.dart';
 
-class TaskPage extends StatelessWidget {
-  TaskPage({Key? key}) : super(key: key);
+import '../../model/household/household.dart';
+import '../../service/household_service.dart';
+
+class HouseholdTaskPage extends StatelessWidget {
+  HouseholdTaskPage({Key? key, required this.householdRef}) : super(key: key);
+
+  String householdRef;
 
   final _taskProvider = GetIt.instance<TaskService>();
+  final _householdProvider = GetIt.instance<HouseholdService>();
 
   @override
   Widget build(BuildContext context) {
     return PageTemplate(
-      title: 'Tasks',
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddTaskPage(),
-            ),
-          );
-        },
-        tooltip: 'Add',
-        child: const Icon(Icons.add),
-      ),
-      child: LoadingStreamBuilder<List<Task>>(
-        stream: _taskProvider.getTasksStream(),
-        builder: taskViewBuilder,
-      ),
+        title: 'Tasks',
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddTaskPage(
+                  householdRef: householdRef,
+                ),
+              ),
+            );
+          },
+          tooltip: 'Add',
+          child: const Icon(Icons.add),
+        ),
+        child: buildHouseholdStream());
+  }
+
+  Widget buildHouseholdStream() {
+    return LoadingStreamBuilder<Household?>(
+      stream: _householdProvider.getHouseholdStream(householdRef),
+      builder: buildTaskStream,
+    );
+  }
+
+  Widget buildTaskStream(BuildContext context, Household? data) {
+    return LoadingStreamBuilder<List<Task>>(
+      stream: _taskProvider.getTasksStreamByRefs(data!.tasks),
+      builder: taskViewBuilder,
     );
   }
 
@@ -100,7 +119,8 @@ class TaskPage extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AddTaskPage(task: task, isEditing: true),
+        builder: (context) => AddTaskPage(
+            householdRef: householdRef, task: task, isEditing: true),
       ),
     );
   }

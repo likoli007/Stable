@@ -60,7 +60,7 @@ class TaskService {
     return subtaskList;
   }
 
-  Future<String?> addTask(
+  Future<DocumentReference?> addTask(
       {required List<DocumentReference>? assignees,
       required String? name,
       required String? description,
@@ -76,7 +76,7 @@ class TaskService {
         description == null ||
         deadline == null ||
         isDone == null) {
-      return "Problem with assigning!";
+      return null;
     }
 
     List<DocumentReference> defaultReferenceList = [defaultReference];
@@ -109,7 +109,7 @@ class TaskService {
 
     DocumentReference newId = await _taskRepository.add(newTask);
     newTask.id = newId.toString();
-    return null;
+    return newId;
   }
 
   Future<List<DocumentReference<Object?>>> setNewSubtasks(
@@ -127,5 +127,9 @@ class TaskService {
     final projectsStream = _taskRepository.observeDocuments();
 
     return projectsStream;
+  }
+
+  Stream<List<Task>> getTasksStreamByRefs(List<DocumentReference> refs) {
+    return _taskRepository.observeDocumentsByIds(refs);
   }
 }

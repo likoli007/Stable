@@ -6,6 +6,8 @@ part 'household.g.dart';
 
 @JsonSerializable(explicitToJson: true, includeIfNull: true)
 class Household {
+  @JsonKey(includeToJson: false)
+  String id;
   @DocumentReferenceConverter()
   DocumentReference? admin;
   @DocumentSerializer()
@@ -17,6 +19,7 @@ class Household {
   final List<DocumentReference> taskHistory;
 
   Household({
+    required this.id,
     required this.admin,
     this.inhabitants = const [],
     required this.name,
