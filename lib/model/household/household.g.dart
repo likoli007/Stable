@@ -7,6 +7,7 @@ part of 'household.dart';
 // **************************************************************************
 
 Household _$HouseholdFromJson(Map<String, dynamic> json) => Household(
+      id: json['id'] as String,
       admin: const DocumentReferenceConverter()
           .fromJson(json['admin'] as DocumentReference<Object?>?),
       inhabitants: (json['inhabitants'] as List<dynamic>?)

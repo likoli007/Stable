@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../common/widget/page_template.dart';
 import '../../model/household/household.dart';
-import '../task/task_page.dart';
+import '../task/household_task_page.dart';
 
 class HouseholdPage extends StatelessWidget {
   final Household household;
@@ -55,7 +55,9 @@ class HouseholdPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => TaskPage(),
+                  builder: (context) => HouseholdTaskPage(
+                    householdRef: household.id,
+                  ),
                 ),
               );
             },

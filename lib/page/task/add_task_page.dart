@@ -1,16 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stable/service/household_service.dart';
 
 import 'package:stable/service/task_service.dart';
 
+import '../../model/household/household.dart';
 import '../../model/subtask/subtask.dart';
 import '../../model/task/task.dart';
 
 class AddTaskPage extends StatefulWidget {
   final Task? task;
+  final String householdRef;
   final bool isEditing;
 
-  AddTaskPage({Key? key, this.task, this.isEditing = false}) : super(key: key);
+  AddTaskPage(
+      {Key? key, required this.householdRef, this.task, this.isEditing = false})
+      : super(key: key);
 
   @override
   State<AddTaskPage> createState() => _AddTaskPageState();
@@ -18,14 +24,13 @@ class AddTaskPage extends StatefulWidget {
 
 class _AddTaskPageState extends State<AddTaskPage> {
   final _taskProvider = GetIt.instance<TaskService>();
+  final _householdProvider = GetIt.instance<HouseholdService>();
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
   late final bool _isDone;
-
   DateTime _selectedDeadline = DateTime.now();
-
   List<Subtask> _subtasks = [];
 
   @override
@@ -107,13 +112,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
     }
   }
 
-  void _addTask() {
+  Future<void> _addTask() async {
     final name = _nameController.text;
     final description = _descriptionController.text;
 
     //TODO: actual validation, but here or in service?
     if (name.isNotEmpty && description.isNotEmpty && true) {
-      _taskProvider.addTask(
+      DocumentReference? taskRef = await _taskProvider.addTask(
           assignees: null,
           name: name,
           description: description,
@@ -121,6 +126,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
           deadline: _selectedDeadline,
           repeat: null,
           subtasks: _subtasks);
+
+      if (taskRef != null) {
+        _householdProvider.addTaskToHousehold(widget.householdRef, taskRef);
+      }
 
       Navigator.pop(context);
     } else {
