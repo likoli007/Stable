@@ -64,7 +64,7 @@ class HouseholdPage extends StatelessWidget {
         context,
         MaterialPageRoute(
           builder: (context) => HouseholdTaskPage(
-            householdRef: household.id,
+            householdReference: household.id,
           ),
         ),
       );
