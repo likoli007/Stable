@@ -20,7 +20,7 @@ class UserTaskPage extends StatelessWidget {
 
   final _taskProvider = GetIt.instance<TaskService>();
   final _householdProvider = GetIt.instance<HouseholdService>();
-  final _userProvider = GetIt.instance<UserService>();
+  final _userProvider = GetIt.instance<InhabitantService>();
 
   @override
   Widget build(BuildContext context) {

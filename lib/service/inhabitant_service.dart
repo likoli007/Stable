@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stable/database/service/database_service.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
 
-class UserService {
+class InhabitantService {
   final DatabaseService<Inhabitant> _inhabitantRepository;
 
-  const UserService(this._inhabitantRepository);
+  const InhabitantService(this._inhabitantRepository);
 
   Stream<List<Inhabitant>> getIhabitantsStream() =>
       _inhabitantRepository.observeDocuments();

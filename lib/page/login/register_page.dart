@@ -8,7 +8,7 @@ import 'package:get_it/get_it.dart';
 import '../../service/inhabitant_service.dart';
 
 class RegisterScreen extends StatelessWidget {
-  final _userProvider = GetIt.instance<UserService>();
+  final _userProvider = GetIt.instance<InhabitantService>();
 
   @override
   Widget build(BuildContext context) {

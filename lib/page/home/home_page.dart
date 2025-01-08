@@ -16,7 +16,7 @@ import 'package:stable/page/household/household_page.dart';
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
-  final _userProvider = GetIt.instance<UserService>();
+  final _userProvider = GetIt.instance<InhabitantService>();
   final _householdProvider = GetIt.instance<HouseholdService>();
 
   @override

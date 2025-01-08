@@ -84,7 +84,7 @@ class HouseholdService {
       _householdRepository.updateEntity(targetHousehold.id, targetHousehold);
 
       // Add household to list of households of an inhabitant
-      UserService _userService = GetIt.instance<UserService>();
+      InhabitantService _userService = GetIt.instance<InhabitantService>();
       DocumentReference householdRef =
           FirebaseFirestore.instance.doc('Household/${targetHousehold.id}');
       _userService.addHouseholdToInhabitant(
