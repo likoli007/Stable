@@ -46,10 +46,7 @@ class HouseholdService {
     required String userId,
     required String name,
   }) async {
-    DocumentReference defaultReference = FirebaseFirestore.instance
-        .doc('users/defaultReference'); // TODO Unused, delete?
-
-    DocumentReference ref = FirebaseFirestore.instance.doc('users/$userId');
+    DocumentReference ref = FirebaseFirestore.instance.doc('User/$userId');
 
     String uuid = _uuid.v4();
     String groupId =
@@ -81,14 +78,14 @@ class HouseholdService {
     if (targetHousehold != null) {
       // Add inhabitant to inhabitants list of a household
       DocumentReference userRef =
-          FirebaseFirestore.instance.doc('users/$userId');
+          FirebaseFirestore.instance.doc('User/$userId');
       targetHousehold.inhabitants.add(userRef);
       _householdRepository.updateEntity(targetHousehold.id, targetHousehold);
 
       // Add household to list of households of an inhabitant
       UserService _userService = GetIt.instance<UserService>();
       DocumentReference householdRef =
-          FirebaseFirestore.instance.doc('households/${targetHousehold.id}');
+          FirebaseFirestore.instance.doc('Household/${targetHousehold.id}');
       _userService.addHouseholdToInhabitant(
         uid: userId,
         newRef: householdRef,
