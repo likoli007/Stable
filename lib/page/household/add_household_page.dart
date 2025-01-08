@@ -16,7 +16,7 @@ class AddHouseholdPage extends StatefulWidget {
 class _AddHouseholdPageState extends State<AddHouseholdPage> {
   final _textController = TextEditingController();
   final _householdService = GetIt.instance.get<HouseholdService>();
-  final _userService = GetIt.instance.get<UserService>();
+  final _userService = GetIt.instance.get<InhabitantService>();
 
   @override
   Widget build(BuildContext context) {

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/common/widget/page_template.dart';
+import 'package:stable/page/household/join_household_page.dart';
 import 'package:stable/service/household_service.dart';
 
 import 'package:stable/common/widget/loading_stream_builder.dart';
@@ -15,7 +16,7 @@ import 'package:stable/page/household/household_page.dart';
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
-  final _userProvider = GetIt.instance<UserService>();
+  final _userProvider = GetIt.instance<InhabitantService>();
   final _householdProvider = GetIt.instance<HouseholdService>();
 
   @override
@@ -40,7 +41,7 @@ class HomePage extends StatelessWidget {
     int householdCount = data!.households.length;
     return householdCount == 0
         ? buildDefaultHomePage(context)
-        : buildHouseholdListPage(data.households);
+        : _buildHouseholdListPage(context: context, data.households);
   }
 
   Widget buildDefaultHomePage(BuildContext context) {
@@ -55,7 +56,8 @@ class HomePage extends StatelessWidget {
               style: TextStyle(fontSize: 18),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(
+                height: 24), // TODO Standardize spacing, use constants
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -70,7 +72,12 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 12),
             ElevatedButton(
               onPressed: () {
-                // TODO: Navigate to a screen where the user can join an existing household
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => JoinHouseholdPage(),
+                  ),
+                );
               },
               child: const Text('Join an Existing Household'),
             ),
@@ -80,13 +87,42 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget buildHouseholdListPage(List<DocumentReference> households) {
-    return LoadingStreamBuilder<List<Household>>(
-        stream: _householdProvider.getHouseholdsStreamByIds(households),
-        builder: buildHouseholdList);
+  Widget _buildHouseholdListPage(List<DocumentReference> households,
+      {required BuildContext context}) {
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => JoinHouseholdPage(),
+              ),
+            );
+          },
+          child: const Text('Join an Existing Household'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddHouseholdPage(),
+              ),
+            );
+          },
+          child: const Text('Create a New Household'),
+        ),
+        Expanded(
+          child: LoadingStreamBuilder<List<Household>>(
+              stream: _householdProvider.getHouseholdsStreamByIds(households),
+              builder: _buildHouseholdList),
+        ),
+      ],
+    );
   }
 
-  Widget buildHouseholdList(BuildContext context, List<Household> households) {
+  Widget _buildHouseholdList(BuildContext context, List<Household> households) {
     return ListView.builder(
       itemCount: households.length,
       itemBuilder: (context, index) {

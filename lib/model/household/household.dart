@@ -13,6 +13,7 @@ class Household {
   @DocumentSerializer()
   final List<DocumentReference> inhabitants;
   String name;
+  String groupId;
   @DocumentSerializer()
   final List<DocumentReference> tasks;
   @DocumentSerializer()
@@ -23,6 +24,7 @@ class Household {
     required this.admin,
     this.inhabitants = const [],
     required this.name,
+    required this.groupId,
     this.tasks = const [],
     this.taskHistory = const [],
   });

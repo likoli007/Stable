@@ -54,7 +54,7 @@ Future<void> main() async {
       toJson: (inhabitant) => inhabitant.toJson()));
 
   GetIt.instance.registerSingleton(
-      UserService(GetIt.instance<DatabaseService<Inhabitant>>()));
+      InhabitantService(GetIt.instance<DatabaseService<Inhabitant>>()));
 
   GetIt.instance.registerSingleton(DatabaseService<Household>('Household',
       fromJson: Household.fromJson, toJson: (household) => household.toJson()));

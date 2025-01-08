@@ -37,6 +37,7 @@ class HouseholdPage extends StatelessWidget {
         _buildSettingsButton(),
         const SizedBox(height: STANDARD_GAP),
         _buildTaskOverviewButton(context),
+        Text("GroupId: ${household.groupId}")
       ],
     );
   }
