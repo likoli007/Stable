@@ -79,7 +79,7 @@ class HouseholdService {
   }) async {
     Household? targetHousehold = await getHouseholdByGroupId(groupId);
     if (targetHousehold != null) {
-      // Add inhabitant to nhabitants list of a household
+      // Add inhabitant to inhabitants list of a household
       DocumentReference userRef =
           FirebaseFirestore.instance.doc('users/$userId');
       targetHousehold.inhabitants.add(userRef);
