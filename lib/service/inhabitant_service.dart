@@ -16,7 +16,6 @@ class UserService {
   Stream<Inhabitant?> getInhabitantStream(String id) {
     return _inhabitantRepository.observeDocument(id);
   }
-  // TODO updateInhabitant(inhabitantId)
 
   Future<void> addHouseholdToInhabitant(
       {required String uid, required DocumentReference newRef}) async {

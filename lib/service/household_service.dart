@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
+import 'package:get_it/get_it.dart';
 import 'package:stable/database/service/database_service.dart';
 import 'package:stable/model/household/household.dart';
+import 'package:stable/service/inhabitant_service.dart';
 import 'package:uuid/uuid.dart';
 
 import '../model/inhabitant/inhabitant.dart';
@@ -32,6 +34,10 @@ class HouseholdService {
   Future<Household?> getHousehold(String id) =>
       _householdRepository.getDocument(id); //TODO search only wanted id
 
+  Future<Household?> getHouseholdByGroupId(String groupId) async {
+    return await _householdRepository.getDocumentByField('groupId', groupId);
+  }
+
   // TODO addInhabitant(inhabitantId, householdId)
 
   // TODO removeInhabitant(inhabitantId, householdId)
@@ -40,8 +46,8 @@ class HouseholdService {
     required String userId,
     required String name,
   }) async {
-    DocumentReference defaultReference =
-        FirebaseFirestore.instance.doc('users/defaultReference');
+    DocumentReference defaultReference = FirebaseFirestore.instance
+        .doc('users/defaultReference'); // TODO Unused, delete?
 
     DocumentReference ref = FirebaseFirestore.instance.doc('users/$userId');
 
@@ -64,6 +70,29 @@ class HouseholdService {
     if (targetHousehold != null) {
       targetHousehold.tasks.add(taskRef);
       _householdRepository.updateEntity(targetHousehold.id, targetHousehold);
+    }
+  }
+
+  Future<void> joinHouseholdByGroupId({
+    required String groupId,
+    required String userId,
+  }) async {
+    Household? targetHousehold = await getHouseholdByGroupId(groupId);
+    if (targetHousehold != null) {
+      // Add inhabitant to nhabitants list of a household
+      DocumentReference userRef =
+          FirebaseFirestore.instance.doc('users/$userId');
+      targetHousehold.inhabitants.add(userRef);
+      _householdRepository.updateEntity(targetHousehold.id, targetHousehold);
+
+      // Add household to list of households of an inhabitant
+      UserService _userService = GetIt.instance<UserService>();
+      DocumentReference householdRef =
+          FirebaseFirestore.instance.doc('households/${targetHousehold.id}');
+      _userService.addHouseholdToInhabitant(
+        uid: userId,
+        newRef: householdRef,
+      );
     }
   }
 }

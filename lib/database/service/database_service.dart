@@ -92,4 +92,17 @@ class DatabaseService<T> {
   Stream<List<T>> observeDocuments() {
     return _collectionReference.snapshots().map(_mapQuerySnapshotToData);
   }
+
+  Future<T?> getDocumentByField(String fieldName, dynamic value) async {
+    QuerySnapshot<T> querySnapshot = await _collectionReference
+        .where(fieldName, isEqualTo: value)
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      return querySnapshot.docs.first.data();
+    } else {
+      return null;
+    }
+  }
 }
