@@ -1,11 +1,16 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto/crypto.dart';
 import 'package:stable/database/service/database_service.dart';
 import 'package:stable/model/household/household.dart';
+import 'package:uuid/uuid.dart';
 
 import '../model/inhabitant/inhabitant.dart';
 
 class HouseholdService {
   final DatabaseService<Household> _householdRepository;
+  final Uuid _uuid = const Uuid();
 
   const HouseholdService(this._householdRepository);
 
@@ -40,10 +45,15 @@ class HouseholdService {
 
     DocumentReference ref = FirebaseFirestore.instance.doc('users/$userId');
 
+    String uuid = _uuid.v4();
+    String groupId =
+        sha256.convert(utf8.encode(uuid)).toString().substring(0, 8);
+
     DocumentReference newId = await _householdRepository.add(Household(
       id: 'placeholder',
       admin: ref,
       name: name,
+      groupId: groupId,
     ));
     return newId;
   }
