@@ -56,6 +56,7 @@ class HouseholdService {
       id: 'placeholder',
       admin: ref,
       name: name,
+      inhabitants: [ref],
       groupId: groupId,
     ));
     return newId;
