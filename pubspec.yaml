@@ -47,6 +47,7 @@ dependencies:
   material_you_dynamic_theme: ^0.1.2
   uuid: ^4.5.1
   crypto: ^3.0.1
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   flutter_test:
