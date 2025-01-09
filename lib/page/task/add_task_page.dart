@@ -211,28 +211,32 @@ class _AddTaskPageState extends State<AddTaskPage> {
               child: const Text('Add Subtask'),
             );
           }
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    onChanged: (value) => _updateSubtask(index, value),
-                    decoration: InputDecoration(
-                      labelText: widget.isEditing
-                          ? _subtasks[index].description
-                          : 'Subtask ${index + 1}',
-                    ),
-                  ),
-                ),
-                Checkbox(
-                  value: _subtasks[index].isDone,
-                  onChanged: (value) => _toggleSubtaskCompletion(index),
-                ),
-              ],
-            ),
-          );
+          return _buildSubtaskInputWidget(index);
         },
+      ),
+    );
+  }
+
+  Widget _buildSubtaskInputWidget(int index) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              onChanged: (value) => _updateSubtask(index, value),
+              decoration: InputDecoration(
+                labelText: widget.isEditing
+                    ? _subtasks[index].description
+                    : 'Subtask ${index + 1}',
+              ),
+            ),
+          ),
+          Checkbox(
+            value: _subtasks[index].isDone,
+            onChanged: (value) => _toggleSubtaskCompletion(index),
+          ),
+        ],
       ),
     );
   }
