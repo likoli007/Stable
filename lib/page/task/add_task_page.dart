@@ -170,83 +170,101 @@ class _AddTaskPageState extends State<AddTaskPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Task Name'),
-            ),
+            _buildTaskNameInput(),
             const SizedBox(height: 16),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
-            ),
+            _buildTaskDescriptionInput(),
             const SizedBox(height: 16),
-            Row(
-              children: [
-                const Text('Is Done:'),
-                const SizedBox(width: 8),
-                Checkbox(
-                  value: _isDone,
-                  onChanged: (value) {
-                    setState(() {
-                      _isDone = value ?? false;
-                    });
-                  },
-                ),
-              ],
-            ),
+            _buildDoneCheckbox(),
             const SizedBox(height: 16),
-
-            //deadline picker
             _buildDeadlinePicker(),
             const SizedBox(height: 16),
             _buildAssigneeSelectionWidget(),
             const SizedBox(height: 16),
             const Text('Subtasks:'),
             const SizedBox(height: 8),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: _subtasks.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == _subtasks.length) {
-                    return TextButton(
-                      onPressed: _addSubtaskField,
-                      child: const Text('Add Subtask'),
-                    );
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            onChanged: (value) => _updateSubtask(index, value),
-                            decoration: InputDecoration(
-                              labelText: widget.isEditing
-                                  ? _subtasks[index].description
-                                  : 'Subtask ${index + 1}',
-                            ),
-                          ),
-                        ),
-                        Checkbox(
-                          value: _subtasks[index].isDone,
-                          onChanged: (value) => _toggleSubtaskCompletion(index),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _handleActionButton();
-              },
-              child: const Text('Add Task'),
-            ),
+            _buildSubtaskAddingWidget(),
+            _buildTaskAddingButton(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildTaskAddingButton() {
+    return ElevatedButton(
+      onPressed: () {
+        _handleActionButton();
+      },
+      child: const Text('Add Task'),
+    );
+  }
+
+  Widget _buildSubtaskAddingWidget() {
+    return Expanded(
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: _subtasks.length + 1,
+        itemBuilder: (context, index) {
+          if (index == _subtasks.length) {
+            return TextButton(
+              onPressed: _addSubtaskField,
+              child: const Text('Add Subtask'),
+            );
+          }
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    onChanged: (value) => _updateSubtask(index, value),
+                    decoration: InputDecoration(
+                      labelText: widget.isEditing
+                          ? _subtasks[index].description
+                          : 'Subtask ${index + 1}',
+                    ),
+                  ),
+                ),
+                Checkbox(
+                  value: _subtasks[index].isDone,
+                  onChanged: (value) => _toggleSubtaskCompletion(index),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildDoneCheckbox() {
+    return Row(
+      children: [
+        const Text('Is Done:'),
+        const SizedBox(width: 8),
+        Checkbox(
+          value: _isDone,
+          onChanged: (value) {
+            setState(() {
+              _isDone = value ?? false;
+            });
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTaskDescriptionInput() {
+    return TextField(
+      controller: _descriptionController,
+      decoration: const InputDecoration(labelText: 'Description'),
+    );
+  }
+
+  Widget _buildTaskNameInput() {
+    return TextField(
+      controller: _nameController,
+      decoration: const InputDecoration(labelText: 'Task Name'),
     );
   }
 
