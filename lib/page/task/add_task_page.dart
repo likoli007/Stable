@@ -71,9 +71,33 @@ class _AddTaskPageState extends State<AddTaskPage> {
     });
   }
 
+  void _toggleTaskCompletion(bool? value) {
+    setState(() {
+      _isDone = value ?? false;
+      //if the user unchecked isDone, set all isDones for all subtasks to false
+      //also vice versa
+      for (Subtask subtask in _subtasks) subtask.isDone = _isDone;
+    });
+  }
+
+  void _percolateIsDone() {
+    bool percolate = true;
+    for (Subtask subtask in _subtasks) {
+      if (!subtask.isDone) {
+        percolate = false;
+        break;
+      }
+    }
+    setState(() {
+      print(percolate);
+      _isDone = percolate;
+    });
+  }
+
   void _toggleSubtaskCompletion(int index) {
     setState(() {
       _subtasks[index].isDone = !_subtasks[index].isDone;
+      _percolateIsDone();
     });
   }
 
@@ -259,9 +283,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         Checkbox(
           value: _isDone,
           onChanged: (value) {
-            setState(() {
-              _isDone = value ?? false;
-            });
+            _toggleTaskCompletion(value);
           },
         ),
       ],
