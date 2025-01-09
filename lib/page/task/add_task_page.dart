@@ -32,7 +32,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
-  late final bool _isDone;
+  late bool _isDone;
   DateTime? _selectedDeadline = null;
   List<Subtask> _subtasks = [];
 
