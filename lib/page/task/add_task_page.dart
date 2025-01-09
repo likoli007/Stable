@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:stable/page/task/task_assignee_pick_page.dart';
 import 'package:stable/service/household_service.dart';
 
@@ -88,9 +89,24 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
 
     if (pickedDate != null) {
-      setState(() {
-        _selectedDeadline = pickedDate;
-      });
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+
+      if (pickedTime != null) {
+        final DateTime finalDeadline = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+
+        setState(() {
+          _selectedDeadline = finalDeadline;
+        });
+      }
     }
   }
 
@@ -241,7 +257,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         Text(
           _selectedDeadline == null
               ? 'No Deadline Chosen'
-              : _selectedDeadline!.toLocal().toString().split('T')[0],
+              : 'Deadline: ${DateFormat('yyyy-MM-dd – kk:mm').format(_selectedDeadline!)}',
         ),
         TextButton(
           onPressed: _pickDeadline,
