@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stable/page/task/task_assignee_pick_page.dart';
 import 'package:stable/service/household_service.dart';
 
 import 'package:stable/service/task_service.dart';
 
 import '../../model/household/household.dart';
+import '../../model/inhabitant/inhabitant.dart';
 import '../../model/subtask/subtask.dart';
 import '../../model/task/task.dart';
 
@@ -32,6 +34,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   late final bool _isDone;
   DateTime _selectedDeadline = DateTime.now();
   List<Subtask> _subtasks = [];
+
+  Inhabitant? assignee = null;
 
   @override
   void initState() {
@@ -193,6 +197,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
               ],
             ),
             const SizedBox(height: 16),
+            _buildAssigneeSelectionWidget(),
+            const SizedBox(height: 16),
             const Text('Subtasks:'),
             const SizedBox(height: 8),
             Expanded(
@@ -240,5 +246,42 @@ class _AddTaskPageState extends State<AddTaskPage> {
         ),
       ),
     );
+  }
+
+  Widget _buildAssigneeSelectionWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          assignee == null ? 'No assignee' : assignee!.name,
+          style: TextStyle(fontSize: 16),
+        ),
+        ElevatedButton(
+          onPressed: () => _selectAssignee(context),
+          child: Text('Select Assignee'),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _selectAssignee(BuildContext context) async {
+    List<DocumentReference> inhabitants =
+        await _householdProvider.getHouseholdInhabitants(widget.householdRef);
+
+    final Inhabitant? selectedUser = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TaskAssigneePickPage(
+          users: inhabitants,
+        ),
+      ),
+    );
+
+    // If a user is selected, update the assignee
+    if (selectedUser != null) {
+      setState(() {
+        assignee = selectedUser;
+      });
+    }
   }
 }
