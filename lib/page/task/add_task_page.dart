@@ -35,8 +35,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   late bool _isDone;
   DateTime? _selectedDeadline = null;
   List<Subtask> _subtasks = [];
-
-  Inhabitant? assignee = null;
+  Inhabitant? _assignee;
 
   @override
   void initState() {
@@ -305,7 +304,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          assignee == null ? 'No assignee' : assignee!.name,
+          _assignee == null ? 'No assignee' : _assignee!.name,
         ),
         TextButton(
           onPressed: () => _selectAssignee(context),
@@ -330,7 +329,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
     if (selectedUser != null) {
       setState(() {
-        assignee = selectedUser;
+        _assignee = selectedUser;
       });
     }
   }
