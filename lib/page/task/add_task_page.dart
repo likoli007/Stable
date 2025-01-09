@@ -32,7 +32,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   TextEditingController _descriptionController = TextEditingController();
 
   late final bool _isDone;
-  DateTime _selectedDeadline = DateTime.now();
+  DateTime? _selectedDeadline = null;
   List<Subtask> _subtasks = [];
 
   Inhabitant? assignee = null;
@@ -45,7 +45,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     _descriptionController =
         TextEditingController(text: widget.task?.description ?? '');
     _isDone = widget.task?.isDone ?? false;
-    _selectedDeadline = widget.task?.deadline ?? DateTime.now();
+    _selectedDeadline = widget.task?.deadline;
 
     _loadSubtasks();
   }
@@ -181,21 +181,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             const SizedBox(height: 16),
 
             //deadline picker
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  _selectedDeadline == null
-                      ? 'No Deadline Chosen'
-                      : 'Deadline: ${_selectedDeadline!.toLocal()}'
-                          .split(' ')[0],
-                ),
-                TextButton(
-                  onPressed: _pickDeadline,
-                  child: const Text('Pick Deadline'),
-                ),
-              ],
-            ),
+            _buildDeadlinePicker(),
             const SizedBox(height: 16),
             _buildAssigneeSelectionWidget(),
             const SizedBox(height: 16),
@@ -245,6 +231,23 @@ class _AddTaskPageState extends State<AddTaskPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildDeadlinePicker() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          _selectedDeadline == null
+              ? 'No Deadline Chosen'
+              : _selectedDeadline!.toLocal().toString().split('T')[0],
+        ),
+        TextButton(
+          onPressed: _pickDeadline,
+          child: const Text('Pick Deadline'),
+        ),
+      ],
     );
   }
 
