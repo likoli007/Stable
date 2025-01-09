@@ -291,9 +291,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
       children: [
         Text(
           assignee == null ? 'No assignee' : assignee!.name,
-          style: TextStyle(fontSize: 16),
         ),
-        ElevatedButton(
+        TextButton(
           onPressed: () => _selectAssignee(context),
           child: Text('Select Assignee'),
         ),
@@ -314,7 +313,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
       ),
     );
 
-    // If a user is selected, update the assignee
     if (selectedUser != null) {
       setState(() {
         assignee = selectedUser;
