@@ -217,6 +217,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 
+  void _deleteSubtask(int index) {
+    setState(() {
+      _subtasks.removeAt(index);
+    });
+  }
+
   Widget _buildSubtaskInputWidget(int index) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -235,6 +241,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
           Checkbox(
             value: _subtasks[index].isDone,
             onChanged: (value) => _toggleSubtaskCompletion(index),
+          ),
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () => _deleteSubtask(index),
+            tooltip: 'Delete subtask',
           ),
         ],
       ),
