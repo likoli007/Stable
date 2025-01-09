@@ -20,7 +20,6 @@ class TaskAssigneePickPage extends StatelessWidget {
   }
 
   Widget _buildInhabitantsFuture() {
-    print(users);
     return Scaffold(
       appBar: AppBar(
         title: Text('Pick a User'),

@@ -22,3 +22,14 @@ class DocumentReferenceConverter
   @override
   DocumentReference? toJson(DocumentReference? docRef) => docRef;
 }
+
+class DocumentReferenceConverterNonNull
+    implements JsonConverter<DocumentReference, DocumentReference> {
+  const DocumentReferenceConverterNonNull();
+
+  @override
+  DocumentReference fromJson(DocumentReference docRef) => docRef;
+
+  @override
+  DocumentReference toJson(DocumentReference docRef) => docRef;
+}

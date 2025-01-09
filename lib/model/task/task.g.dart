@@ -8,10 +8,8 @@ part of 'task.dart';
 
 Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       id: json['id'] as String,
-      assignees: (json['assignees'] as List<dynamic>)
-          .map((e) => const DocumentSerializer()
-              .fromJson(e as DocumentReference<Object?>))
-          .toList(),
+      assignee: const DocumentReferenceConverter()
+          .fromJson(json['assignee'] as DocumentReference<Object?>?),
       deadline: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['deadline'], const TimestampConverter().fromJson),
       description: json['description'] as String,
@@ -26,8 +24,7 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
     );
 
 Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
-      'assignees':
-          instance.assignees.map(const DocumentSerializer().toJson).toList(),
+      'assignee': const DocumentReferenceConverter().toJson(instance.assignee),
       'deadline': _$JsonConverterToJson<Timestamp, DateTime>(
           instance.deadline, const TimestampConverter().toJson),
       'description': instance.description,

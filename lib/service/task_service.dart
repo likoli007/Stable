@@ -61,7 +61,7 @@ class TaskService {
   }
 
   Future<DocumentReference?> addTask(
-      {required List<DocumentReference>? assignees,
+      {required String? assignee,
       required String? name,
       required String? description,
       required bool? isDone,
@@ -69,8 +69,6 @@ class TaskService {
       required DocumentReference? repeat,
       required List<Subtask>? subtasks}) async {
     //TODO validation checks and document reference handling
-    DocumentReference defaultReference =
-        FirebaseFirestore.instance.doc('users/defaultReference');
 
     if (name == null ||
         description == null ||
@@ -78,8 +76,6 @@ class TaskService {
         isDone == null) {
       return null;
     }
-
-    List<DocumentReference> defaultReferenceList = [defaultReference];
 
     List<DocumentReference> subtaskReferences = [];
     if (subtasks != null) {
@@ -97,14 +93,18 @@ class TaskService {
       }
     }
 
+    DocumentReference? assigneeRef = assignee == null
+        ? null
+        : FirebaseFirestore.instance.doc('User/$assignee');
+
     Task newTask = Task(
         id: "discard",
-        assignees: defaultReferenceList,
+        assignee: assigneeRef,
         name: name,
         description: description,
         deadline: deadline,
         isDone: isDone,
-        repeat: defaultReference,
+        repeat: null,
         subtasks: subtaskReferences);
 
     DocumentReference newId = await _taskRepository.add(newTask);

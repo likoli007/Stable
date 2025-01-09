@@ -138,7 +138,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     //TODO: actual validation, but here or in service?
     if (name.isNotEmpty && description.isNotEmpty && true) {
       DocumentReference? taskRef = await _taskProvider.addTask(
-          assignees: null,
+          assignee: _assignee?.id,
           name: name,
           description: description,
           isDone: _isDone,
