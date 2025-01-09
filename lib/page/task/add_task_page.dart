@@ -61,7 +61,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   void _addSubtaskField() {
     setState(() {
-      _subtasks.add(new Subtask(id: "", description: "", isDone: false));
+      _subtasks.add(new Subtask(
+          id: "", description: "", isDone: false, taskReference: null));
     });
   }
 
