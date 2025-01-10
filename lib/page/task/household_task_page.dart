@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/common/widget/loading_stream_builder.dart';
-import 'package:stable/common/widget/page_body.dart';
+import 'package:stable/common/page/page_body.dart';
 import 'package:stable/model/task/task.dart';
 import 'package:stable/page/task/common_task_view.dart';
 import 'package:stable/service/task_service.dart';

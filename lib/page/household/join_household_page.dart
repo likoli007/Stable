@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:stable/common/widget/page_body.dart';
+import 'package:stable/common/page/page_body.dart';
 import 'package:stable/service/household_service.dart';
 
 class JoinHouseholdPage extends StatefulWidget {
