@@ -5,6 +5,8 @@ part 'inhabitant.g.dart';
 
 @JsonSerializable(explicitToJson: true, includeIfNull: true)
 class Inhabitant {
+  @JsonKey(includeToJson: false)
+  String id;
   String name;
   String surname;
   String photo;
@@ -12,6 +14,7 @@ class Inhabitant {
   List<DocumentReference> households;
 
   Inhabitant({
+    required this.id,
     required this.name,
     required this.surname,
     this.photo = "", // TODO change to default photo

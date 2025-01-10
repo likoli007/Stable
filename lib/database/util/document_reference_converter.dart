@@ -22,3 +22,33 @@ class DocumentReferenceConverter
   @override
   DocumentReference? toJson(DocumentReference? docRef) => docRef;
 }
+
+class DocumentReferenceConverterNonNull
+    implements JsonConverter<DocumentReference, DocumentReference> {
+  const DocumentReferenceConverterNonNull();
+
+  @override
+  DocumentReference fromJson(DocumentReference docRef) => docRef;
+
+  @override
+  DocumentReference toJson(DocumentReference docRef) => docRef;
+}
+
+class NullableIntConverter implements JsonConverter<int?, int?> {
+  const NullableIntConverter();
+
+  @override
+  int? fromJson(dynamic json) {
+    if (json == null) return null;
+    if (json is int) return json;
+    if (json is String) {
+      return int.tryParse(json);
+    }
+    throw ArgumentError('Invalid type for nullable int: $json');
+  }
+
+  @override
+  int? toJson(int? value) {
+    return value;
+  }
+}
