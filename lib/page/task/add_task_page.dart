@@ -219,6 +219,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Task'),
+        actions: [
+          _buildDeleteButton(),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -247,6 +250,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
         ),
       ),
     );
+  }
+
+  void _deleteTask() {
+    _householdProvider.removeTask(widget.householdRef, widget.task!.id);
+    _taskProvider.removeTask(widget.task!.id);
+    Navigator.pop(context);
+  }
+
+  Widget _buildDeleteButton() {
+    return IconButton(
+        onPressed: () => _deleteTask(), icon: Icon(Icons.delete_forever));
   }
 
   Widget _buildTaskAddingButton() {

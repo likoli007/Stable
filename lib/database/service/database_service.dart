@@ -19,6 +19,10 @@ class DatabaseService<T> {
 
   // TODO: add relevant functions as app is built
 
+  Future<void> deleteDocument(String id) async {
+    await _collectionReference.doc(id).delete();
+  }
+
   Future<DocumentReference> add(T data) async {
     return await _collectionReference.add(data);
   }

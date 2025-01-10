@@ -42,6 +42,18 @@ class HouseholdService {
 
   // TODO removeInhabitant(inhabitantId, householdId)
 
+  Future<void> removeTask(String householdId, String taskId) async {
+    Household? household = await _householdRepository.getDocument(householdId);
+
+    for (int i = 0; i < household!.tasks.length; i++) {
+      if (household.tasks[i].toString() == taskId) {
+        household.tasks.removeAt(i);
+        _householdRepository.updateEntity(household.id, household);
+        return;
+      }
+    }
+  }
+
   Future<DocumentReference> createHousehold({
     required String userId,
     required String name,
