@@ -34,6 +34,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   late bool _isDone;
   late bool _isRepeat;
+  late bool _isRotating;
 
   DateTime? _selectedDeadline = null;
   List<Subtask> _subtasks = [];
@@ -50,6 +51,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     _isDone = widget.task?.isDone ?? false;
     _selectedDeadline = widget.task?.deadline;
     _isRepeat = widget.task?.repeat != null ? true : false;
+    _isRotating = widget.task?.rotating ?? false;
 
     _loadSubtasks();
   }
@@ -197,7 +199,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
           isDone: _isDone,
           deadline: _selectedDeadline,
           repeat: repeatValue,
-          subtasks: _subtasks);
+          subtasks: _subtasks,
+          rotating: _isRotating);
 
       if (taskRef != null) {
         _householdProvider.addTaskToHousehold(widget.householdRef, taskRef);
@@ -231,6 +234,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
             _buildDeadlinePicker(),
             const SizedBox(height: 16),
             _buildRepeatingCheckbox(),
+            const SizedBox(height: 16),
+            _buildRotatingCheckbox(),
             const SizedBox(height: 16),
             _buildAssigneeSelectionWidget(),
             const SizedBox(height: 16),
@@ -304,6 +309,27 @@ class _AddTaskPageState extends State<AddTaskPage> {
         ],
       ),
     );
+  }
+
+  Widget _buildRotatingCheckbox() {
+    return Row(
+      children: [
+        Text("Is Rotating:"),
+        const SizedBox(width: 8),
+        Checkbox(
+          value: _isRotating,
+          onChanged: (value) {
+            _toggleTaskRotation(value);
+          },
+        ),
+      ],
+    );
+  }
+
+  void _toggleTaskRotation(bool? value) {
+    setState(() {
+      _isRotating = value ?? false;
+    });
   }
 
   Widget _buildRepeatingCheckbox() {

@@ -10,8 +10,8 @@ class TaskService {
 
   const TaskService(this._taskRepository, this._subTaskRepository);
 
-  Future<List<Task>> getTasks() {
-    final taskStream = _taskRepository.getAllDocuments();
+  Future<List<Task>> getTasks(List<DocumentReference>? refs) {
+    final taskStream = _taskRepository.getDocumentsByIds(refs);
     return taskStream;
   }
 
@@ -118,7 +118,8 @@ class TaskService {
       required bool? isDone,
       required DateTime? deadline,
       required int? repeat,
-      required List<Subtask>? subtasks}) async {
+      required List<Subtask>? subtasks,
+      required bool? rotating}) async {
     //TODO validation checks and document reference handling
 
     if (name == null ||
@@ -156,7 +157,8 @@ class TaskService {
         deadline: deadline,
         isDone: isDone,
         repeat: repeat,
-        subtasks: subtaskReferences);
+        subtasks: subtaskReferences,
+        rotating: rotating!);
 
     DocumentReference newId = await _taskRepository.add(newTask);
 

@@ -54,7 +54,10 @@ class UserTaskPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: STANDARD_GAP, vertical: SMALL_GAP),
-              child: CommonTaskView(household: household),
+              child: CommonTaskView(
+                household: household,
+                showAssignee: false,
+              ),
             ),
           ],
         );

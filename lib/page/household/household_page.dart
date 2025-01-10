@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
+import 'package:stable/server/TaskUpdater.dart';
 import 'package:stable/page/household/edit_household_page.dart';
 
 import '../../common/widget/page_template.dart';
@@ -39,6 +40,8 @@ class HouseholdPage extends StatelessWidget {
         _buildInhabitantsButton(context),
         const SizedBox(height: STANDARD_GAP),
         _buildTaskOverviewButton(context),
+        const SizedBox(height: STANDARD_GAP),
+        _buildDebugRotationButton(),
         Text("GroupId: ${household.groupId}")
       ],
     );
@@ -79,6 +82,14 @@ class HouseholdPage extends StatelessWidget {
       );
     });
   }
+
+
+  Widget _buildDebugRotationButton() {
+    return _buildButton('DEBUG: ROTATE', const Icon(Icons.access_time), () {
+      updateHouseholdRotation(household);
+    });
+  }
+
 
   Widget _buildSettingsButton(BuildContext context) {
     return _buildButton("Settings", const Icon(Icons.settings), () {

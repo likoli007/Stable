@@ -21,6 +21,7 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
           ?.map((e) => const DocumentSerializer()
               .fromJson(e as DocumentReference<Object?>))
           .toList(),
+      rotating: json['rotating'] as bool,
     );
 
 Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
@@ -29,6 +30,7 @@ Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
           instance.deadline, const TimestampConverter().toJson),
       'description': instance.description,
       'isDone': instance.isDone,
+      'rotating': instance.rotating,
       'name': instance.name,
       'repeat': const NullableIntConverter().toJson(instance.repeat),
       'subtasks':
