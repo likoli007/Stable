@@ -37,7 +37,7 @@ class AppWrapper extends StatelessWidget {
         seedColor: settings.themeColor,
         brightness: Brightness.dark,
       ),
-      initialRoute: _auth.user == null ? '/' : '/home',
+      initialRoute: _auth.user != null ? '/home' : '/',
       routes: {
         '/': (context) => IntroductionPage(),
         '/home': (context) => HomePage(),
