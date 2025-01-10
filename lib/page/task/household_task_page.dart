@@ -58,6 +58,9 @@ class HouseholdTaskPage extends StatelessWidget {
   }
 
   Widget _buildTaskStream(BuildContext context, Household? data) {
-    return CommonTaskView(household: data!);
+    return CommonTaskView(
+      household: data!,
+      showAssignee: true,
+    );
   }
 }

@@ -10,10 +10,14 @@ import '../../service/task_service.dart';
 import 'add_task_page.dart';
 
 class CommonTaskView extends StatelessWidget {
-  CommonTaskView({Key? key, required this.household}) : super(key: key);
+  CommonTaskView(
+      {Key? key, required this.household, required this.showAssignee})
+      : super(key: key);
 
   final _taskProvider = GetIt.instance<TaskService>();
   Household household;
+
+  bool showAssignee;
 
   @override
   Widget build(BuildContext context) {
@@ -30,26 +34,23 @@ class CommonTaskView extends StatelessWidget {
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         final task = tasks[index];
-        return ExpansionTile(
-          maintainState: true,
+        //return _buildTaskTile(context, task);
+        return ListTile(
           title: Text(task.name),
           subtitle: Text(task.description),
+          leading: _buildAssigneeInformation(task),
           trailing: IconButton(
             icon: Icon(task.isDone ? Icons.check_circle : Icons.circle),
             onPressed: () => _setDone(task),
           ),
-          children: [
-            IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () => _editTask(context, task),
-            ),
-            LoadingStreamBuilder<List<Subtask>>(
-                stream: _taskProvider.getTaskSubTasksStream(task),
-                builder: _buildSubTaskView),
-          ],
+          onTap: () => _editTask(context, task),
         );
       },
     );
+  }
+
+  Widget _buildAssigneeInformation(Task task) {
+    return Icon(Icons.account_circle);
   }
 
   Widget _buildSubTaskView(BuildContext context, List<Subtask> data) {
