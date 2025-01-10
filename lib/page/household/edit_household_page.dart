@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:stable/common/widget/loading_future_builder.dart';
 import 'package:stable/common/widget/page_template.dart';
 import 'package:stable/model/household/household.dart';
+import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/service/household_service.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stable/service/inhabitant_service.dart';
 
 class EditHouseholdPage extends StatefulWidget {
-  final householdReference;
+  final String householdReference;
 
   EditHouseholdPage({Key? key, required this.householdReference})
       : super(key: key);
@@ -17,19 +20,39 @@ class EditHouseholdPage extends StatefulWidget {
 class _EditHouseholdPageState extends State<EditHouseholdPage> {
   late TextEditingController _nameController;
   final HouseholdService _householdService = GetIt.instance<HouseholdService>();
+  final InhabitantService _inhabitantService =
+      GetIt.instance<InhabitantService>();
+
+  List<String> _inhabitants = [];
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.household.name);
+    _nameController = TextEditingController();
+    _loadHousehold();
+  }
+
+  void _loadHousehold() async {
+    Household? household =
+        await _householdService.getHousehold(widget.householdReference);
+    setState(() {
+      _nameController.text = household?.name ?? 'Error occurred';
+      _inhabitants = household?.inhabitants.map((e) => e.id).toList() ?? [];
+    });
+  }
+
+  void _updateHousehold() {
+    if (_nameController.text.isNotEmpty) {
+      _householdService.updateHouseholdName(
+          widget.householdReference, _nameController.text);
+    }
+    _householdService.updateHouseholdInhabitants(
+        widget.householdReference, _inhabitants);
   }
 
   @override
   void dispose() {
-    if (_nameController.text != widget.household.name) {
-      _householdService.updateHouseholdName(
-          widget.household.id, _nameController.text);
-    }
+    _updateHousehold();
     _nameController.dispose();
     super.dispose();
   }
@@ -37,17 +60,46 @@ class _EditHouseholdPageState extends State<EditHouseholdPage> {
   @override
   Widget build(BuildContext context) {
     return PageTemplate(
-      title: widget.household.name,
+      title: 'Edit Household',
       child: Column(
         children: [
           TextField(
             controller: _nameController,
             decoration: InputDecoration(labelText: 'Household Name'),
           ),
-          // TODO add edit household color
-          // TODO add edit household icon (emoji picker?)
-          // TODO add household members list (with remove member button)
-          // TODO add add member button (show invite code and share it to other apps if on mobile)
+          Expanded(
+            child: ReorderableListView(
+              onReorder: (int oldIndex, int newIndex) {
+                setState(() {
+                  if (newIndex > oldIndex) {
+                    newIndex -= 1;
+                  }
+                  final String item = _inhabitants.removeAt(oldIndex);
+                  _inhabitants.insert(newIndex, item);
+                });
+              },
+              children: [
+                for (final inhabitant in _inhabitants)
+                  ListTile(
+                    key: UniqueKey(),
+                    title: LoadingFutureBuilder<Inhabitant?>(
+                      future: _inhabitantService.getInhabitant(inhabitant),
+                      builder: (context, data) {
+                        return Text(data?.name ?? "Error occurred");
+                      },
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        setState(() {
+                          _inhabitants.remove(inhabitant);
+                        });
+                      },
+                    ),
+                  )
+              ],
+            ),
+          ),
         ],
       ),
     );

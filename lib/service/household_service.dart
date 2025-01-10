@@ -109,4 +109,15 @@ class HouseholdService {
       await _householdRepository.updateEntity(householdId, household);
     }
   }
+
+  Future<void> updateHouseholdInhabitants(
+      String householdId, List<String> newInhabitants) async {
+    Household? household = await getHousehold(householdId);
+    if (household != null) {
+      household.inhabitants = newInhabitants
+          .map((ref) => FirebaseFirestore.instance.doc('User/$ref'))
+          .toList();
+      await _householdRepository.updateEntity(householdId, household);
+    }
+  }
 }
