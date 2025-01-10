@@ -15,8 +15,8 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       description: json['description'] as String,
       isDone: json['isDone'] as bool,
       name: json['name'] as String,
-      repeat: const DocumentReferenceConverter()
-          .fromJson(json['repeat'] as DocumentReference<Object?>?),
+      repeat: const NullableIntConverter()
+          .fromJson((json['repeat'] as num?)?.toInt()),
       subtasks: (json['subtasks'] as List<dynamic>?)
           ?.map((e) => const DocumentSerializer()
               .fromJson(e as DocumentReference<Object?>))
@@ -30,7 +30,7 @@ Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
       'description': instance.description,
       'isDone': instance.isDone,
       'name': instance.name,
-      'repeat': const DocumentReferenceConverter().toJson(instance.repeat),
+      'repeat': const NullableIntConverter().toJson(instance.repeat),
       'subtasks':
           instance.subtasks?.map(const DocumentSerializer().toJson).toList(),
     };

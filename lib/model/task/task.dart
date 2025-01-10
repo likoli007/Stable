@@ -15,8 +15,10 @@ class Task {
   String description;
   bool isDone;
   String name;
-  @DocumentReferenceConverter()
-  DocumentReference? repeat;
+
+  @NullableIntConverter()
+  int? repeat;
+
   @DocumentSerializer()
   List<DocumentReference>? subtasks;
 
