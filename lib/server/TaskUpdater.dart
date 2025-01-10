@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/service/task_service.dart';
 
@@ -13,10 +14,18 @@ Future<void> updateHouseholdRotation(Household household) async {
   for (Task t in tasks) {
     if (t.repeat != null) {
       if (t.repeat != 0) {
-        t.deadline?.add(Duration(days: t.repeat!));
+        t.deadline = t.deadline?.add(Duration(days: t.repeat!));
       } else {
-        t.deadline?.add(Duration(minutes: 5));
+        t.deadline = t.deadline?.add(Duration(minutes: 5));
       }
+
+      if (t.rotating) {
+        DocumentReference? currentAssignee = t.assignee;
+        int index = household.inhabitants.indexOf(currentAssignee!);
+        t.assignee =
+            household.inhabitants[(index + 1) % household.inhabitants.length];
+      }
+
       taskService.updateTask(t);
     }
   }

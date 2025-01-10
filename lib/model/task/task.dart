@@ -14,6 +14,7 @@ class Task {
   DateTime? deadline;
   String description;
   bool isDone;
+  bool rotating;
   String name;
 
   @NullableIntConverter()
@@ -31,6 +32,7 @@ class Task {
     required this.name,
     this.repeat,
     this.subtasks,
+    required this.rotating,
   });
 
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
