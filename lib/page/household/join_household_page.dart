@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/common/widget/page_template.dart';
 import 'package:stable/service/household_service.dart';
-import 'package:stable/service/inhabitant_service.dart';
 
 class JoinHouseholdPage extends StatefulWidget {
   const JoinHouseholdPage({Key? key}) : super(key: key);

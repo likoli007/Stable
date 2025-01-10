@@ -11,7 +11,7 @@ class Household {
   @DocumentReferenceConverter()
   DocumentReference? admin;
   @DocumentSerializer()
-  final List<DocumentReference> inhabitants;
+  late List<DocumentReference> inhabitants;
   String name;
   String groupId;
   @DocumentSerializer()
