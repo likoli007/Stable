@@ -6,6 +6,7 @@ import 'package:material_you_dynamic_theme/material_you_dynamic_theme.dart';
 
 import 'package:stable/app/widget/app_wrapper.dart';
 import 'package:stable/auth/firebase_auth_service.dart';
+import 'package:stable/common/page/page_layout.dart';
 import 'package:stable/common/theme/theme_provider.dart';
 import 'package:stable/database/service/database_service.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
@@ -65,6 +66,9 @@ Future<void> main() async {
   // Theming
   GetIt.instance.registerSingleton(SettingsController());
   GetIt.instance.registerSingleton(ThemeProvider());
+
+  GetIt.instance.registerSingleton(
+      PageLayout(title: "Stable", child: Text("Nothing to show")));
 
   runAppDynamic(home: AppWrapper());
 }
