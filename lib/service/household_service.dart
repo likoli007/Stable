@@ -71,6 +71,13 @@ class HouseholdService {
     }
   }
 
+  Future<List<DocumentReference>> getHouseholdInhabitants(
+      String householdRef) async {
+    Household? household = await _householdRepository.getDocument(householdRef);
+
+    return household!.inhabitants;
+  }
+
   Future<void> joinHouseholdByGroupId({
     required String groupId,
     required String userId,

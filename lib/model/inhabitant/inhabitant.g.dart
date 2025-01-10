@@ -7,6 +7,7 @@ part of 'inhabitant.dart';
 // **************************************************************************
 
 Inhabitant _$InhabitantFromJson(Map<String, dynamic> json) => Inhabitant(
+      id: json['id'] as String,
       name: json['name'] as String,
       surname: json['surname'] as String,
       photo: json['photo'] as String? ?? "",

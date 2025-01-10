@@ -55,7 +55,6 @@ class PageTemplate extends StatelessWidget {
         child: child,
       ),
       bottomNavigationBar: BottomNavigation(),
-      // TODO body: pages[currentPageIndex],
     );
   }
 }
