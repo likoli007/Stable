@@ -117,7 +117,7 @@ class TaskService {
       required String? description,
       required bool? isDone,
       required DateTime? deadline,
-      required DocumentReference? repeat,
+      required int? repeat,
       required List<Subtask>? subtasks}) async {
     //TODO validation checks and document reference handling
 
@@ -155,7 +155,7 @@ class TaskService {
         description: description,
         deadline: deadline,
         isDone: isDone,
-        repeat: null,
+        repeat: repeat,
         subtasks: subtaskReferences);
 
     DocumentReference newId = await _taskRepository.add(newTask);

@@ -33,9 +33,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
   TextEditingController _descriptionController = TextEditingController();
 
   late bool _isDone;
+  late bool _isRepeat;
+
   DateTime? _selectedDeadline = null;
   List<Subtask> _subtasks = [];
   Inhabitant? _assignee;
+  String _repeatDays = "Daily";
 
   @override
   void initState() {
@@ -46,6 +49,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         TextEditingController(text: widget.task?.description ?? '');
     _isDone = widget.task?.isDone ?? false;
     _selectedDeadline = widget.task?.deadline;
+    _isRepeat = widget.task?.repeat != null ? true : false;
 
     _loadSubtasks();
   }
@@ -69,6 +73,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
   void _updateSubtask(int index, String name) {
     setState(() {
       _subtasks[index].description = name;
+    });
+  }
+
+  void _toggleTaskRepetition(bool? value) {
+    setState(() {
+      _isRepeat = value ?? false;
     });
   }
 
@@ -156,9 +166,27 @@ class _AddTaskPageState extends State<AddTaskPage> {
     }
   }
 
+  int? _getTaskRepeat() {
+    if (_isRepeat) {
+      switch (_repeatDays) {
+        case 'Daily':
+          return 1;
+        case 'Weekly':
+          return 7;
+        case 'Monthly':
+          return 30;
+        default:
+          return 0;
+      }
+    }
+    return null;
+  }
+
   Future<void> _addTask() async {
     final name = _nameController.text;
     final description = _descriptionController.text;
+
+    int? repeatValue = _getTaskRepeat();
 
     //TODO: actual validation, but here or in service?
     if (name.isNotEmpty && description.isNotEmpty && true) {
@@ -168,7 +196,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           description: description,
           isDone: _isDone,
           deadline: _selectedDeadline,
-          repeat: null,
+          repeat: repeatValue,
           subtasks: _subtasks);
 
       if (taskRef != null) {
@@ -201,6 +229,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
             _buildDoneCheckbox(),
             const SizedBox(height: 16),
             _buildDeadlinePicker(),
+            const SizedBox(height: 16),
+            _buildRepeatingCheckbox(),
             const SizedBox(height: 16),
             _buildAssigneeSelectionWidget(),
             const SizedBox(height: 16),
@@ -276,10 +306,47 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 
+  Widget _buildRepeatingCheckbox() {
+    return Row(
+      children: [
+        Text("Is Repeating:"),
+        const SizedBox(width: 8),
+        Checkbox(
+          value: _isRepeat,
+          onChanged: (value) {
+            _toggleTaskRepetition(value);
+          },
+        ),
+        _buildRepeatingTaskSelection(),
+      ],
+    );
+  }
+
+  Widget _buildRepeatingTaskSelection() {
+    if (_isRepeat) {
+      return DropdownButton<String>(
+        value: _repeatDays,
+        items: ['Daily', 'Weekly', 'Monthly', '5 Minutes']
+            .map((frequency) => DropdownMenuItem<String>(
+                  value: frequency,
+                  child: Text(frequency),
+                ))
+            .toList(),
+        onChanged: (value) {
+          setState(() {
+            _repeatDays = value!;
+          });
+        },
+        hint: Text('Select Frequency'),
+      );
+    }
+    return const SizedBox();
+  }
+
   Widget _buildDoneCheckbox() {
     return Row(
       children: [
-        const Text('Is Done:'),
+        Text("Is Done:"),
         const SizedBox(width: 8),
         Checkbox(
           value: _isDone,
