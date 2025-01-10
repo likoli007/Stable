@@ -17,7 +17,6 @@ class HouseholdPage extends StatelessWidget {
         child: _buildHouseholdOverviewPage(context));
     // TODO add rotary task overview and settings
     // TODO add unassigned task list (for inhabitants to claim)
-    //TODO invitation system
     //TODO household management shortcut (only visible to admin)
   }
 
@@ -35,6 +34,8 @@ class HouseholdPage extends StatelessWidget {
         ),
         const SizedBox(height: STANDARD_GAP),
         _buildSettingsButton(),
+        const SizedBox(height: STANDARD_GAP),
+        _buildInhabitantsButton(context),
         const SizedBox(height: STANDARD_GAP),
         _buildTaskOverviewButton(context),
         Text("GroupId: ${household.groupId}")
@@ -57,6 +58,12 @@ class HouseholdPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildInhabitantsButton(BuildContext context) {
+    return _buildButton("View Inhabitants", const Icon(Icons.accessible), () {
+      //TODO: view inhabitants
+    });
   }
 
   Widget _buildTaskOverviewButton(BuildContext context) {
