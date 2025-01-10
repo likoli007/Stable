@@ -10,8 +10,8 @@ class TaskService {
 
   const TaskService(this._taskRepository, this._subTaskRepository);
 
-  Future<List<Task>> getTasks() {
-    final taskStream = _taskRepository.getAllDocuments();
+  Future<List<Task>> getTasks(List<DocumentReference>? refs) {
+    final taskStream = _taskRepository.getDocumentsByIds(refs);
     return taskStream;
   }
 
