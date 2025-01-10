@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
+import 'package:stable/page/household/edit_household_page.dart';
 
 import '../../common/widget/page_template.dart';
 import '../../model/household/household.dart';
@@ -33,7 +34,7 @@ class HouseholdPage extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: STANDARD_GAP),
-        _buildSettingsButton(),
+        _buildSettingsButton(context),
         const SizedBox(height: STANDARD_GAP),
         _buildInhabitantsButton(context),
         const SizedBox(height: STANDARD_GAP),
@@ -79,7 +80,16 @@ class HouseholdPage extends StatelessWidget {
     });
   }
 
-  Widget _buildSettingsButton() {
-    return _buildButton("Settings", const Icon(Icons.settings), () {});
+  Widget _buildSettingsButton(BuildContext context) {
+    return _buildButton("Settings", const Icon(Icons.settings), () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditHouseholdPage(
+            householdReference: household.id,
+          ),
+        ),
+      );
+    });
   }
 }
