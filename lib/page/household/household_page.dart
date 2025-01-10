@@ -3,9 +3,9 @@ import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/server/TaskUpdater.dart';
 import 'package:stable/page/household/edit_household_page.dart';
 
-import '../../common/widget/page_body.dart';
-import '../../model/household/household.dart';
-import '../task/household_task_page.dart';
+import 'package:stable/common/widget/page_body.dart';
+import 'package:stable/model/household/household.dart';
+import 'package:stable/page/task/household_task_page.dart';
 
 class HouseholdPage extends StatelessWidget {
   final Household household;
