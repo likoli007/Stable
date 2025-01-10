@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stable/database/service/database_service.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
 
-class UserService {
+class InhabitantService {
   final DatabaseService<Inhabitant> _inhabitantRepository;
 
-  const UserService(this._inhabitantRepository);
+  const InhabitantService(this._inhabitantRepository);
 
   Stream<List<Inhabitant>> getIhabitantsStream() =>
       _inhabitantRepository.observeDocuments();
@@ -16,7 +16,6 @@ class UserService {
   Stream<Inhabitant?> getInhabitantStream(String id) {
     return _inhabitantRepository.observeDocument(id);
   }
-  // TODO updateInhabitant(inhabitantId)
 
   Future<void> addHouseholdToInhabitant(
       {required String uid, required DocumentReference newRef}) async {
@@ -28,11 +27,16 @@ class UserService {
     }
   }
 
+  Future<List<Inhabitant>> getInhabitants(List<DocumentReference> refs) {
+    return _inhabitantRepository.getDocumentsByIds(refs);
+  }
+
   void createInhabitantFromAuth({
     required String displayName,
     required String uid,
   }) async {
-    Inhabitant newInhabitant = Inhabitant(name: displayName, surname: '');
+    Inhabitant newInhabitant =
+        Inhabitant(id: 'placeholder', name: displayName, surname: '');
 
     await _inhabitantRepository.updateEntity(uid, newInhabitant);
   }
@@ -45,6 +49,7 @@ class UserService {
         FirebaseFirestore.instance.doc('users/defaultReference');
 
     await _inhabitantRepository.add(Inhabitant(
+      id: 'placeholder',
       name: name,
       surname: surname,
     ));

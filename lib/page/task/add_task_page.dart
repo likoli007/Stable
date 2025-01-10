@@ -1,16 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
+import 'package:stable/page/task/task_assignee_pick_page.dart';
+import 'package:stable/service/household_service.dart';
 
 import 'package:stable/service/task_service.dart';
 
+import '../../model/household/household.dart';
+import '../../model/inhabitant/inhabitant.dart';
 import '../../model/subtask/subtask.dart';
 import '../../model/task/task.dart';
 
 class AddTaskPage extends StatefulWidget {
   final Task? task;
+  final String householdRef;
   final bool isEditing;
 
-  AddTaskPage({Key? key, this.task, this.isEditing = false}) : super(key: key);
+  AddTaskPage(
+      {Key? key, required this.householdRef, this.task, this.isEditing = false})
+      : super(key: key);
 
   @override
   State<AddTaskPage> createState() => _AddTaskPageState();
@@ -18,15 +27,18 @@ class AddTaskPage extends StatefulWidget {
 
 class _AddTaskPageState extends State<AddTaskPage> {
   final _taskProvider = GetIt.instance<TaskService>();
+  final _householdProvider = GetIt.instance<HouseholdService>();
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
-  late final bool _isDone;
+  late bool _isDone;
+  late bool _isRepeat;
 
-  DateTime _selectedDeadline = DateTime.now();
-
+  DateTime? _selectedDeadline = null;
   List<Subtask> _subtasks = [];
+  Inhabitant? _assignee;
+  String _repeatDays = "Daily";
 
   @override
   void initState() {
@@ -36,7 +48,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
     _descriptionController =
         TextEditingController(text: widget.task?.description ?? '');
     _isDone = widget.task?.isDone ?? false;
-    _selectedDeadline = widget.task?.deadline ?? DateTime.now();
+    _selectedDeadline = widget.task?.deadline;
+    _isRepeat = widget.task?.repeat != null ? true : false;
 
     _loadSubtasks();
   }
@@ -52,7 +65,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   void _addSubtaskField() {
     setState(() {
-      _subtasks.add(new Subtask(id: "", description: "", isDone: false));
+      _subtasks.add(new Subtask(
+          id: "", description: "", isDone: false, taskReference: null));
     });
   }
 
@@ -62,9 +76,39 @@ class _AddTaskPageState extends State<AddTaskPage> {
     });
   }
 
+  void _toggleTaskRepetition(bool? value) {
+    setState(() {
+      _isRepeat = value ?? false;
+    });
+  }
+
+  void _toggleTaskCompletion(bool? value) {
+    setState(() {
+      _isDone = value ?? false;
+      //if the user unchecked isDone, set all isDones for all subtasks to false
+      //also vice versa
+      for (Subtask subtask in _subtasks) subtask.isDone = _isDone;
+    });
+  }
+
+  void _percolateIsDone() {
+    bool percolate = true;
+    for (Subtask subtask in _subtasks) {
+      if (!subtask.isDone) {
+        percolate = false;
+        break;
+      }
+    }
+    setState(() {
+      print(percolate);
+      _isDone = percolate;
+    });
+  }
+
   void _toggleSubtaskCompletion(int index) {
     setState(() {
       _subtasks[index].isDone = !_subtasks[index].isDone;
+      _percolateIsDone();
     });
   }
 
@@ -79,9 +123,24 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
 
     if (pickedDate != null) {
-      setState(() {
-        _selectedDeadline = pickedDate;
-      });
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+
+      if (pickedTime != null) {
+        final DateTime finalDeadline = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+
+        setState(() {
+          _selectedDeadline = finalDeadline;
+        });
+      }
     }
   }
 
@@ -107,20 +166,42 @@ class _AddTaskPageState extends State<AddTaskPage> {
     }
   }
 
-  void _addTask() {
+  int? _getTaskRepeat() {
+    if (_isRepeat) {
+      switch (_repeatDays) {
+        case 'Daily':
+          return 1;
+        case 'Weekly':
+          return 7;
+        case 'Monthly':
+          return 30;
+        default:
+          return 0;
+      }
+    }
+    return null;
+  }
+
+  Future<void> _addTask() async {
     final name = _nameController.text;
     final description = _descriptionController.text;
 
+    int? repeatValue = _getTaskRepeat();
+
     //TODO: actual validation, but here or in service?
     if (name.isNotEmpty && description.isNotEmpty && true) {
-      _taskProvider.addTask(
-          assignees: null,
+      DocumentReference? taskRef = await _taskProvider.addTask(
+          assignee: _assignee?.id,
           name: name,
           description: description,
           isDone: _isDone,
           deadline: _selectedDeadline,
-          repeat: null,
+          repeat: repeatValue,
           subtasks: _subtasks);
+
+      if (taskRef != null) {
+        _householdProvider.addTaskToHousehold(widget.householdRef, taskRef);
+      }
 
       Navigator.pop(context);
     } else {
@@ -141,95 +222,205 @@ class _AddTaskPageState extends State<AddTaskPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Task Name'),
-            ),
+            _buildTaskNameInput(),
             const SizedBox(height: 16),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
-            ),
+            _buildTaskDescriptionInput(),
             const SizedBox(height: 16),
-            Row(
-              children: [
-                const Text('Is Done:'),
-                const SizedBox(width: 8),
-                Checkbox(
-                  value: _isDone,
-                  onChanged: (value) {
-                    setState(() {
-                      _isDone = value ?? false;
-                    });
-                  },
-                ),
-              ],
-            ),
+            _buildDoneCheckbox(),
             const SizedBox(height: 16),
-
-            //deadline picker
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  _selectedDeadline == null
-                      ? 'No Deadline Chosen'
-                      : 'Deadline: ${_selectedDeadline!.toLocal()}'
-                          .split(' ')[0],
-                ),
-                TextButton(
-                  onPressed: _pickDeadline,
-                  child: const Text('Pick Deadline'),
-                ),
-              ],
-            ),
+            _buildDeadlinePicker(),
+            const SizedBox(height: 16),
+            _buildRepeatingCheckbox(),
+            const SizedBox(height: 16),
+            _buildAssigneeSelectionWidget(),
             const SizedBox(height: 16),
             const Text('Subtasks:'),
             const SizedBox(height: 8),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: _subtasks.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == _subtasks.length) {
-                    return TextButton(
-                      onPressed: _addSubtaskField,
-                      child: const Text('Add Subtask'),
-                    );
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            onChanged: (value) => _updateSubtask(index, value),
-                            decoration: InputDecoration(
-                              labelText: widget.isEditing
-                                  ? _subtasks[index].description
-                                  : 'Subtask ${index + 1}',
-                            ),
-                          ),
-                        ),
-                        Checkbox(
-                          value: _subtasks[index].isDone,
-                          onChanged: (value) => _toggleSubtaskCompletion(index),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _handleActionButton();
-              },
-              child: const Text('Add Task'),
-            ),
+            _buildSubtaskAddingWidget(),
+            _buildTaskAddingButton(),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildTaskAddingButton() {
+    return ElevatedButton(
+      onPressed: () {
+        _handleActionButton();
+      },
+      child: const Text('Add Task'),
+    );
+  }
+
+  Widget _buildSubtaskAddingWidget() {
+    return Expanded(
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: _subtasks.length + 1,
+        itemBuilder: (context, index) {
+          if (index == _subtasks.length) {
+            return TextButton(
+              onPressed: _addSubtaskField,
+              child: const Text('Add Subtask'),
+            );
+          }
+          return _buildSubtaskInputWidget(index);
+        },
+      ),
+    );
+  }
+
+  void _deleteSubtask(int index) {
+    setState(() {
+      _subtasks.removeAt(index);
+    });
+  }
+
+  Widget _buildSubtaskInputWidget(int index) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              onChanged: (value) => _updateSubtask(index, value),
+              decoration: InputDecoration(
+                labelText: widget.isEditing
+                    ? _subtasks[index].description
+                    : 'Subtask ${index + 1}',
+              ),
+            ),
+          ),
+          Checkbox(
+            value: _subtasks[index].isDone,
+            onChanged: (value) => _toggleSubtaskCompletion(index),
+          ),
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () => _deleteSubtask(index),
+            tooltip: 'Delete subtask',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRepeatingCheckbox() {
+    return Row(
+      children: [
+        Text("Is Repeating:"),
+        const SizedBox(width: 8),
+        Checkbox(
+          value: _isRepeat,
+          onChanged: (value) {
+            _toggleTaskRepetition(value);
+          },
+        ),
+        _buildRepeatingTaskSelection(),
+      ],
+    );
+  }
+
+  Widget _buildRepeatingTaskSelection() {
+    if (_isRepeat) {
+      return DropdownButton<String>(
+        value: _repeatDays,
+        items: ['Daily', 'Weekly', 'Monthly', '5 Minutes']
+            .map((frequency) => DropdownMenuItem<String>(
+                  value: frequency,
+                  child: Text(frequency),
+                ))
+            .toList(),
+        onChanged: (value) {
+          setState(() {
+            _repeatDays = value!;
+          });
+        },
+        hint: Text('Select Frequency'),
+      );
+    }
+    return const SizedBox();
+  }
+
+  Widget _buildDoneCheckbox() {
+    return Row(
+      children: [
+        Text("Is Done:"),
+        const SizedBox(width: 8),
+        Checkbox(
+          value: _isDone,
+          onChanged: (value) {
+            _toggleTaskCompletion(value);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTaskDescriptionInput() {
+    return TextField(
+      controller: _descriptionController,
+      decoration: const InputDecoration(labelText: 'Description'),
+    );
+  }
+
+  Widget _buildTaskNameInput() {
+    return TextField(
+      controller: _nameController,
+      decoration: const InputDecoration(labelText: 'Task Name'),
+    );
+  }
+
+  Widget _buildDeadlinePicker() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          _selectedDeadline == null
+              ? 'No Deadline Chosen'
+              : 'Deadline: ${DateFormat('yyyy-MM-dd – kk:mm').format(_selectedDeadline!)}',
+        ),
+        TextButton(
+          onPressed: _pickDeadline,
+          child: const Text('Pick Deadline'),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAssigneeSelectionWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          _assignee == null ? 'No assignee' : _assignee!.name,
+        ),
+        TextButton(
+          onPressed: () => _selectAssignee(context),
+          child: Text('Select Assignee'),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _selectAssignee(BuildContext context) async {
+    List<DocumentReference> inhabitants =
+        await _householdProvider.getHouseholdInhabitants(widget.householdRef);
+
+    final Inhabitant? selectedUser = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TaskAssigneePickPage(
+          users: inhabitants,
+        ),
+      ),
+    );
+
+    if (selectedUser != null) {
+      setState(() {
+        _assignee = selectedUser;
+      });
+    }
   }
 }

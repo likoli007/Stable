@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/service/household_service.dart';
 import 'package:stable/service/inhabitant_service.dart';
 
@@ -15,7 +16,7 @@ class AddHouseholdPage extends StatefulWidget {
 class _AddHouseholdPageState extends State<AddHouseholdPage> {
   final _textController = TextEditingController();
   final _householdService = GetIt.instance.get<HouseholdService>();
-  final _userService = GetIt.instance.get<UserService>();
+  final _userService = GetIt.instance.get<InhabitantService>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,37 +25,53 @@ class _AddHouseholdPageState extends State<AddHouseholdPage> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text('Create Household'),
         ),
-        body: _buildTextInput());
+        body: _buildHouseholdCreationPage());
   }
 
-  Padding _buildTextInput() {
+  Padding _buildHouseholdCreationPage() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(STANDARD_GAP),
       child: Column(
         children: [
-          TextField(
-            controller: _textController,
-            autofocus: true,
-            decoration: const InputDecoration(
-              hintText: 'Enter the name of your Household...',
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              String uid = FirebaseAuth.instance.currentUser!.uid;
-              String name = _textController.text;
-
-              DocumentReference householdReference = await _householdService
-                  .createHousehold(userId: uid, name: name);
-              _userService.addHouseholdToInhabitant(
-                  uid: uid, newRef: householdReference);
-              _textController.clear();
-              Navigator.pop(context);
-            },
-            child: const Text('Add Household'),
-          ),
+          _buildHouseholdNameTextField(),
+          _buildSubmitButton(),
         ],
       ),
     );
+  }
+
+  Widget _buildHouseholdNameTextField() {
+    return TextField(
+      controller: _textController,
+      decoration: const InputDecoration(
+        hintText: 'Enter the name of your Household...',
+      ),
+    );
+  }
+
+  Widget _buildSubmitButton() {
+    return ElevatedButton(
+      onPressed: () async {
+        await _onHouseholdFormSubmitted();
+        Navigator.pop(context);
+      },
+      child: const Text('Add Household'),
+    );
+  }
+
+  Future<void> _onHouseholdFormSubmitted() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    String name = _textController.text;
+
+    DocumentReference householdReference =
+        await _householdService.createHousehold(userId: uid, name: name);
+    _userService.addHouseholdToInhabitant(uid: uid, newRef: householdReference);
+    _textController.clear();
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
   }
 }

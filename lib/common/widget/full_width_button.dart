@@ -7,24 +7,29 @@ class FullWidthButton extends StatelessWidget {
   final Alignment alignment;
 
   const FullWidthButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.onPressed,
-    this.icon = null,
+    this.icon,
     this.alignment = Alignment.centerLeft,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        icon: icon,
+        icon: icon != null ? Icon(icon!.icon, color: Theme.of(context).colorScheme.onPrimary) : null,
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           alignment: alignment,
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
         ),
-        label: Text(label),
+        label: Text(
+          label,
+          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+        ),
       ),
     );
   }
