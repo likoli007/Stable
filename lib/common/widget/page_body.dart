@@ -5,14 +5,14 @@ import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/common/widget/bottom_navigation.dart';
 import 'package:stable/common/widget/profile_bottom_sheet.dart';
 
-class PageTemplate extends StatelessWidget {
+class PageBody extends StatelessWidget {
   final String title;
   final Widget child;
   final FloatingActionButton? floatingActionButton;
   final bool showProfileButton;
   final bool showBackButton;
 
-  PageTemplate({
+  PageBody({
     super.key,
     required this.title,
     required this.child,

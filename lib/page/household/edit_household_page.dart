@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stable/common/widget/loading_future_builder.dart';
-import 'package:stable/common/widget/page_template.dart';
+import 'package:stable/common/widget/page_body.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
-import 'package:stable/page/household/join_household_page.dart';
 import 'package:stable/page/household/share_household_page.dart';
 import 'package:stable/service/household_service.dart';
 import 'package:get_it/get_it.dart';
@@ -64,7 +63,7 @@ class _EditHouseholdPageState extends State<EditHouseholdPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PageTemplate(
+    return PageBody(
       title: 'Edit Household',
       floatingActionButton: FloatingActionButton(
         onPressed: () {

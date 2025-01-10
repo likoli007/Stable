@@ -3,7 +3,7 @@ import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/server/TaskUpdater.dart';
 import 'package:stable/page/household/edit_household_page.dart';
 
-import '../../common/widget/page_template.dart';
+import '../../common/widget/page_body.dart';
 import '../../model/household/household.dart';
 import '../task/household_task_page.dart';
 
@@ -14,7 +14,7 @@ class HouseholdPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageTemplate(
+    return PageBody(
         title: "${household.name} overview",
         child: _buildHouseholdOverviewPage(context));
     // TODO add rotary task overview and settings
@@ -83,13 +83,11 @@ class HouseholdPage extends StatelessWidget {
     });
   }
 
-
   Widget _buildDebugRotationButton() {
     return _buildButton('DEBUG: ROTATE', const Icon(Icons.access_time), () {
       updateHouseholdRotation(household);
     });
   }
-
 
   Widget _buildSettingsButton(BuildContext context) {
     return _buildButton("Settings", const Icon(Icons.settings), () {
