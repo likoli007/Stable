@@ -28,7 +28,7 @@ class _JoinHouseholdPageState extends State<JoinHouseholdPage> {
   Widget build(BuildContext context) {
     return PageBody(
       title: 'Join Household',
-      child: Padding(
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [

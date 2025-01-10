@@ -79,7 +79,7 @@ class _EditHouseholdPageState extends State<EditHouseholdPage> {
         tooltip: 'Add Inhabitant',
         child: Icon(Icons.add),
       ),
-      child: Column(
+      body: Column(
         children: [
           TextField(
             controller: _nameController,

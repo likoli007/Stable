@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
     return PageBody(
       title: "Household Name Placeholder",
       showBackButton: false,
-      child: LoadingStreamBuilder(
+      body: LoadingStreamBuilder(
           stream: _userProvider
               .getInhabitantStream(FirebaseAuth.instance.currentUser!.uid),
           builder: homePageBuilder),

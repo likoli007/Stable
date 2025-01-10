@@ -29,7 +29,7 @@ class HouseholdTaskPage extends StatelessWidget {
     return PageBody(
         title: 'Tasks',
         floatingActionButton: _buildHouseholdTaskPageFloatingButton(context),
-        child: _buildHouseholdStream());
+        body: _buildHouseholdStream());
   }
 
   FloatingActionButton _buildHouseholdTaskPageFloatingButton(
