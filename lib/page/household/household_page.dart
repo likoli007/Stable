@@ -72,7 +72,16 @@ class HouseholdPage extends StatelessWidget {
     });
   }
 
-  Widget _buildSettingsButton() {
-    return _buildButton("Settings", const Icon(Icons.settings), () {});
+  Widget _buildSettingsButton(BuildContext context) {
+    return _buildButton("Settings", const Icon(Icons.settings), () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditTaskPage(
+            householdReference: household.id,
+          ),
+        ),
+      );
+    });
   }
 }

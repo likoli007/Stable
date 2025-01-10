@@ -78,6 +78,7 @@ class HouseholdService {
     Household? targetHousehold = await getHouseholdByGroupId(groupId);
     if (targetHousehold != null) {
       // Add inhabitant to inhabitants list of a household
+      // TODO if inhabitant already in household give error
       DocumentReference userRef =
           FirebaseFirestore.instance.doc('User/$userId');
       targetHousehold.inhabitants.add(userRef);
@@ -91,6 +92,14 @@ class HouseholdService {
         uid: userId,
         newRef: householdRef,
       );
+    }
+  }
+
+  Future<void> updateHouseholdName(String householdId, String newName) async {
+    Household? household = await getHousehold(householdId);
+    if (household != null) {
+      household.name = newName;
+      await _householdRepository.updateEntity(householdId, household);
     }
   }
 }
