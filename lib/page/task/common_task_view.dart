@@ -57,7 +57,7 @@ class CommonTaskView extends StatelessWidget {
   Widget _buildTaskTrailingButton(Task task) {
     if (isFailedView) {
       return IconButton(
-          onPressed: _removeTaskFromHistory(task),
+          onPressed: () => _removeTaskFromHistory(task),
           icon: Icon(Icons.delete_forever));
     }
     return IconButton(

@@ -36,7 +36,9 @@ class TaskUpdater {
   void _autoUpdate(List<Household> households) {
     print("running update method");
     for (Household household in households) {
-      updateHouseholdRotation(household);
+      if (household.tasks.isNotEmpty) {
+        updateHouseholdRotation(household);
+      }
     }
   }
 
@@ -56,7 +58,7 @@ class TaskUpdater {
               deadline: t.deadline,
               repeat: null,
               subtasks: [],
-              rotating: null);
+              rotating: false);
 
           _householdService.updateHouseholdHistory(
               household.id, failedTaskRef!);
@@ -85,6 +87,8 @@ class TaskUpdater {
                 t.assignee.toString());
           }
           _taskService.updateTask(t);
+        } else {
+          _taskService.removeTask(t.id);
         }
       }
     }
