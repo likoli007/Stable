@@ -83,13 +83,11 @@ class HouseholdPage extends StatelessWidget {
     });
   }
 
-
   Widget _buildDebugRotationButton() {
     return _buildButton('DEBUG: ROTATE', const Icon(Icons.access_time), () {
-      updateHouseholdRotation(household);
+      print("no longer needed");
     });
   }
-
 
   Widget _buildSettingsButton(BuildContext context) {
     return _buildButton("Settings", const Icon(Icons.settings), () {

@@ -6,6 +6,10 @@ import '../model/household/household.dart';
 import '../model/task/task.dart';
 import '../service/household_service.dart';
 
+/*
+  IDEA: periodically poll all households, for each household check the task expiration date
+    if it is in the past, increment it by its repeat period and possibly assign a new assignee
+ */
 class TaskUpdater {
   final TaskService _taskService = GetIt.instance<TaskService>();
   final HouseholdService _householdService = GetIt.instance<HouseholdService>();
@@ -14,11 +18,11 @@ class TaskUpdater {
 
   TaskUpdater() {
     print("TaskUpdater Instantiated!");
-    final tasksStream = _taskService.getTasksStream();
+    final householdStream = _householdService.getHouseholdsStream();
 
     // Poll tasks periodically
-    stream = Stream.periodic(Duration(seconds: 5))
-        .asyncMap((_) => tasksStream.first);
+    stream = Stream.periodic(Duration(seconds: 30))
+        .asyncMap((_) => householdStream.first);
 
     listenToUpdates();
   }
@@ -29,32 +33,41 @@ class TaskUpdater {
     });
   }
 
-  void _autoUpdate(_) {
-    print(_);
+  void _autoUpdate(List<Household> households) {
+    print("running update method");
+    for (Household household in households) {
+      updateHouseholdRotation(household);
+    }
   }
-}
 
-Future<void> updateHouseholdRotation(Household household) async {
-  final taskService = GetIt.instance<TaskService>();
+  Future<void> updateHouseholdRotation(Household household) async {
+    List<Task> tasks = await _taskService.getTasks(household.tasks);
 
-  List<Task> tasks = await taskService.getTasks(household.tasks);
+    for (Task t in tasks) {
+      if (t.repeat != null && t.deadline!.isBefore(DateTime.now())) {
+        if (t.repeat != 0) {
+          t.deadline = t.deadline?.add(Duration(days: t.repeat!));
+        } else {
+          //DEBUG, TODO: REMOVE
+          t.deadline = t.deadline?.add(Duration(minutes: 5));
+          print("changed " + t.name + " to deadline: " + t.deadline.toString());
+        }
 
-  for (Task t in tasks) {
-    if (t.repeat != null) {
-      if (t.repeat != 0) {
-        t.deadline = t.deadline?.add(Duration(days: t.repeat!));
-      } else {
-        t.deadline = t.deadline?.add(Duration(minutes: 5));
+        if (t.rotating) {
+          DocumentReference? currentAssignee = t.assignee;
+          int index = household.inhabitants.indexOf(currentAssignee!);
+          t.assignee =
+              household.inhabitants[(index + 1) % household.inhabitants.length];
+          print("rotated assignee for " +
+              t.name +
+              " from " +
+              currentAssignee.toString() +
+              " to " +
+              t.assignee.toString());
+        }
+
+        _taskService.updateTask(t);
       }
-
-      if (t.rotating) {
-        DocumentReference? currentAssignee = t.assignee;
-        int index = household.inhabitants.indexOf(currentAssignee!);
-        t.assignee =
-            household.inhabitants[(index + 1) % household.inhabitants.length];
-      }
-
-      taskService.updateTask(t);
     }
   }
 }
