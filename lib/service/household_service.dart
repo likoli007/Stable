@@ -114,6 +114,15 @@ class HouseholdService {
     }
   }
 
+  Future<void> updateHouseholdHistory(
+      String householdId, DocumentReference ref) async {
+    Household? household = await getHousehold(householdId);
+    if (household != null) {
+      household.taskHistory.add(ref);
+      await _householdRepository.updateEntity(householdId, household);
+    }
+  }
+
   Future<void> updateHouseholdName(String householdId, String newName) async {
     Household? household = await getHousehold(householdId);
     if (household != null) {
@@ -130,6 +139,17 @@ class HouseholdService {
           .map((ref) => FirebaseFirestore.instance.doc('User/$ref'))
           .toList();
       await _householdRepository.updateEntity(householdId, household);
+    }
+  }
+
+  Future<void> removeTaskFromHistory(
+      String householdRef, String taskRef) async {
+    Household? household = await getHousehold(householdRef);
+    if (household != null) {
+      DocumentReference ref = FirebaseFirestore.instance.doc('Task/${taskRef}');
+      int index = household.taskHistory.indexOf(ref);
+      household.taskHistory.removeAt(index);
+      await _householdRepository.updateEntity(householdRef, household);
     }
   }
 }

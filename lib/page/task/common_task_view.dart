@@ -10,24 +10,32 @@ import '../../model/household/household.dart';
 import '../../model/inhabitant/inhabitant.dart';
 import '../../model/subtask/subtask.dart';
 import '../../model/task/task.dart';
+import '../../service/household_service.dart';
 import '../../service/task_service.dart';
 import 'add_task_page.dart';
 
 class CommonTaskView extends StatelessWidget {
   CommonTaskView(
-      {Key? key, required this.household, required this.showAssignee})
+      {Key? key,
+      required this.household,
+      required this.showAssignee,
+      required this.isFailedView})
       : super(key: key);
 
   final _taskProvider = GetIt.instance<TaskService>();
+  final _householdProvider = GetIt.instance<HouseholdService>();
   final _inhabitantProvider = GetIt.instance<InhabitantService>();
+
   Household household;
 
   bool showAssignee;
+  bool isFailedView;
 
   @override
   Widget build(BuildContext context) {
     return LoadingStreamBuilder(
-      stream: _taskProvider.getTasksStreamByRefs(household.tasks),
+      stream: _taskProvider.getTasksStreamByRefs(
+          isFailedView ? household.taskHistory : household.tasks),
       builder: _buildTaskView,
     );
   }
@@ -43,19 +51,33 @@ class CommonTaskView extends StatelessWidget {
         return ListTile(
           title: Text(task.name),
           subtitle: Text(task.description),
+          trailing: _buildTaskTrailingButton(task),
+          onTap: () => !isFailedView ? _editTask(context, task) : (),
           leading: SizedBox(
             height: 50,
             width: 50,
             child: _buildAssigneeInformation(task),
           ),
-          trailing: IconButton(
-            icon: Icon(task.isDone ? Icons.check_circle : Icons.circle),
-            onPressed: () => _setDone(task),
-          ),
-          onTap: () => _editTask(context, task),
         );
       },
     );
+  }
+
+  Widget _buildTaskTrailingButton(Task task) {
+    if (isFailedView) {
+      return IconButton(
+          onPressed: () => _removeTaskFromHistory(task),
+          icon: Icon(Icons.delete_forever));
+    }
+    return IconButton(
+      icon: Icon(task.isDone ? Icons.check_circle : Icons.circle),
+      onPressed: () => _setDone(task),
+    );
+  }
+
+  _removeTaskFromHistory(Task t) {
+    _householdProvider.removeTaskFromHistory(household.id, t.id);
+    _taskProvider.removeTask(t.id);
   }
 
   Widget _buildAssigneeInformation(Task task) {

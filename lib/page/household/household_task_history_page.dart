@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -15,39 +17,17 @@ import 'package:stable/model/subtask/subtask.dart';
 import '../../model/household/household.dart';
 import '../../service/household_service.dart';
 
-class HouseholdTaskPage extends StatelessWidget {
-  HouseholdTaskPage({Key? key, required this.householdReference})
+class HouseholdTaskHistoryPage extends StatelessWidget {
+  HouseholdTaskHistoryPage({Key? key, required this.householdReference})
       : super(key: key);
 
   String householdReference;
 
-  final _taskProvider = GetIt.instance<TaskService>();
   final _householdProvider = GetIt.instance<HouseholdService>();
 
   @override
   Widget build(BuildContext context) {
-    return PageTemplate(
-        title: 'Tasks',
-        floatingActionButton: _buildHouseholdTaskPageFloatingButton(context),
-        child: _buildHouseholdStream());
-  }
-
-  FloatingActionButton _buildHouseholdTaskPageFloatingButton(
-      BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AddTaskPage(
-              householdRef: householdReference,
-            ),
-          ),
-        );
-      },
-      tooltip: 'Add',
-      child: const Icon(Icons.add),
-    );
+    return PageTemplate(title: 'Failed Tasks', child: _buildHouseholdStream());
   }
 
   Widget _buildHouseholdStream() {
@@ -59,9 +39,6 @@ class HouseholdTaskPage extends StatelessWidget {
 
   Widget _buildTaskStream(BuildContext context, Household? data) {
     return CommonTaskView(
-      household: data!,
-      showAssignee: true,
-      isFailedView: false,
-    );
+        household: data!, showAssignee: true, isFailedView: true);
   }
 }

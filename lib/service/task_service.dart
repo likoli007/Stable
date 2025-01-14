@@ -112,6 +112,10 @@ class TaskService {
 
   Future<void> assignTaskReference(
       List<DocumentReference>? subtaskRefs, DocumentReference taskRef) async {
+    if (subtaskRefs!.isEmpty) {
+      return;
+    }
+
     List<Subtask> subtasks =
         await _subTaskRepository.getDocumentsByIds(subtaskRefs);
 
