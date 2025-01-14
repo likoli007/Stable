@@ -34,10 +34,12 @@ class PageTemplate extends StatelessWidget {
           Visibility(
             visible: showProfileButton,
             child: IconButton(
-              icon: UserProfilePicture(
-                size: 40,
-                user: FirebaseAuth.instance.currentUser!.uid,
-              ),
+              icon: FirebaseAuth.instance.currentUser != null
+                  ? UserProfilePicture(
+                      size: 40,
+                      user: FirebaseAuth.instance.currentUser!.uid,
+                    )
+                  : Icon(Icons.account_circle),
               onPressed: () {
                 showModalBottomSheet(
                   context: context,
