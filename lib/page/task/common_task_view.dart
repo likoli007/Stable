@@ -66,7 +66,7 @@ class CommonTaskView extends StatelessWidget {
   }
 
   Widget _buildAssigneePicture(BuildContext context, Inhabitant? inhabitant) {
-    return UserProfilePicture(user: inhabitant!);
+    return UserProfilePicture(user: inhabitant!.id);
   }
 
   Widget _buildSubTaskView(BuildContext context, List<Subtask> data) {
