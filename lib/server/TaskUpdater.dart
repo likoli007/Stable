@@ -44,29 +44,48 @@ class TaskUpdater {
     List<Task> tasks = await _taskService.getTasks(household.tasks);
 
     for (Task t in tasks) {
-      if (t.repeat != null && t.deadline!.isBefore(DateTime.now())) {
-        if (t.repeat != 0) {
-          t.deadline = t.deadline?.add(Duration(days: t.repeat!));
-        } else {
-          //DEBUG, TODO: REMOVE
-          t.deadline = t.deadline?.add(Duration(minutes: 5));
-          print("changed " + t.name + " to deadline: " + t.deadline.toString());
+      if (t.deadline!.isBefore(DateTime.now())) {
+        //check if task is finished, if not put it to failed task history
+        if (!t.isDone) {
+          //if it is not done, copy it to a new task and assign it to task history
+          DocumentReference? failedTaskRef = await _taskService.addTask(
+              assignee: t.assignee.toString(),
+              name: t.name,
+              description: t.description,
+              isDone: t.isDone,
+              deadline: t.deadline,
+              repeat: null,
+              subtasks: [],
+              rotating: null);
+
+          _householdService.updateHouseholdHistory(
+              household.id, failedTaskRef!);
+          print("One task moved to history!");
         }
 
-        if (t.rotating) {
-          DocumentReference? currentAssignee = t.assignee;
-          int index = household.inhabitants.indexOf(currentAssignee!);
-          t.assignee =
-              household.inhabitants[(index + 1) % household.inhabitants.length];
-          print("rotated assignee for " +
-              t.name +
-              " from " +
-              currentAssignee.toString() +
-              " to " +
-              t.assignee.toString());
+        if (t.repeat != null) {
+          if (t.repeat != 0) {
+            t.deadline = t.deadline?.add(Duration(days: t.repeat!));
+          } else {
+            //DEBUG, TODO: REMOVE
+            t.deadline = t.deadline?.add(Duration(minutes: 5));
+            print(
+                "changed " + t.name + " to deadline: " + t.deadline.toString());
+          }
+          if (t.rotating) {
+            DocumentReference? currentAssignee = t.assignee;
+            int index = household.inhabitants.indexOf(currentAssignee!);
+            t.assignee = household
+                .inhabitants[(index + 1) % household.inhabitants.length];
+            print("rotated assignee for " +
+                t.name +
+                " from " +
+                currentAssignee.toString() +
+                " to " +
+                t.assignee.toString());
+          }
+          _taskService.updateTask(t);
         }
-
-        _taskService.updateTask(t);
       }
     }
   }

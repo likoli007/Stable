@@ -114,6 +114,15 @@ class HouseholdService {
     }
   }
 
+  Future<void> updateHouseholdHistory(
+      String householdId, DocumentReference ref) async {
+    Household? household = await getHousehold(householdId);
+    if (household != null) {
+      household.taskHistory.add(ref);
+      await _householdRepository.updateEntity(householdId, household);
+    }
+  }
+
   Future<void> updateHouseholdName(String householdId, String newName) async {
     Household? household = await getHousehold(householdId);
     if (household != null) {
