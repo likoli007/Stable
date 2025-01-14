@@ -49,7 +49,7 @@ class TaskUpdater {
         if (!t.isDone) {
           //if it is not done, copy it to a new task and assign it to task history
           DocumentReference? failedTaskRef = await _taskService.addTask(
-              assignee: t.assignee.toString(),
+              assignee: t.assignee?.id.toString(),
               name: t.name,
               description: t.description,
               isDone: t.isDone,
