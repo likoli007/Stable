@@ -7,12 +7,9 @@ import 'package:stable/service/household_service.dart';
 import 'package:stable/service/inhabitant_service.dart';
 
 import '../../common/widget/loading_future_builder.dart';
-import '../../common/widget/loading_stream_builder.dart';
-import '../../common/page/page_body.dart';
+import '../../common/page/page_layout.dart';
 import '../../model/household/household.dart';
 import '../../model/inhabitant/inhabitant.dart';
-import '../../model/subtask/subtask.dart';
-import '../../model/task/task.dart';
 import '../../service/task_service.dart';
 
 class UserTaskPage extends StatelessWidget {
@@ -24,7 +21,7 @@ class UserTaskPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageBody(title: 'Tasks', body: _buildUserFuture());
+    return PageLayout(title: 'Tasks', body: _buildUserFuture());
   }
 
   Widget _buildUserFuture() {

@@ -68,7 +68,7 @@ Future<void> main() async {
   GetIt.instance.registerSingleton(ThemeProvider());
 
   GetIt.instance.registerSingleton(
-      PageLayout(title: "Stable", child: Text("Nothing to show")));
+      PageLayout(title: "Stable", body: Text("Nothing to show")));
 
   runAppDynamic(home: AppWrapper());
 }

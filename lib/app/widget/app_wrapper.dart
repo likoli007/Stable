@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/auth/firebase_auth_service.dart';
+import 'package:stable/common/page/page_layout.dart';
 import 'package:stable/common/theme/theme_provider.dart';
 import 'package:stable/model/settings/settings.dart';
 import 'package:stable/page/home/home_page.dart';
@@ -26,7 +27,7 @@ class AppWrapper extends StatelessWidget {
   }
 
   Widget _materialAppBuilder(BuildContext context, Settings settings) {
-    return MaterialApp(
+    final materialApp = MaterialApp(
       title: 'Stable',
       debugShowCheckedModeBanner: false,
       themeMode: settings.themeMode,
@@ -47,5 +48,7 @@ class AppWrapper extends StatelessWidget {
         //TODO: Add routes
       },
     );
+    PageLayout(title: "Stable", body: Text("Nothing to show"));
+    return materialApp;
   }
 }

@@ -1,3 +1,4 @@
+// lib/common/page/page_layout.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,9 +6,9 @@ import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/common/widget/bottom_navigation.dart';
 import 'package:stable/common/widget/profile_bottom_sheet.dart';
 
-class PageLayout extends StatelessWidget {
+class PageLayout extends StatefulWidget {
   final String title;
-  final Widget child;
+  final Widget body;
   final FloatingActionButton? floatingActionButton;
   final bool showProfileButton;
   final bool showBackButton;
@@ -15,23 +16,65 @@ class PageLayout extends StatelessWidget {
   PageLayout({
     super.key,
     required this.title,
-    required this.child,
-    FloatingActionButton? this.floatingActionButton,
-    bool this.showProfileButton = true,
-    bool this.showBackButton = true,
+    required this.body,
+    this.floatingActionButton,
+    this.showProfileButton = true,
+    this.showBackButton = true,
   });
+
+  @override
+  _PageLayoutState createState() => _PageLayoutState();
+
+  void update(
+      {required String title,
+      required Widget body,
+      FloatingActionButton? floatingActionButton}) {
+    _PageLayoutState? state = _PageLayoutState();
+    state.update(
+      title: title,
+      body: body,
+      floatingActionButton: floatingActionButton,
+    );
+  }
+}
+
+class _PageLayoutState extends State<PageLayout> {
+  late String _title;
+  late Widget _body;
+  FloatingActionButton? _floatingActionButton;
+
+  @override
+  void initState() {
+    super.initState();
+    _title = widget.title;
+    _body = widget.body;
+    _floatingActionButton = widget.floatingActionButton;
+  }
+
+  void update(
+      {required String title,
+      required Widget body,
+      FloatingActionButton? floatingActionButton}) {
+    if (mounted) {
+      setState(() {
+        _title = title;
+        _body = body;
+        _floatingActionButton = floatingActionButton;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(_title),
         centerTitle: true,
-        automaticallyImplyLeading: showBackButton,
+        automaticallyImplyLeading: widget.showBackButton,
         backgroundColor: Theme.of(context).colorScheme.surface,
         actions: [
           Visibility(
-            visible: showProfileButton,
+            visible: widget.showProfileButton,
             child: IconButton(
               icon: UserAvatar(
                 size: 40,
@@ -49,10 +92,10 @@ class PageLayout extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: floatingActionButton,
+      floatingActionButton: _floatingActionButton,
       body: Padding(
         padding: const EdgeInsets.all(STANDARD_GAP),
-        child: child,
+        child: _body,
       ),
       bottomNavigationBar: BottomNavigation(),
     );
