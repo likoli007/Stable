@@ -57,6 +57,7 @@ class UserTaskPage extends StatelessWidget {
               child: CommonTaskView(
                 household: household,
                 showAssignee: false,
+                isFailedView: false,
               ),
             ),
           ],

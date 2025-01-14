@@ -11,18 +11,23 @@ import 'add_task_page.dart';
 
 class CommonTaskView extends StatelessWidget {
   CommonTaskView(
-      {Key? key, required this.household, required this.showAssignee})
+      {Key? key,
+      required this.household,
+      required this.showAssignee,
+      required this.isFailedView})
       : super(key: key);
 
   final _taskProvider = GetIt.instance<TaskService>();
   Household household;
 
   bool showAssignee;
+  bool isFailedView;
 
   @override
   Widget build(BuildContext context) {
     return LoadingStreamBuilder(
-      stream: _taskProvider.getTasksStreamByRefs(household.tasks),
+      stream: _taskProvider.getTasksStreamByRefs(
+          isFailedView ? household.taskHistory : household.tasks),
       builder: _buildTaskView,
     );
   }
@@ -39,14 +44,27 @@ class CommonTaskView extends StatelessWidget {
           title: Text(task.name),
           subtitle: Text(task.description),
           leading: _buildAssigneeInformation(task),
-          trailing: IconButton(
-            icon: Icon(task.isDone ? Icons.check_circle : Icons.circle),
-            onPressed: () => _setDone(task),
-          ),
-          onTap: () => _editTask(context, task),
+          trailing: _buildTaskTrailingButton(task),
+          onTap: () => !isFailedView ? _editTask(context, task) : (),
         );
       },
     );
+  }
+
+  Widget _buildTaskTrailingButton(Task task) {
+    if (isFailedView) {
+      return IconButton(
+          onPressed: _removeTaskFromHistory(task),
+          icon: Icon(Icons.delete_forever));
+    }
+    return IconButton(
+      icon: Icon(task.isDone ? Icons.check_circle : Icons.circle),
+      onPressed: () => _setDone(task),
+    );
+  }
+
+  _removeTaskFromHistory(Task t) {
+    print("TODO");
   }
 
   Widget _buildAssigneeInformation(Task task) {

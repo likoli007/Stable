@@ -61,6 +61,7 @@ class HouseholdTaskPage extends StatelessWidget {
     return CommonTaskView(
       household: data!,
       showAssignee: true,
+      isFailedView: false,
     );
   }
 }
