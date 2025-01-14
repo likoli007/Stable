@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/common/widget/bottom_navigation.dart';
 import 'package:stable/common/widget/profile_bottom_sheet.dart';
+import 'package:stable/common/widget/user_profile_picture.dart';
 
 class PageTemplate extends StatelessWidget {
   final String title;
@@ -33,9 +34,9 @@ class PageTemplate extends StatelessWidget {
           Visibility(
             visible: showProfileButton,
             child: IconButton(
-              icon: UserAvatar(
+              icon: UserProfilePicture(
                 size: 40,
-                auth: FirebaseAuth.instance,
+                user: FirebaseAuth.instance.currentUser!.uid,
               ),
               onPressed: () {
                 showModalBottomSheet(

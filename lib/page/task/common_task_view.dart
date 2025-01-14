@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stable/common/widget/loading_future_builder.dart';
+import 'package:stable/common/widget/user_profile_picture.dart';
+import 'package:stable/service/inhabitant_service.dart';
 
 import '../../common/util/shared_ui_constants.dart';
 import '../../common/widget/loading_stream_builder.dart';
 import '../../model/household/household.dart';
+import '../../model/inhabitant/inhabitant.dart';
 import '../../model/subtask/subtask.dart';
 import '../../model/task/task.dart';
 import '../../service/task_service.dart';
@@ -15,6 +19,7 @@ class CommonTaskView extends StatelessWidget {
       : super(key: key);
 
   final _taskProvider = GetIt.instance<TaskService>();
+  final _inhabitantProvider = GetIt.instance<InhabitantService>();
   Household household;
 
   bool showAssignee;
@@ -38,7 +43,11 @@ class CommonTaskView extends StatelessWidget {
         return ListTile(
           title: Text(task.name),
           subtitle: Text(task.description),
-          leading: _buildAssigneeInformation(task),
+          leading: SizedBox(
+            height: 50,
+            width: 50,
+            child: _buildAssigneeInformation(task),
+          ),
           trailing: IconButton(
             icon: Icon(task.isDone ? Icons.check_circle : Icons.circle),
             onPressed: () => _setDone(task),
@@ -50,7 +59,14 @@ class CommonTaskView extends StatelessWidget {
   }
 
   Widget _buildAssigneeInformation(Task task) {
-    return Icon(Icons.account_circle);
+    return LoadingStreamBuilder(
+        stream: _inhabitantProvider
+            .getInhabitantStream(task.assignee!.id.toString()),
+        builder: _buildAssigneePicture);
+  }
+
+  Widget _buildAssigneePicture(BuildContext context, Inhabitant? inhabitant) {
+    return UserProfilePicture(user: inhabitant!.id);
   }
 
   Widget _buildSubTaskView(BuildContext context, List<Subtask> data) {

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -50,5 +52,19 @@ class NullableIntConverter implements JsonConverter<int?, int?> {
   @override
   int? toJson(int? value) {
     return value;
+  }
+}
+
+class ColorConverter implements JsonConverter<Color, int> {
+  const ColorConverter();
+
+  @override
+  Color fromJson(int json) {
+    return Color(json);
+  }
+
+  @override
+  int toJson(Color object) {
+    return object.value;
   }
 }
