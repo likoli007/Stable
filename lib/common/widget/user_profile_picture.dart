@@ -8,21 +8,20 @@ import '../../model/inhabitant/inhabitant.dart';
 
 class UserProfilePicture extends StatelessWidget {
   final double size;
-  final String? user;
+  final String user;
 
   final _inhabitantService = GetIt.instance<InhabitantService>();
 
   UserProfilePicture({
     Key? key,
-    this.user,
+    required this.user,
     this.size = 50.0,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return LoadingStreamBuilder(
-        stream: _inhabitantService.getInhabitantStream(
-            user != null ? user! : FirebaseAuth.instance.currentUser!.uid),
+        stream: _inhabitantService.getInhabitantStream(user),
         builder: _buildAvatar);
   }
 
