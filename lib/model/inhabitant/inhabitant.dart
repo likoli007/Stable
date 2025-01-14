@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:stable/database/util/document_reference_converter.dart';
@@ -8,17 +10,13 @@ class Inhabitant {
   @JsonKey(includeToJson: false)
   String id;
   String name;
-  String surname;
-  String photo;
+  Color profileColor;
+
   @DocumentSerializer()
   List<DocumentReference> households;
 
-  Inhabitant({
-    required this.id,
-    required this.name,
-    required this.surname,
-    this.photo = "", // TODO change to default photo
-  }) : households = [];
+  Inhabitant({required this.id, required this.name, required this.profileColor})
+      : households = [];
 
   factory Inhabitant.fromJson(Map<String, dynamic> json) =>
       _$InhabitantFromJson(json);
