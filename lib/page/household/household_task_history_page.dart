@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stable/common/page/page_layout.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/common/widget/loading_stream_builder.dart';
-import 'package:stable/common/widget/page_template.dart';
+import 'package:stable/common/widget/page_layout.dart';
 import 'package:stable/model/task/task.dart';
 import 'package:stable/page/task/common_task_view.dart';
 import 'package:stable/service/task_service.dart';
@@ -27,7 +28,7 @@ class HouseholdTaskHistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageTemplate(title: 'Failed Tasks', child: _buildHouseholdStream());
+    return PageLayout(title: 'Failed Tasks', body: _buildHouseholdStream());
   }
 
   Widget _buildHouseholdStream() {
