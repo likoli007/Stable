@@ -10,6 +10,7 @@ class Inhabitant {
   @JsonKey(includeToJson: false)
   String id;
   String name;
+  @ColorConverter()
   Color profileColor;
 
   @DocumentSerializer()
