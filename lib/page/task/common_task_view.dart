@@ -6,6 +6,7 @@ import '../../common/widget/loading_stream_builder.dart';
 import '../../model/household/household.dart';
 import '../../model/subtask/subtask.dart';
 import '../../model/task/task.dart';
+import '../../service/household_service.dart';
 import '../../service/task_service.dart';
 import 'add_task_page.dart';
 
@@ -18,6 +19,8 @@ class CommonTaskView extends StatelessWidget {
       : super(key: key);
 
   final _taskProvider = GetIt.instance<TaskService>();
+  final _householdProvider = GetIt.instance<HouseholdService>();
+
   Household household;
 
   bool showAssignee;
@@ -64,7 +67,8 @@ class CommonTaskView extends StatelessWidget {
   }
 
   _removeTaskFromHistory(Task t) {
-    print("TODO");
+    _householdProvider.removeTaskFromHistory(household.id, t.id);
+    _taskProvider.removeTask(t.id);
   }
 
   Widget _buildAssigneeInformation(Task task) {

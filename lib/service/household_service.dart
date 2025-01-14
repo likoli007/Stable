@@ -141,4 +141,16 @@ class HouseholdService {
       await _householdRepository.updateEntity(householdId, household);
     }
   }
+
+  Future<void> removeTaskFromHistory(
+      String householdRef, String taskRef) async {
+    Household? household = await getHousehold(householdRef);
+    if (household != null) {
+      DocumentReference ref =
+          FirebaseFirestore.instance.doc('Tasks/${taskRef}');
+      int index = household.taskHistory.indexOf(ref);
+      household.taskHistory.removeAt(index);
+      await _householdRepository.updateEntity(householdRef, household);
+    }
+  }
 }
