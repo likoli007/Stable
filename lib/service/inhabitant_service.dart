@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:stable/database/service/database_service.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
 
@@ -35,23 +38,12 @@ class InhabitantService {
     required String displayName,
     required String uid,
   }) async {
-    Inhabitant newInhabitant =
-        Inhabitant(id: 'placeholder', name: displayName, surname: '');
+    Inhabitant newInhabitant = Inhabitant(
+        id: 'placeholder',
+        name: displayName,
+        profileColor:
+            Colors.primaries[Random().nextInt(Colors.primaries.length)]);
 
     await _inhabitantRepository.updateEntity(uid, newInhabitant);
-  }
-
-  void createInhabitant({
-    required String name,
-    required String surname,
-  }) async {
-    DocumentReference defaultReference =
-        FirebaseFirestore.instance.doc('users/defaultReference');
-
-    await _inhabitantRepository.add(Inhabitant(
-      id: 'placeholder',
-      name: name,
-      surname: surname,
-    ));
   }
 }

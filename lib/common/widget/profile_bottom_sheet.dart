@@ -6,6 +6,7 @@ import 'package:stable/auth/firebase_auth_service.dart';
 import 'package:stable/common/theme/toggle_buttons_theme.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/common/widget/full_width_button.dart';
+import 'package:stable/common/widget/user_profile_picture.dart';
 import 'package:stable/service/settings_controller.dart';
 
 class ProfileBottomSheet extends StatelessWidget {
@@ -41,9 +42,9 @@ class ProfileBottomSheet extends StatelessWidget {
   Widget _buildProfileSection(BuildContext context) {
     return Row(
       children: [
-        UserAvatar(
+        UserProfilePicture(
           size: 100,
-          auth: FirebaseAuth.instance,
+          user: FirebaseAuth.instance.currentUser!.uid,
         ),
         SizedBox(width: STANDARD_GAP),
         Column(

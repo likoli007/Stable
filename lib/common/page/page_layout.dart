@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/common/widget/bottom_navigation.dart';
 import 'package:stable/common/widget/profile_bottom_sheet.dart';
+import 'package:stable/common/widget/user_profile_picture.dart';
 
 class PageLayout extends StatefulWidget {
   final String title;
@@ -76,10 +77,12 @@ class _PageLayoutState extends State<PageLayout> {
           Visibility(
             visible: widget.showProfileButton,
             child: IconButton(
-              icon: UserAvatar(
-                size: 40,
-                auth: FirebaseAuth.instance,
-              ),
+              icon: FirebaseAuth.instance.currentUser != null
+                  ? UserProfilePicture(
+                      size: 40,
+                      user: FirebaseAuth.instance.currentUser!.uid,
+                    )
+                  : Icon(Icons.account_circle),
               onPressed: () {
                 showModalBottomSheet(
                   context: context,

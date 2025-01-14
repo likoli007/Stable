@@ -1,28 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stable/common/widget/loading_future_builder.dart';
+import 'package:stable/common/widget/user_profile_picture.dart';
+import 'package:stable/service/inhabitant_service.dart';
 
 import '../../common/util/shared_ui_constants.dart';
 import '../../common/widget/loading_stream_builder.dart';
 import '../../model/household/household.dart';
+import '../../model/inhabitant/inhabitant.dart';
 import '../../model/subtask/subtask.dart';
 import '../../model/task/task.dart';
+import '../../service/household_service.dart';
 import '../../service/task_service.dart';
 import 'add_task_page.dart';
 
 class CommonTaskView extends StatelessWidget {
   CommonTaskView(
-      {Key? key, required this.household, required this.showAssignee})
+      {Key? key,
+      required this.household,
+      required this.showAssignee,
+      required this.isFailedView})
       : super(key: key);
 
   final _taskProvider = GetIt.instance<TaskService>();
+  final _householdProvider = GetIt.instance<HouseholdService>();
+  final _inhabitantProvider = GetIt.instance<InhabitantService>();
+
   Household household;
 
   bool showAssignee;
+  bool isFailedView;
 
   @override
   Widget build(BuildContext context) {
     return LoadingStreamBuilder(
-      stream: _taskProvider.getTasksStreamByRefs(household.tasks),
+      stream: _taskProvider.getTasksStreamByRefs(
+          isFailedView ? household.taskHistory : household.tasks),
       builder: _buildTaskView,
     );
   }
@@ -38,19 +51,44 @@ class CommonTaskView extends StatelessWidget {
         return ListTile(
           title: Text(task.name),
           subtitle: Text(task.description),
-          leading: _buildAssigneeInformation(task),
-          trailing: IconButton(
-            icon: Icon(task.isDone ? Icons.check_circle : Icons.circle),
-            onPressed: () => _setDone(task),
+          trailing: _buildTaskTrailingButton(task),
+          onTap: () => !isFailedView ? _editTask(context, task) : (),
+          leading: SizedBox(
+            height: 50,
+            width: 50,
+            child: _buildAssigneeInformation(task),
           ),
-          onTap: () => _editTask(context, task),
         );
       },
     );
   }
 
+  Widget _buildTaskTrailingButton(Task task) {
+    if (isFailedView) {
+      return IconButton(
+          onPressed: () => _removeTaskFromHistory(task),
+          icon: Icon(Icons.delete_forever));
+    }
+    return IconButton(
+      icon: Icon(task.isDone ? Icons.check_circle : Icons.circle),
+      onPressed: () => _setDone(task),
+    );
+  }
+
+  _removeTaskFromHistory(Task t) {
+    _householdProvider.removeTaskFromHistory(household.id, t.id);
+    _taskProvider.removeTask(t.id);
+  }
+
   Widget _buildAssigneeInformation(Task task) {
-    return Icon(Icons.account_circle);
+    return LoadingStreamBuilder(
+        stream: _inhabitantProvider
+            .getInhabitantStream(task.assignee!.id.toString()),
+        builder: _buildAssigneePicture);
+  }
+
+  Widget _buildAssigneePicture(BuildContext context, Inhabitant? inhabitant) {
+    return UserProfilePicture(user: inhabitant!.id);
   }
 
   Widget _buildSubTaskView(BuildContext context, List<Subtask> data) {

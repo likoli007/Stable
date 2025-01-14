@@ -19,6 +19,10 @@ class DatabaseService<T> {
 
   // TODO: add relevant functions as app is built
 
+  Future<void> deleteDocument(String id) async {
+    await _collectionReference.doc(id).delete();
+  }
+
   Future<DocumentReference> add(T data) async {
     return await _collectionReference.add(data);
   }
@@ -39,14 +43,12 @@ class DatabaseService<T> {
   Future<List<T>> getDocumentsByIds(List<DocumentReference>? refs) async {
     List<T> result = [];
     if (refs != null) {
-      for (int i = 0; i < refs.length; i++) {
-        final documentData = await _collectionReference
-            .where(FieldPath.documentId, whereIn: refs)
-            .get();
-        result = documentData.docs
-            .map((documentSnapshot) => documentSnapshot.data())
-            .toList();
-      }
+      final documentData = await _collectionReference
+          .where(FieldPath.documentId, whereIn: refs)
+          .get();
+      result = documentData.docs
+          .map((documentSnapshot) => documentSnapshot.data())
+          .toList();
     }
     return result;
   }

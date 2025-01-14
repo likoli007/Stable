@@ -9,8 +9,8 @@ part of 'inhabitant.dart';
 Inhabitant _$InhabitantFromJson(Map<String, dynamic> json) => Inhabitant(
       id: json['id'] as String,
       name: json['name'] as String,
-      surname: json['surname'] as String,
-      photo: json['photo'] as String? ?? "",
+      profileColor: const ColorConverter()
+          .fromJson((json['profileColor'] as num).toInt()),
     )..households = (json['households'] as List<dynamic>)
         .map((e) => const DocumentSerializer()
             .fromJson(e as DocumentReference<Object?>))
@@ -19,8 +19,7 @@ Inhabitant _$InhabitantFromJson(Map<String, dynamic> json) => Inhabitant(
 Map<String, dynamic> _$InhabitantToJson(Inhabitant instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'surname': instance.surname,
-      'photo': instance.photo,
+      'profileColor': const ColorConverter().toJson(instance.profileColor),
       'households':
           instance.households.map(const DocumentSerializer().toJson).toList(),
     };

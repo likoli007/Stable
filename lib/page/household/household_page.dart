@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
-import 'package:stable/server/TaskUpdater.dart';
+import 'package:stable/server/TaskUpdater.dart'; //TODO unused import
 import 'package:stable/page/household/edit_household_page.dart';
 
 import 'package:stable/common/page/page_layout.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/page/task/household_task_page.dart';
+import 'household_task_history_page.dart'; //TODO Package import
 
 class HouseholdPage extends StatelessWidget {
   final Household household;
@@ -41,7 +42,7 @@ class HouseholdPage extends StatelessWidget {
         const SizedBox(height: STANDARD_GAP),
         _buildTaskOverviewButton(context),
         const SizedBox(height: STANDARD_GAP),
-        _buildDebugRotationButton(),
+        _buildFailedTasksHistoryButton(context),
         Text("GroupId: ${household.groupId}")
       ],
     );
@@ -83,9 +84,16 @@ class HouseholdPage extends StatelessWidget {
     });
   }
 
-  Widget _buildDebugRotationButton() {
-    return _buildButton('DEBUG: ROTATE', const Icon(Icons.access_time), () {
-      updateHouseholdRotation(household);
+  Widget _buildFailedTasksHistoryButton(BuildContext context) {
+    return _buildButton('View Failed Tasks', const Icon(Icons.access_time), () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HouseholdTaskHistoryPage(
+            householdReference: household.id,
+          ),
+        ),
+      );
     });
   }
 

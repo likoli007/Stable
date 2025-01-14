@@ -10,6 +10,7 @@ import 'package:stable/common/page/page_layout.dart';
 import 'package:stable/common/theme/theme_provider.dart';
 import 'package:stable/database/service/database_service.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
+import 'package:stable/server/TaskUpdater.dart';
 import 'package:stable/service/household_service.dart';
 import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/service/settings_controller.dart';
@@ -62,6 +63,8 @@ Future<void> main() async {
 
   GetIt.instance.registerSingleton(
       HouseholdService(GetIt.instance<DatabaseService<Household>>()));
+
+  GetIt.instance.registerSingleton(TaskUpdater());
 
   // Theming
   GetIt.instance.registerSingleton(SettingsController());

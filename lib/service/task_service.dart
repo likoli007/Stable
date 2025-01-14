@@ -10,6 +10,16 @@ class TaskService {
 
   const TaskService(this._taskRepository, this._subTaskRepository);
 
+  Future<void> removeTask(String taskId) async {
+    Task? t = await _taskRepository.getDocument(taskId);
+    Task task = t!;
+    for (int i = 0; i < task.subtasks!.length; i++) {
+      DocumentReference? r = task.subtasks?[i];
+      _subTaskRepository.deleteDocument(r!.id.toString());
+    }
+    _taskRepository.deleteDocument(taskId);
+  }
+
   Future<List<Task>> getTasks(List<DocumentReference>? refs) {
     final taskStream = _taskRepository.getDocumentsByIds(refs);
     return taskStream;
@@ -102,6 +112,10 @@ class TaskService {
 
   Future<void> assignTaskReference(
       List<DocumentReference>? subtaskRefs, DocumentReference taskRef) async {
+    if (subtaskRefs!.isEmpty) {
+      return;
+    }
+
     List<Subtask> subtasks =
         await _subTaskRepository.getDocumentsByIds(subtaskRefs);
 
