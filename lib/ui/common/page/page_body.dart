@@ -7,7 +7,7 @@ import 'package:stable/ui/common/widget/user_profile_picture.dart';
 class PageBody extends StatelessWidget {
   final String title;
   final Widget body;
-  final FloatingActionButton? floatingActionButton;
+  final Widget? floatingActionButton;
   final bool showProfileButton;
   final bool showBackButton;
 
@@ -25,6 +25,7 @@ class PageBody extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
+        titleTextStyle: Theme.of(context).textTheme.headlineMedium,
         centerTitle: true,
         automaticallyImplyLeading: showBackButton,
         backgroundColor: Theme.of(context).colorScheme.surface,
