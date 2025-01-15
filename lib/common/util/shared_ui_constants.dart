@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 const STANDARD_GAP = 24.0;
-const SMALL_GAP = 8.0;
+const BIG_GAP = STANDARD_GAP * 3;
+const SMALL_GAP = STANDARD_GAP / 3;
 
 const BUTTON_HEIGHT = 40.0;
 
