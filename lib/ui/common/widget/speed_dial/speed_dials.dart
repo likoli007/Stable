@@ -8,11 +8,11 @@ class SpeedDials extends StatelessWidget {
   final List<SpeedDialChild> children;
 
   const SpeedDials({
-    Key? key,
+    super.key,
     required this.icon,
     required this.activeIcon,
     required this.children,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,25 +26,6 @@ class SpeedDials extends StatelessWidget {
       spaceBetweenChildren: SMALL_GAP,
       isOpenOnStart: false,
       children: children,
-    );
-  }
-
-  SpeedDialChild customSpeedDialChild({
-    required BuildContext context,
-    required Icon icon,
-    required String label,
-    Color? backgroundColor,
-    Color? foregroundColor,
-    required Function() onTap,
-  }) {
-    return SpeedDialChild(
-      child: icon,
-      label: label,
-      shape: const CircleBorder(),
-      backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.primary,
-      foregroundColor:
-          foregroundColor ?? Theme.of(context).colorScheme.onPrimary,
-      onTap: onTap,
     );
   }
 }
