@@ -20,8 +20,13 @@ abstract class AppThemeFactory {
 
     final dynamicColorsScheme = await _getDynamicColors(brightness);
 
+    final defaultColorScheme = ColorScheme.fromSeed(
+      seedColor: Colors.deepOrangeAccent,
+      brightness: brightness,
+    );
+
     final appColorScheme = AppColorScheme.fromMaterialColorScheme(
-      dynamicColorsScheme!,
+      dynamicColorsScheme ?? defaultColorScheme,
       disabled: Colors.grey,
       onDisabled: Colors.black,
     );
