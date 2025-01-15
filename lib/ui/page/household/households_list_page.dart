@@ -5,15 +5,15 @@ import 'package:get_it/get_it.dart';
 import 'package:stable/common/page/page_body.dart';
 import 'package:stable/common/widget/big_icon_page.dart';
 import 'package:stable/common/widget/full_width_button.dart';
-import 'package:stable/page/household/join_household_page.dart';
+import 'package:stable/ui/page/household/join_household_page.dart';
 import 'package:stable/service/household_service.dart';
 
 import 'package:stable/common/widget/loading_stream_builder.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/service/inhabitant_service.dart';
-import 'package:stable/page/household/add_household_page.dart';
-import 'package:stable/page/household/household_page.dart';
+import 'package:stable/ui/page/household/add_household_page.dart';
+import 'package:stable/ui/page/household/household_page.dart';
 
 class HouseholdsListPage extends StatelessWidget {
   HouseholdsListPage({super.key});

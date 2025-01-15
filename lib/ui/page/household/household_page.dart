@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
-import 'package:stable/page/household/edit_household_page.dart';
+import 'package:stable/ui/page/household/edit_household_page.dart';
 
 import 'package:stable/common/page/page_body.dart';
 import 'package:stable/model/household/household.dart';
-import 'package:stable/page/task/household_task_page.dart';
-import 'package:stable/page/household/household_task_history_page.dart';
+import 'package:stable/ui/page/task/household_task_page.dart';
+import 'package:stable/ui/page/household/household_task_history_page.dart';
 
 class HouseholdPage extends StatelessWidget {
   final Household household;

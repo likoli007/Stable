@@ -1,16 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stable/common/page/page_body.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
-import 'package:stable/page/task/common_task_view.dart';
+import 'package:stable/common/widget/loading_future_builder.dart';
+import 'package:stable/model/household/household.dart';
+import 'package:stable/model/inhabitant/inhabitant.dart';
+import 'package:stable/service/task_service.dart';
+import 'package:stable/ui/page/task/common_task_view.dart';
 import 'package:stable/service/household_service.dart';
 import 'package:stable/service/inhabitant_service.dart';
-
-import '../../common/widget/loading_future_builder.dart';
-import '../../common/page/page_body.dart';
-import '../../model/household/household.dart';
-import '../../model/inhabitant/inhabitant.dart';
-import '../../service/task_service.dart';
 
 class UserTaskPage extends StatelessWidget {
   UserTaskPage({Key? key}) : super(key: key);

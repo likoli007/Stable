@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/common/widget/big_icon_page.dart';
 import 'package:stable/common/widget/full_width_button.dart';
-import 'package:stable/page/login/register_page.dart';
+import 'package:stable/ui/page/login/register_page.dart';
 
 class IntroductionPage extends StatelessWidget {
   const IntroductionPage({super.key});

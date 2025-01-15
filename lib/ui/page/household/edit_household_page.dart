@@ -8,7 +8,7 @@ import 'package:stable/common/widget/loading_future_builder.dart';
 import 'package:stable/common/page/page_body.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
-import 'package:stable/page/household/share_household_page.dart';
+import 'package:stable/ui/page/household/share_household_page.dart';
 
 class EditHouseholdPage extends StatefulWidget {
   final String householdReference;

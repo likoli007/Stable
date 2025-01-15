@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stable/page/home/overview_page.dart';
-import 'package:stable/page/household/households_list_page.dart';
-import 'package:stable/page/task/user_task_page.dart';
+import 'package:stable/ui/page/home/overview_page.dart';
+import 'package:stable/ui/page/household/households_list_page.dart';
+import 'package:stable/ui/page/task/user_task_page.dart';
 
 class PageLayout extends StatefulWidget {
   @override

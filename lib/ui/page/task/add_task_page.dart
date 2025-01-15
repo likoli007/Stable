@@ -2,15 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:stable/page/task/task_assignee_pick_page.dart';
+import 'package:stable/model/inhabitant/inhabitant.dart';
+import 'package:stable/model/subtask/subtask.dart';
+import 'package:stable/model/task/task.dart';
+import 'package:stable/ui/page/task/task_assignee_pick_page.dart';
 import 'package:stable/service/household_service.dart';
 
 import 'package:stable/service/task_service.dart';
-
-import '../../model/household/household.dart';
-import '../../model/inhabitant/inhabitant.dart';
-import '../../model/subtask/subtask.dart';
-import '../../model/task/task.dart';
 
 class AddTaskPage extends StatefulWidget {
   final Task? task;

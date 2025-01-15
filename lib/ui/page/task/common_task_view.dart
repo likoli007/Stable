@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/common/widget/loading_future_builder.dart';
+import 'package:stable/common/widget/loading_stream_builder.dart';
 import 'package:stable/common/widget/user_profile_picture.dart';
+import 'package:stable/model/household/household.dart';
+import 'package:stable/model/inhabitant/inhabitant.dart';
+import 'package:stable/model/subtask/subtask.dart';
+import 'package:stable/model/task/task.dart';
+import 'package:stable/service/household_service.dart';
 import 'package:stable/service/inhabitant_service.dart';
-
-import '../../common/util/shared_ui_constants.dart';
-import '../../common/widget/loading_stream_builder.dart';
-import '../../model/household/household.dart';
-import '../../model/inhabitant/inhabitant.dart';
-import '../../model/subtask/subtask.dart';
-import '../../model/task/task.dart';
-import '../../service/household_service.dart';
-import '../../service/task_service.dart';
-import 'add_task_page.dart';
+import 'package:stable/service/task_service.dart';
+import 'package:stable/ui/page/task/add_task_page.dart';
 
 class CommonTaskView extends StatelessWidget {
   CommonTaskView(

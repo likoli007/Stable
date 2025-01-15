@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/common/widget/loading_stream_builder.dart';
 import 'package:stable/common/page/page_body.dart';
-import 'package:stable/page/task/common_task_view.dart';
-import 'package:stable/page/task/add_task_page.dart';
-
-import '../../model/household/household.dart';
-import '../../service/household_service.dart';
+import 'package:stable/model/household/household.dart';
+import 'package:stable/service/household_service.dart';
+import 'package:stable/ui/page/task/common_task_view.dart';
+import 'package:stable/ui/page/task/add_task_page.dart';
 
 class HouseholdTaskPage extends StatelessWidget {
   HouseholdTaskPage({Key? key, required this.householdReference})
