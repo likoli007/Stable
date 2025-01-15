@@ -133,7 +133,7 @@ class ProfileBottomSheet extends StatelessWidget {
                   borderColor: toggleButtonsTheme?.fillColor,
                   constraints: BoxConstraints(
                     minWidth: constraints.maxWidth / 3 - 3,
-                    minHeight: 40,
+                    minHeight: BUTTON_HEIGHT,
                   ),
                   onPressed: (buttonIndex) {
                     if (buttonIndex >= 0 && buttonIndex < THEME_MODES.length) {
