@@ -6,19 +6,14 @@ class BigIconPage extends StatelessWidget {
   final Icon icon;
   final String title;
   final String text;
-  final Icon buttonIcon;
-  final String buttonLabel;
-  final Function onButtonPressed;
+  final List<Widget> buttons;
 
-  const BigIconPage({
-    super.key,
-    required this.icon,
-    required this.title,
-    required this.text,
-    required this.buttonIcon,
-    required this.buttonLabel,
-    required this.onButtonPressed,
-  });
+  const BigIconPage(
+      {super.key,
+      required this.icon,
+      required this.title,
+      required this.text,
+      required this.buttons});
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +38,7 @@ class BigIconPage extends StatelessWidget {
             ],
           ),
           const SizedBox(height: STANDARD_GAP),
-          FullWidthButton(
-            onPressed: () => onButtonPressed(),
-            icon: buttonIcon,
-            label: buttonLabel,
-            alignment: Alignment.center,
-          ),
+          ...buttons,
         ],
       ),
     ]);

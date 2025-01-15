@@ -18,14 +18,17 @@ class IntroductionPage extends StatelessWidget {
               text: "Dirty dishes, laundry, or piled-up trash? "
                   "Create tasks, assign them to your household members, and keep track of their progress. "
                   "Just sit back and relax — Stable will take care of the rest.",
-              buttonIcon: const Icon(Icons.bedroom_baby),
-              buttonLabel: "Enter the Stable",
-              onButtonPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RegisterScreen()),
-                );
-              },
+              buttons: [
+                FullWidthButton(
+                  icon: const Icon(Icons.bedroom_baby),
+                  label: "Enter the Stable",
+                  alignment: Alignment.center,
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RegisterScreen())),
+                ),
+              ],
             )));
   }
 }
