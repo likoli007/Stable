@@ -23,7 +23,6 @@ class PageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // TODO maybe add scrollable view
       appBar: AppBar(
         title: Text(title),
         centerTitle: true,
