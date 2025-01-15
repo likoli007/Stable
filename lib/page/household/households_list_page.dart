@@ -13,8 +13,8 @@ import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/page/household/add_household_page.dart';
 import 'package:stable/page/household/household_page.dart';
 
-class HouseholdsOverviewPage extends StatelessWidget {
-  HouseholdsOverviewPage({Key? key}) : super(key: key);
+class HouseholdsListPage extends StatelessWidget {
+  HouseholdsListPage({Key? key}) : super(key: key);
 
   final _userProvider = GetIt.instance<InhabitantService>();
   final _householdProvider = GetIt.instance<HouseholdService>();

@@ -37,10 +37,10 @@ class AppWrapper extends StatelessWidget {
       themeMode: settings.themeMode,
       theme: lightThemeData.materialThemeData,
       darkTheme: darkThemeData.materialThemeData,
-      initialRoute: _auth.user != null ? '/home' : '/',
+      initialRoute: _auth.user != null ? '/' : '/introduction',
       routes: {
-        '/': (context) => IntroductionPage(),
-        '/home': (context) => PageLayout(),
+        '/introduction': (context) => IntroductionPage(),
+        '/': (context) => PageLayout(),
         '/tasks': (context) => UserTaskPage(),
         //'/tasks': (context) => HouseholdTaskPage(),
         //TODO '/household': (context) => HouseholdPage(),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stable/page/home/home_page.dart';
-import 'package:stable/page/household/households_overview_page.dart';
+import 'package:stable/page/home/overview_page.dart';
+import 'package:stable/page/household/households_list_page.dart';
 import 'package:stable/page/task/user_task_page.dart';
 
 class PageLayout extends StatefulWidget {
@@ -18,8 +18,8 @@ class _PageLayoutState extends State<PageLayout> {
         child: IndexedStack(
           index: _pageIndex,
           children: <Widget>[
-            HomePage(),
-            HouseholdsOverviewPage(),
+            OverviewPage(),
+            HouseholdsListPage(),
             UserTaskPage(),
           ],
         ),
@@ -33,7 +33,7 @@ class _PageLayoutState extends State<PageLayout> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.group),
-            label: 'Household',
+            label: 'Households',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.task),
