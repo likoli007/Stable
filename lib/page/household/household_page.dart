@@ -37,7 +37,6 @@ class HouseholdPage extends StatelessWidget {
         const SizedBox(height: STANDARD_GAP),
         _buildSettingsButton(context),
         const SizedBox(height: STANDARD_GAP),
-        _buildInhabitantsButton(context),
         const SizedBox(height: STANDARD_GAP),
         _buildTaskOverviewButton(context),
         const SizedBox(height: STANDARD_GAP),
@@ -48,6 +47,7 @@ class HouseholdPage extends StatelessWidget {
   }
 
   Widget _buildButton(String text, Icon icon, Function onPressed) {
+    // TODO extract to a common widget
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
