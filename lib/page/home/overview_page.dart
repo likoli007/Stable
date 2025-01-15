@@ -5,6 +5,10 @@ class OverviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+        // TODO add welcome message
+        // TODO add an overview of the household (unfinished repeating tasks, rotary tasks)
+        // TODO add a center floating button to quickly add a new task
+        );
   }
 }
