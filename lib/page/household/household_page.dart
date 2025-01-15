@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
-import 'package:stable/server/TaskUpdater.dart';
 import 'package:stable/page/household/edit_household_page.dart';
 
-import '../../common/widget/page_template.dart';
-import '../../model/household/household.dart';
-import '../task/household_task_page.dart';
-import 'household_task_history_page.dart';
+import 'package:stable/common/page/page_body.dart';
+import 'package:stable/model/household/household.dart';
+import 'package:stable/page/task/household_task_page.dart';
+import 'package:stable/page/household/household_task_history_page.dart';
 
 class HouseholdPage extends StatelessWidget {
   final Household household;
@@ -15,9 +14,9 @@ class HouseholdPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageTemplate(
+    return PageBody(
         title: "${household.name} overview",
-        child: _buildHouseholdOverviewPage(context));
+        body: _buildHouseholdOverviewPage(context));
     // TODO add rotary task overview and settings
     // TODO add unassigned task list (for inhabitants to claim)
     //TODO household management shortcut (only visible to admin)
@@ -38,7 +37,6 @@ class HouseholdPage extends StatelessWidget {
         const SizedBox(height: STANDARD_GAP),
         _buildSettingsButton(context),
         const SizedBox(height: STANDARD_GAP),
-        _buildInhabitantsButton(context),
         const SizedBox(height: STANDARD_GAP),
         _buildTaskOverviewButton(context),
         const SizedBox(height: STANDARD_GAP),
@@ -49,6 +47,7 @@ class HouseholdPage extends StatelessWidget {
   }
 
   Widget _buildButton(String text, Icon icon, Function onPressed) {
+    // TODO extract to a common widget
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
@@ -63,12 +62,6 @@ class HouseholdPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _buildInhabitantsButton(BuildContext context) {
-    return _buildButton("View Inhabitants", const Icon(Icons.accessible), () {
-      //TODO: view inhabitants
-    });
   }
 
   Widget _buildTaskOverviewButton(BuildContext context) {

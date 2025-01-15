@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stable/common/util/shared_ui_constants.dart';
 
 class FullWidthButton extends StatelessWidget {
   final String label;
@@ -16,19 +17,25 @@ class FullWidthButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton.icon(
-        icon: icon != null ? Icon(icon!.icon, color: Theme.of(context).colorScheme.onPrimary) : null,
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          alignment: alignment,
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        ),
-        label: Text(
-          label,
-          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: SMALL_GAP),
+      child: SizedBox(
+        width: double.infinity,
+        height: BUTTON_HEIGHT,
+        child: ElevatedButton.icon(
+          icon: icon != null
+              ? Icon(icon!.icon, color: Theme.of(context).colorScheme.onPrimary)
+              : null,
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            alignment: alignment,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          ),
+          label: Text(
+            label,
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          ),
         ),
       ),
     );

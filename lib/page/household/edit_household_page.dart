@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+
+import 'package:stable/service/household_service.dart';
+import 'package:stable/service/inhabitant_service.dart';
+
 import 'package:stable/common/widget/loading_future_builder.dart';
-import 'package:stable/common/widget/page_template.dart';
+import 'package:stable/common/page/page_body.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
-import 'package:stable/page/household/join_household_page.dart';
 import 'package:stable/page/household/share_household_page.dart';
-import 'package:stable/service/household_service.dart';
-import 'package:get_it/get_it.dart';
-import 'package:stable/service/inhabitant_service.dart';
 
 class EditHouseholdPage extends StatefulWidget {
   final String householdReference;
@@ -64,7 +65,7 @@ class _EditHouseholdPageState extends State<EditHouseholdPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PageTemplate(
+    return PageBody(
       title: 'Edit Household',
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -80,7 +81,7 @@ class _EditHouseholdPageState extends State<EditHouseholdPage> {
         tooltip: 'Add Inhabitant',
         child: Icon(Icons.add),
       ),
-      child: Column(
+      body: Column(
         children: [
           TextField(
             controller: _nameController,

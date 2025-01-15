@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/common/widget/loading_stream_builder.dart';
@@ -13,10 +12,10 @@ class UserProfilePicture extends StatelessWidget {
   final _inhabitantService = GetIt.instance<InhabitantService>();
 
   UserProfilePicture({
-    Key? key,
+    super.key,
     required this.user,
     this.size = 50.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

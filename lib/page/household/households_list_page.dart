@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:stable/common/widget/page_template.dart';
+import 'package:stable/common/page/page_body.dart';
 import 'package:stable/page/household/join_household_page.dart';
 import 'package:stable/service/household_service.dart';
 
@@ -13,18 +13,18 @@ import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/page/household/add_household_page.dart';
 import 'package:stable/page/household/household_page.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+class HouseholdsListPage extends StatelessWidget {
+  HouseholdsListPage({Key? key}) : super(key: key);
 
   final _userProvider = GetIt.instance<InhabitantService>();
   final _householdProvider = GetIt.instance<HouseholdService>();
 
   @override
   Widget build(BuildContext context) {
-    return PageTemplate(
+    return PageBody(
       title: "Household Name Placeholder",
       showBackButton: false,
-      child: LoadingStreamBuilder(
+      body: LoadingStreamBuilder(
           stream: _userProvider
               .getInhabitantStream(FirebaseAuth.instance.currentUser!.uid),
           builder: homePageBuilder),
