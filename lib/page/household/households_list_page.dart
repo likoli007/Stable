@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/common/page/page_body.dart';
+import 'package:stable/common/widget/big_icon_page.dart';
+import 'package:stable/common/widget/full_width_button.dart';
 import 'package:stable/page/household/join_household_page.dart';
 import 'package:stable/service/household_service.dart';
 
@@ -14,7 +16,7 @@ import 'package:stable/page/household/add_household_page.dart';
 import 'package:stable/page/household/household_page.dart';
 
 class HouseholdsListPage extends StatelessWidget {
-  HouseholdsListPage({Key? key}) : super(key: key);
+  HouseholdsListPage({super.key});
 
   final _userProvider = GetIt.instance<InhabitantService>();
   final _householdProvider = GetIt.instance<HouseholdService>();
@@ -22,68 +24,52 @@ class HouseholdsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageBody(
-      title: "Household Name Placeholder",
+      title: "Your households",
       showBackButton: false,
       body: LoadingStreamBuilder(
           stream: _userProvider
               .getInhabitantStream(FirebaseAuth.instance.currentUser!.uid),
-          builder: homePageBuilder),
+          builder: _homePageBuilder),
     );
-    // TODO add welcome message
-    // TODO add an overview of the household (unfinished repeating tasks, rotary tasks)
-    // TODO add a center floating button to quickly add a new task
-    // TODO add bottom navbar with home/overview, tasklist and household (on web combine it with the appbar)
   }
 
-  Widget homePageBuilder(BuildContext context, Inhabitant? data) {
-    //TODO: if inhabitant is null, something went horribly wrong somewhere
-
-    int householdCount = data!.households.length;
+  Widget _homePageBuilder(BuildContext context, Inhabitant? data) {
+    final int householdCount = data!.households.length;
     return householdCount == 0
-        ? buildDefaultHomePage(context)
+        ? _buildEmptyHomePage(context)
         : _buildHouseholdListPage(context: context, data.households);
   }
 
-  Widget buildDefaultHomePage(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'You have no households at the moment.',
-              style: TextStyle(fontSize: 18),
-              textAlign: TextAlign.center,
+  Widget _buildEmptyHomePage(BuildContext context) {
+    return BigIconPage(
+      icon: const Icon(Icons.no_meeting_room, size: 200),
+      title: "You have no household to manage, buddy.",
+      text: "Join already existing household or create a "
+          "new one and invite your friends. In case, you have any.",
+      buttons: [
+        FullWidthButton(
+          icon: const Icon(Icons.domain_add),
+          label: "Create a new household",
+          alignment: Alignment.center,
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddHouseholdPage(),
             ),
-            const SizedBox(
-                height: 24), // TODO Standardize spacing, use constants
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddHouseholdPage(),
-                  ),
-                );
-              },
-              child: const Text('Create a New Household'),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => JoinHouseholdPage(),
-                  ),
-                );
-              },
-              child: const Text('Join an Existing Household'),
-            ),
-          ],
+          ),
         ),
-      ),
+        FullWidthButton(
+          icon: const Icon(Icons.login),
+          label: "Join an existing household",
+          alignment: Alignment.center,
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const JoinHouseholdPage(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -96,7 +82,7 @@ class HouseholdsListPage extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => JoinHouseholdPage(),
+                builder: (context) => const JoinHouseholdPage(),
               ),
             );
           },
@@ -107,7 +93,7 @@ class HouseholdsListPage extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AddHouseholdPage(),
+                builder: (context) => const AddHouseholdPage(),
               ),
             );
           },
