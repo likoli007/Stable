@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:stable/ui/common/util/shared_ui_constants.dart';
+import 'package:stable/ui/common/widget/speed_dial/custom_speed_dial_child.dart';
 import 'package:stable/ui/common/widget/speed_dial/speed_dials.dart';
-import 'package:stable/ui/page/household/edit_household_page.dart';
+import 'package:stable/ui/page/household/manage_household_inhabitants.dart';
 
 import 'package:stable/ui/common/page/page_body.dart';
 import 'package:stable/model/household/household.dart';
+import 'package:stable/ui/page/household/share_household_page.dart';
 import 'package:stable/ui/page/task/household_task_page.dart';
 import 'package:stable/ui/page/household/household_task_history_page.dart';
 
@@ -25,24 +26,69 @@ class HouseholdPage extends StatelessWidget {
 
   Widget _buildSpeedDials(BuildContext context) {
     return SpeedDials(
-      icon: Icons.add,
-      activeIcon: Icons.close,
+      icon: Icons.more_horiz,
+      activeIcon: Icons.more_vert,
       children: [
-        SpeedDialChild(
-          child: const Icon(Icons.domain_add),
-          label: 'Invite your friend',
-          shape: const CircleBorder(),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        CustomSpeedDialChild(
+          context: context,
+          icon: const Icon(Icons.add_task),
+          label: 'Add a new task',
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
           onTap: () => {},
         ),
-        SpeedDialChild(
-          child: const Icon(Icons.login),
+        CustomSpeedDialChild(
+          context: context,
+          icon: const Icon(Icons.cancel),
+          label: 'View failed tasks',
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HouseholdTaskHistoryPage(
+                householdReference: household.id,
+              ),
+            ),
+          ),
+        ),
+        CustomSpeedDialChild(
+          context: context,
+          icon: const Icon(Icons.add_reaction),
+          label: 'Invite your friend',
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ShareHouseholdPage(
+                groupId: household.id,
+              ),
+            ),
+          ),
+        ),
+        CustomSpeedDialChild(
+          context: context,
+          icon: const Icon(Icons.supervised_user_circle),
+          label: 'Manage inhabitants',
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ManageHouseholdInhabitants(
+                householdReference: household.id,
+              ),
+            ),
+          ),
+        ),
+        CustomSpeedDialChild(
+          context: context,
+          icon: const Icon(Icons.drive_file_rename_outline_rounded),
           label: 'Rename',
-          shape: const CircleBorder(),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          foregroundColor: Theme.of(context).colorScheme.onPrimary,
-          onTap: () {},
+          onTap: () {}, // TODO dialog
+        ),
+        CustomSpeedDialChild(
+          context: context,
+          icon: const Icon(Icons.logout),
+          label: 'Leave',
+          backgroundColor: Colors.red,
+          foregroundColor: Colors.white,
+          onTap: () {}, //TODO dialog - are you sure?
         ),
       ],
     );
@@ -61,11 +107,9 @@ class HouseholdPage extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: STANDARD_GAP),
-        _buildSettingsButton(context),
         const SizedBox(height: STANDARD_GAP),
         _buildTaskOverviewButton(context),
         const SizedBox(height: STANDARD_GAP),
-        _buildFailedTasksHistoryButton(context),
         Text("GroupId: ${household.groupId}")
       ],
     );
@@ -102,32 +146,7 @@ class HouseholdPage extends StatelessWidget {
     });
   }
 
-  Widget _buildFailedTasksHistoryButton(BuildContext context) {
-    return _buildButton('View Failed Tasks', const Icon(Icons.access_time), () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HouseholdTaskHistoryPage(
-            householdReference: household.id,
-          ),
-        ),
-      );
-    });
-  }
-
-  Widget _buildSettingsButton(BuildContext context) {
-    return _buildButton("Settings", const Icon(Icons.settings), () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => EditHouseholdPage(
-            householdReference: household.id,
-          ),
-        ),
-      );
-    });
-  }
   // TODO only show tasks here
-  // TODO SpeedDial with Rename, Manage Inhabitants, Leave, view failed tasks, share invite code
   // TODO add rotary task overview and settings
+  // TODO if no tasks, show a message, how to create a first one, bigIconPage
 }
