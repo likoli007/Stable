@@ -12,4 +12,6 @@ const INFO_PARAGRAPH_SCALER = 1.1;
 
 const MEDIUM_FONT_SIZE = 16.0;
 
+const BORDER_RADIUS = 20.0;
+
 const THEME_MODES = [ThemeMode.light, ThemeMode.dark, ThemeMode.system];
