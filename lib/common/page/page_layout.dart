@@ -28,15 +28,15 @@ class _PageLayoutState extends State<PageLayout> {
         type: BottomNavigationBarType.fixed, // TODO play with this modes
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.today),
+            label: 'Overview',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.group),
+            icon: Icon(Icons.maps_home_work),
             label: 'Households',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.task),
+            icon: Icon(Icons.task_alt),
             label: 'Tasks',
           ),
         ],
