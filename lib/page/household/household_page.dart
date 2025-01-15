@@ -65,12 +65,6 @@ class HouseholdPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInhabitantsButton(BuildContext context) {
-    return _buildButton("View Inhabitants", const Icon(Icons.accessible), () {
-      //TODO: view inhabitants
-    });
-  }
-
   Widget _buildTaskOverviewButton(BuildContext context) {
     return _buildButton("View Tasks", const Icon(Icons.task), () {
       Navigator.push(
