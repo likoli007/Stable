@@ -1,9 +1,6 @@
-// lib/common/page/page_body.dart
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
-import 'package:stable/common/widget/bottom_navigation.dart';
 import 'package:stable/common/widget/profile_bottom_sheet.dart';
 import 'package:stable/common/widget/user_profile_picture.dart';
 
@@ -101,7 +98,6 @@ class _PageBodyState extends State<PageBody> {
         padding: const EdgeInsets.all(STANDARD_GAP),
         child: _body,
       ),
-      bottomNavigationBar: BottomNavigation(),
     );
   }
 }

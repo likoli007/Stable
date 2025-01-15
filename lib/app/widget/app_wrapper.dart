@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/auth/firebase_auth_service.dart';
-import 'package:stable/common/page/page_body.dart';
+import 'package:stable/common/page/page_layout.dart';
 import 'package:stable/model/settings/settings.dart';
-import 'package:stable/page/home/home_page.dart';
 import 'package:stable/page/login/introduction_page.dart';
 import 'package:stable/page/task/user_task_page.dart';
 import 'package:stable/service/settings_controller.dart';
@@ -41,14 +40,13 @@ class AppWrapper extends StatelessWidget {
       initialRoute: _auth.user != null ? '/home' : '/',
       routes: {
         '/': (context) => IntroductionPage(),
-        '/home': (context) => HomePage(),
+        '/home': (context) => PageLayout(),
         '/tasks': (context) => UserTaskPage(),
         //'/tasks': (context) => HouseholdTaskPage(),
         //TODO '/household': (context) => HouseholdPage(),
         //TODO: Add routes
       },
     );
-    PageBody(title: "Stable", body: Text("Nothing to show"));
     return materialApp;
   }
 }
