@@ -11,7 +11,7 @@ import 'package:stable/service/household_service.dart';
 import 'package:stable/service/inhabitant_service.dart';
 
 class UserTaskPage extends StatelessWidget {
-  UserTaskPage({Key? key}) : super(key: key);
+  UserTaskPage({super.key});
 
   final _householdProvider = GetIt.instance<HouseholdService>();
   final _userProvider = GetIt.instance<InhabitantService>();
