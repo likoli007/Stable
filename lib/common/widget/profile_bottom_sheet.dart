@@ -132,8 +132,9 @@ class ProfileBottomSheet extends StatelessWidget {
                 ToggleButtons(
                   borderColor: toggleButtonsTheme?.fillColor,
                   constraints: BoxConstraints(
-                      minWidth: constraints.maxWidth / 3 - STANDARD_GAP / 2,
-                      minHeight: 30),
+                    minWidth: constraints.maxWidth / 3 - 3,
+                    minHeight: 40,
+                  ),
                   onPressed: (buttonIndex) {
                     if (buttonIndex >= 0 && buttonIndex < THEME_MODES.length) {
                       _settingsController
@@ -179,19 +180,14 @@ class ProfileBottomSheet extends StatelessWidget {
       {required BuildContext context,
       required String title,
       required IconData icon}) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal:
-              (MediaQuery.of(context).size.width - 2 * STANDARD_GAP) / 14),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Icon(icon),
-          const SizedBox(width: STANDARD_GAP / 2),
-          Text(title),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Icon(icon),
+        const SizedBox(width: STANDARD_GAP / 2),
+        Text(title),
+      ],
     );
   }
 }
