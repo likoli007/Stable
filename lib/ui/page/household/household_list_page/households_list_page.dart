@@ -30,17 +30,17 @@ class HouseholdsListPage extends StatelessWidget {
     final int householdCount = data!.households.length;
     return householdCount == 0
         ? EmptyHouseholdsListPage(
-            showCreateHouseholdDialog: showJoinHouseholdDialog(),
-            showJoinHouseholdDialog: showCreateHouseholdDialog(),
+            showCreateHouseholdDialog: showCreateHouseholdDialog(),
+            showJoinHouseholdDialog: showJoinHouseholdDialog(context),
           )
         : FullHouseholdsListPage(
-            showCreateHouseholdDialog: showJoinHouseholdDialog(),
-            showJoinHouseholdDialog: showCreateHouseholdDialog(),
+            showCreateHouseholdDialog: showCreateHouseholdDialog(),
+            showJoinHouseholdDialog: showJoinHouseholdDialog(context),
             households: data.households,
           );
   }
 
-  Widget showJoinHouseholdDialog() {
+  Widget showCreateHouseholdDialog() {
     return TextInputDialog(
       title: 'Create household',
       buttonText: 'Create',
@@ -58,7 +58,7 @@ class HouseholdsListPage extends StatelessWidget {
     );
   }
 
-  Widget showCreateHouseholdDialog() {
+  Widget showJoinHouseholdDialog(BuildContext context) {
     return TextInputDialog(
       title: 'Join household',
       buttonText: 'Join',
@@ -67,10 +67,18 @@ class HouseholdsListPage extends StatelessWidget {
       maxInputLength: 8,
       onSubmit: (groupId) async {
         String uid = FirebaseAuth.instance.currentUser!.uid;
-        _householdService.joinHouseholdByGroupId(
-          groupId: groupId,
-          userId: uid,
-        );
+        try {
+          await _householdService.joinHouseholdByGroupId(
+            groupId: groupId,
+            userId: uid,
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error: No household found with this invite code.'),
+            ),
+          );
+        }
       },
     );
   }
