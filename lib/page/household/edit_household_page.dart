@@ -113,6 +113,7 @@ class _EditHouseholdPageState extends State<EditHouseholdPage> {
                       onPressed: () {
                         setState(() {
                           _inhabitants.remove(inhabitant);
+                          //TODO dialog to confirm deletion and remove inhabitant from household
                         });
                       },
                     ),
