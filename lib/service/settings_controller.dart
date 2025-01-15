@@ -10,13 +10,9 @@ class SettingsController {
   void updateThemeMode(ThemeMode themeMode) =>
       _updateSettings(themeMode: themeMode);
 
-  void updateThemeColor(Color themeColor) =>
-      _updateSettings(themeColor: themeColor);
-
-  void _updateSettings({Color? themeColor, ThemeMode? themeMode}) {
+  void _updateSettings({ThemeMode? themeMode}) {
     final currentSettings = _settingsController.value;
-    final updatedSettings =
-        currentSettings.copyWith(themeColor: themeColor, themeMode: themeMode);
+    final updatedSettings = currentSettings.copyWith(themeMode: themeMode);
 
     _settingsController.add(updatedSettings);
   }
