@@ -4,7 +4,7 @@ import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
-import 'package:stable/common/util/shared_ui_constants.dart';
+import 'package:stable/ui/common/util/shared_ui_constants.dart';
 import 'package:stable/service/inhabitant_service.dart';
 
 class RegisterScreen extends StatelessWidget {

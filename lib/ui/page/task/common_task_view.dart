@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:stable/common/util/shared_ui_constants.dart';
-import 'package:stable/common/widget/loading_future_builder.dart';
-import 'package:stable/common/widget/loading_stream_builder.dart';
-import 'package:stable/common/widget/user_profile_picture.dart';
+import 'package:stable/ui/common/util/shared_ui_constants.dart';
+import 'package:stable/ui/common/widget/loading_stream_builder.dart';
+import 'package:stable/ui/common/widget/user_profile_picture.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/model/subtask/subtask.dart';

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/auth/firebase_auth_service.dart';
-import 'package:stable/common/theme/toggle_buttons_theme.dart';
-import 'package:stable/common/util/shared_ui_constants.dart';
-import 'package:stable/common/widget/full_width_button.dart';
-import 'package:stable/common/widget/user_profile_picture.dart';
+import 'package:stable/ui/common/theme/toggle_buttons_theme.dart';
+import 'package:stable/ui/common/util/shared_ui_constants.dart';
+import 'package:stable/ui/common/widget/full_width_button.dart';
+import 'package:stable/ui/common/widget/user_profile_picture.dart';
 import 'package:stable/service/settings_controller.dart';
 
 class ProfileBottomSheet extends StatelessWidget {

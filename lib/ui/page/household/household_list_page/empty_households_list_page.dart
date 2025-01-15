@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stable/common/page/page_body.dart';
-import 'package:stable/common/widget/big_icon_page.dart';
-import 'package:stable/common/widget/full_width_button.dart';
+import 'package:stable/ui/common/page/page_body.dart';
+import 'package:stable/ui/common/widget/big_icon_page.dart';
+import 'package:stable/ui/common/widget/full_width_button.dart';
 
 class EmptyHouseholdsListPage extends StatelessWidget {
   final Widget showCreateHouseholdDialog;

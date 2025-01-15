@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stable/common/util/shared_ui_constants.dart';
+import 'package:stable/ui/common/util/shared_ui_constants.dart';
 
 class FullWidthButton extends StatelessWidget {
   final String label;

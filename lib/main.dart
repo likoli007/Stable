@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 
 import 'package:stable/app/widget/app_wrapper.dart';
 import 'package:stable/auth/firebase_auth_service.dart';
-import 'package:stable/common/theme/app_theme_factory.dart';
+import 'package:stable/ui/common/theme/app_theme_factory.dart';
 import 'package:stable/database/service/database_service.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/server/TaskUpdater.dart';

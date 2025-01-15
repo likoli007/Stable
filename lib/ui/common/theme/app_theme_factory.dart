@@ -2,9 +2,9 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:stable/common/theme/app_color_scheme.dart';
-import 'package:stable/common/theme/app_theme_data.dart';
-import 'package:stable/common/theme/core_palette_ext.dart';
+import 'package:stable/ui/common/theme/app_color_scheme.dart';
+import 'package:stable/ui/common/theme/app_theme_data.dart';
+import 'package:stable/ui/common/theme/core_palette_ext.dart';
 
 abstract class AppThemeFactory {
   AppThemeFactory._();

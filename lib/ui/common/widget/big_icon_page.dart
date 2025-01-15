@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stable/common/util/shared_ui_constants.dart';
-import 'package:stable/common/widget/full_width_button.dart';
+import 'package:stable/ui/common/util/shared_ui_constants.dart';
 
 class BigIconPage extends StatelessWidget {
   final Icon icon;

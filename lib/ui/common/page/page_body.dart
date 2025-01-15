@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:stable/common/util/shared_ui_constants.dart';
-import 'package:stable/common/widget/profile_bottom_sheet.dart';
-import 'package:stable/common/widget/user_profile_picture.dart';
+import 'package:stable/ui/common/util/shared_ui_constants.dart';
+import 'package:stable/ui/common/widget/profile_bottom_sheet.dart';
+import 'package:stable/ui/common/widget/user_profile_picture.dart';
 
 class PageBody extends StatelessWidget {
   final String title;

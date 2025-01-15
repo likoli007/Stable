@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:stable/common/widget/loading_stream_builder.dart';
+import 'package:stable/ui/common/widget/loading_stream_builder.dart';
 import 'package:stable/service/inhabitant_service.dart';
-
-import '../../model/inhabitant/inhabitant.dart';
+import 'package:stable/model/inhabitant/inhabitant.dart';
 
 class UserProfilePicture extends StatelessWidget {
   final double size;

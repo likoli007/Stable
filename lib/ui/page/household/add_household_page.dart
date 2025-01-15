@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:stable/common/util/shared_ui_constants.dart';
+import 'package:stable/ui/common/util/shared_ui_constants.dart';
 import 'package:stable/service/household_service.dart';
 import 'package:stable/service/inhabitant_service.dart';
 
