@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
-import 'package:material_you_dynamic_theme/material_you_dynamic_theme.dart';
 
 import 'package:stable/app/widget/app_wrapper.dart';
 import 'package:stable/auth/firebase_auth_service.dart';
-import 'package:stable/common/page/page_layout.dart';
+import 'package:stable/common/theme/app_theme_factory.dart';
 import 'package:stable/common/theme/theme_provider.dart';
 import 'package:stable/database/service/database_service.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
@@ -70,8 +69,15 @@ Future<void> main() async {
   GetIt.instance.registerSingleton(SettingsController());
   GetIt.instance.registerSingleton(ThemeProvider());
 
-  GetIt.instance.registerSingleton(
-      PageLayout(title: "Stable", body: Text("Nothing to show")));
+  final lightThemeData = await AppThemeFactory.create(
+    isDark: false,
+  );
+  final darkThemeData = await AppThemeFactory.create(
+    isDark: true,
+  );
 
-  runAppDynamic(home: AppWrapper());
+  runApp(AppWrapper(
+    lightThemeData: lightThemeData,
+    darkThemeData: darkThemeData,
+  ));
 }

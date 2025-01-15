@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stable/page/home/home_page.dart';
 import 'package:stable/page/household/add_household_page.dart';
-import 'package:stable/page/household/household_page.dart';
-import 'package:stable/page/task/household_task_page.dart';
 import 'package:stable/page/task/user_task_page.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -17,7 +15,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   final List<Widget> pages = [
     HomePage(),
-    AddHouseholdPage(), // TODO const HouseholdPage(household: null,),
+    const AddHouseholdPage(), // TODO const HouseholdPage(household: null,),
     UserTaskPage(),
   ];
 

@@ -3,13 +3,11 @@ import 'package:stable/common/theme/color_extension.dart';
 import 'package:stable/common/theme/toggle_buttons_theme.dart';
 import 'package:stable/common/util/shared_ui_constants.dart';
 
-const _PRIMARY_COLOR = Color(0xFFF57C00);
-
 class ThemeProvider {
   ThemeData get lightTheme => ThemeData(
         colorScheme: ColorScheme(
           brightness: Brightness.light,
-          primary: _PRIMARY_COLOR,
+          primary: Colors.black,
           onPrimary: Colors.white,
           primaryContainer: Colors.orange.shade100,
           onPrimaryContainer: Colors.orange.shade900,
@@ -40,13 +38,13 @@ class ThemeProvider {
           backgroundColor: Colors.deepOrangeAccent,
           foregroundColor: Colors.white,
         ),
-        // extensions: [
-        //   CustomToggleButtonsTheme(
-        //     borderRadius: BorderRadius.circular(10.0),
-        //     selectedBorderColor: _PRIMARY_COLOR,
-        //     fillColor: _PRIMARY_COLOR.withOpacity(0.1),
-        //   ),
-        // ],
+        extensions: [
+          CustomToggleButtonsTheme(
+            borderRadius: BorderRadius.circular(10.0),
+            selectedBorderColor: Colors.black,
+            fillColor: Colors.black.withOpacity(0.1),
+          ),
+        ],
       );
 
   ThemeData get darkTheme => ThemeData(

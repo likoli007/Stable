@@ -68,6 +68,7 @@ class _PageLayoutState extends State<PageLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // TODO add scrollable view
       appBar: AppBar(
         title: Text(_title),
         centerTitle: true,
