@@ -56,7 +56,7 @@ class ProfileBottomSheet extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: () {
                 FirebaseAuth.instance.signOut();
-                Navigator.pushReplacementNamed(context, '/');
+                Navigator.pushReplacementNamed(context, '/introduction');
               },
               icon: const Icon(Icons.logout, color: Colors.white),
               style: ButtonStyle(

@@ -30,7 +30,7 @@ class RegisterScreen extends StatelessWidget {
         AuthStateChangeAction<SignedIn>((context, state) {
           //Registered user get an UID assigned by firestore auth, we need it inside our db
 
-          Navigator.pushReplacementNamed(context, '/home');
+          Navigator.pushReplacementNamed(context, '/');
         }),
       ],
     );
