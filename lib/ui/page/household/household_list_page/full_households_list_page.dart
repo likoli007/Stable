@@ -34,11 +34,9 @@ class FullHouseholdsListPage extends StatelessWidget {
   }
 
   Widget _buildHouseholdListPage(BuildContext context) {
-    return Expanded(
-      child: LoadingStreamBuilder<List<Household>>(
-          stream: _householdProvider.getHouseholdsStreamByIds(households),
-          builder: _buildHouseholdList),
-    );
+    return LoadingStreamBuilder<List<Household>>(
+        stream: _householdProvider.getHouseholdsStreamByIds(households),
+        builder: _buildHouseholdList);
   }
 
   Widget _buildHouseholdList(BuildContext context, List<Household> households) {
@@ -48,14 +46,12 @@ class FullHouseholdsListPage extends StatelessWidget {
         final household = households[index];
         return ListTile(
           title: Text(household.name),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HouseholdPage(household: household),
-              ),
-            );
-          },
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HouseholdPage(household: household),
+            ),
+          ),
         );
       },
     );

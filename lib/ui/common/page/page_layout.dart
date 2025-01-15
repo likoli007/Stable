@@ -18,37 +18,38 @@ class _PageLayoutState extends State<PageLayout> {
         child: IndexedStack(
           index: _pageIndex,
           children: <Widget>[
-            OverviewPage(),
+            const OverviewPage(),
             HouseholdsListPage(),
             UserTaskPage(),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // TODO play with this modes
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.today),
-            label: 'Overview',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.maps_home_work),
-            label: 'Households',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.task_alt),
-            label: 'Tasks',
-          ),
-        ],
-        currentIndex: _pageIndex,
-        onTap: (int index) {
-          setState(
-            () {
-              _pageIndex = index;
-            },
-          );
-        },
-      ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
+  BottomNavigationBar _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      currentIndex: _pageIndex,
+      onTap: (int index) {
+        setState(() {
+          _pageIndex = index;
+        });
+      },
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.group),
+          label: 'Households',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.assignment),
+          label: 'Tasks',
+        ),
+      ],
     );
   }
 }
