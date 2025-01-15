@@ -140,8 +140,7 @@ class ProfileBottomSheet extends StatelessWidget {
                           .updateThemeMode(THEME_MODES[buttonIndex]);
                     }
                   },
-                  borderRadius: toggleButtonsTheme?.borderRadius,
-                  selectedBorderColor: toggleButtonsTheme?.selectedBorderColor,
+                  borderRadius: BorderRadius.circular(40),
                   fillColor: toggleButtonsTheme?.fillColor,
                   isSelected:
                       THEME_MODES.map((mode) => themeMode == mode).toList(),
