@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:stable/ui/common/util/shared_ui_constants.dart';
+import 'package:stable/ui/common/widget/speed_dial/speed_dials.dart';
 import 'package:stable/ui/page/household/edit_household_page.dart';
 
 import 'package:stable/ui/common/page/page_body.dart';
@@ -17,6 +19,32 @@ class HouseholdPage extends StatelessWidget {
     return PageBody(
       title: household.name,
       body: _buildHouseholdOverviewPage(context),
+      floatingActionButton: _buildSpeedDials(context),
+    );
+  }
+
+  Widget _buildSpeedDials(BuildContext context) {
+    return SpeedDials(
+      icon: Icons.add,
+      activeIcon: Icons.close,
+      children: [
+        SpeedDialChild(
+          child: const Icon(Icons.domain_add),
+          label: 'Invite your friend',
+          shape: const CircleBorder(),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          onTap: () => {},
+        ),
+        SpeedDialChild(
+          child: const Icon(Icons.login),
+          label: 'Rename',
+          shape: const CircleBorder(),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          onTap: () {},
+        ),
+      ],
     );
   }
 

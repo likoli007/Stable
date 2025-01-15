@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:stable/ui/common/widget/loading_stream_builder.dart';
+import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 import 'package:stable/ui/common/page/page_body.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/service/household_service.dart';

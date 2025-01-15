@@ -6,7 +6,7 @@ import 'package:stable/ui/common/widget/text_input_dialog.dart';
 import 'package:stable/ui/page/household/household_list_page/empty_households_list_page.dart';
 import 'package:stable/service/household_service.dart';
 
-import 'package:stable/ui/common/widget/loading_stream_builder.dart';
+import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/ui/page/household/household_list_page/full_households_list_page.dart';

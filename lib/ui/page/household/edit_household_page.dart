@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:stable/service/household_service.dart';
 import 'package:stable/service/inhabitant_service.dart';
 
-import 'package:stable/ui/common/widget/loading_future_builder.dart';
+import 'package:stable/ui/common/widget/builder/loading_future_builder.dart';
 import 'package:stable/ui/common/page/page_body.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
