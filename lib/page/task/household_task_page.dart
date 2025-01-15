@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/common/widget/loading_stream_builder.dart';
-import 'package:stable/common/page/page_layout.dart';
+import 'package:stable/common/page/page_body.dart';
 import 'package:stable/page/task/common_task_view.dart';
 import 'package:stable/page/task/add_task_page.dart';
 
@@ -18,7 +18,7 @@ class HouseholdTaskPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageLayout(
+    return PageBody(
         title: 'Tasks',
         floatingActionButton: _buildHouseholdTaskPageFloatingButton(context),
         body: _buildHouseholdStream());

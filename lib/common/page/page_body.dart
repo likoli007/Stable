@@ -1,4 +1,4 @@
-// lib/common/page/page_layout.dart
+// lib/common/page/page_body.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,14 +7,14 @@ import 'package:stable/common/widget/bottom_navigation.dart';
 import 'package:stable/common/widget/profile_bottom_sheet.dart';
 import 'package:stable/common/widget/user_profile_picture.dart';
 
-class PageLayout extends StatefulWidget {
+class PageBody extends StatefulWidget {
   final String title;
   final Widget body;
   final FloatingActionButton? floatingActionButton;
   final bool showProfileButton;
   final bool showBackButton;
 
-  PageLayout({
+  PageBody({
     super.key,
     required this.title,
     required this.body,
@@ -24,13 +24,13 @@ class PageLayout extends StatefulWidget {
   });
 
   @override
-  _PageLayoutState createState() => _PageLayoutState();
+  _PageBodyState createState() => _PageBodyState();
 
   void update(
       {required String title,
       required Widget body,
       FloatingActionButton? floatingActionButton}) {
-    _PageLayoutState? state = _PageLayoutState();
+    _PageBodyState? state = _PageBodyState();
     state.update(
       title: title,
       body: body,
@@ -39,7 +39,7 @@ class PageLayout extends StatefulWidget {
   }
 }
 
-class _PageLayoutState extends State<PageLayout> {
+class _PageBodyState extends State<PageBody> {
   late String _title;
   late Widget _body;
   FloatingActionButton? _floatingActionButton;

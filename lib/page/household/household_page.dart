@@ -3,7 +3,7 @@ import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/server/TaskUpdater.dart'; //TODO unused import
 import 'package:stable/page/household/edit_household_page.dart';
 
-import 'package:stable/common/page/page_layout.dart';
+import 'package:stable/common/page/page_body.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/page/task/household_task_page.dart';
 import 'household_task_history_page.dart'; //TODO Package import
@@ -15,7 +15,7 @@ class HouseholdPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageLayout(
+    return PageBody(
         title: "${household.name} overview",
         body: _buildHouseholdOverviewPage(context));
     // TODO add rotary task overview and settings
