@@ -8,13 +8,13 @@ class UserProfilePicture extends StatelessWidget {
   final double size;
   final String user;
 
-  final _inhabitantService = GetIt.instance<InhabitantService>();
-
   UserProfilePicture({
     super.key,
     required this.user,
     this.size = 50.0,
   });
+
+  final _inhabitantService = GetIt.instance<InhabitantService>();
 
   @override
   Widget build(BuildContext context) {

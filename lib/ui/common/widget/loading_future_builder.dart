@@ -20,7 +20,6 @@ class LoadingFutureBuilder<T> extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        // ignore: null_check_on_nullable_type_parameter
         return builder(context, snapshot.data!);
       },
     );

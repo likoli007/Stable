@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CustomToggleButtonsTheme extends ThemeExtension<CustomToggleButtonsTheme> {
+class CustomToggleButtonsTheme
+    extends ThemeExtension<CustomToggleButtonsTheme> {
   final Color? selectedBorderColor;
   final Color? fillColor;
   final BorderRadius? borderRadius;
@@ -11,6 +12,7 @@ class CustomToggleButtonsTheme extends ThemeExtension<CustomToggleButtonsTheme> 
     this.borderRadius,
   });
 
+  @override
   CustomToggleButtonsTheme copyWith({
     Color? selectedBorderColor,
     Color? fillColor,
@@ -24,13 +26,15 @@ class CustomToggleButtonsTheme extends ThemeExtension<CustomToggleButtonsTheme> 
   }
 
   @override
-  ThemeExtension<CustomToggleButtonsTheme> lerp(covariant ThemeExtension<CustomToggleButtonsTheme>? other, double t) {
+  ThemeExtension<CustomToggleButtonsTheme> lerp(
+      covariant ThemeExtension<CustomToggleButtonsTheme>? other, double t) {
     if (other is! CustomToggleButtonsTheme) {
       return this;
     }
 
     return CustomToggleButtonsTheme(
-      selectedBorderColor: Color.lerp(selectedBorderColor, other.selectedBorderColor, t),
+      selectedBorderColor:
+          Color.lerp(selectedBorderColor, other.selectedBorderColor, t),
       fillColor: Color.lerp(fillColor, other.fillColor, t),
       borderRadius: BorderRadius.lerp(borderRadius, other.borderRadius, t),
     );

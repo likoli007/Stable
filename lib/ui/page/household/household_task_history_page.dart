@@ -8,10 +8,9 @@ import 'package:stable/model/household/household.dart';
 import 'package:stable/service/household_service.dart';
 
 class HouseholdTaskHistoryPage extends StatelessWidget {
-  HouseholdTaskHistoryPage({Key? key, required this.householdReference})
-      : super(key: key);
+  final String householdReference;
 
-  String householdReference;
+  HouseholdTaskHistoryPage({super.key, required this.householdReference});
 
   final _householdProvider = GetIt.instance<HouseholdService>();
 

@@ -10,17 +10,17 @@ import 'package:stable/ui/common/widget/loading_stream_builder.dart';
 import 'package:stable/ui/common/theme/app_theme_data.dart';
 
 class AppWrapper extends StatelessWidget {
+  final AppThemeData lightThemeData;
+  final AppThemeData darkThemeData;
+
   AppWrapper({
-    Key? key,
+    super.key,
     required this.lightThemeData,
     required this.darkThemeData,
-  }) : super(key: key);
+  });
 
   final FirebaseAuthService _auth = GetIt.instance<FirebaseAuthService>();
   final _settingsController = GetIt.instance<SettingsController>();
-
-  final AppThemeData lightThemeData;
-  final AppThemeData darkThemeData;
 
   @override
   Widget build(BuildContext context) {

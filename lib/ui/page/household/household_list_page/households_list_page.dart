@@ -30,22 +30,22 @@ class HouseholdsListPage extends StatelessWidget {
     final int householdCount = data!.households.length;
     return householdCount == 0
         ? EmptyHouseholdsListPage(
-            showCreateHouseholdDialog: showCreateHouseholdDialog(),
-            showJoinHouseholdDialog: showJoinHouseholdDialog(context),
+            showCreateHouseholdDialog: _showCreateHouseholdDialog(),
+            showJoinHouseholdDialog: _showJoinHouseholdDialog(context),
           )
         : FullHouseholdsListPage(
-            showCreateHouseholdDialog: showCreateHouseholdDialog(),
-            showJoinHouseholdDialog: showJoinHouseholdDialog(context),
+            showCreateHouseholdDialog: _showCreateHouseholdDialog(),
+            showJoinHouseholdDialog: _showJoinHouseholdDialog(context),
             households: data.households,
           );
   }
 
-  Widget showCreateHouseholdDialog() {
+  Widget _showCreateHouseholdDialog() {
     return TextInputDialog(
       title: 'Create household',
       buttonText: 'Create',
       infoText: "Pro tip: Add an emoji at the beginning of the name to better "
-          "differenciate between several households. 😏",
+          "differentiate between several households. 😏",
       onSubmit: (name) async {
         String uid = FirebaseAuth.instance.currentUser!.uid;
         DocumentReference householdReference =
@@ -58,7 +58,7 @@ class HouseholdsListPage extends StatelessWidget {
     );
   }
 
-  Widget showJoinHouseholdDialog(BuildContext context) {
+  Widget _showJoinHouseholdDialog(BuildContext context) {
     return TextInputDialog(
       title: 'Join household',
       buttonText: 'Join',
@@ -74,7 +74,7 @@ class HouseholdsListPage extends StatelessWidget {
           );
         } catch (e) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Error: No household found with this invite code.'),
             ),
           );

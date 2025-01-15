@@ -8,10 +8,9 @@ import 'package:stable/ui/page/task/common_task_view.dart';
 import 'package:stable/ui/page/task/add_task_page.dart';
 
 class HouseholdTaskPage extends StatelessWidget {
-  HouseholdTaskPage({Key? key, required this.householdReference})
-      : super(key: key);
+  final String householdReference;
 
-  String householdReference;
+  HouseholdTaskPage({super.key, required this.householdReference});
 
   final _householdProvider = GetIt.instance<HouseholdService>();
 
@@ -26,6 +25,8 @@ class HouseholdTaskPage extends StatelessWidget {
   FloatingActionButton _buildHouseholdTaskPageFloatingButton(
       BuildContext context) {
     return FloatingActionButton(
+      tooltip: 'Add',
+      child: const Icon(Icons.add),
       onPressed: () {
         Navigator.push(
           context,
@@ -36,8 +37,6 @@ class HouseholdTaskPage extends StatelessWidget {
           ),
         );
       },
-      tooltip: 'Add',
-      child: const Icon(Icons.add),
     );
   }
 

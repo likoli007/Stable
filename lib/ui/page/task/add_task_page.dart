@@ -15,9 +15,12 @@ class AddTaskPage extends StatefulWidget {
   final String householdRef;
   final bool isEditing;
 
-  AddTaskPage(
-      {Key? key, required this.householdRef, this.task, this.isEditing = false})
-      : super(key: key);
+  const AddTaskPage({
+    super.key,
+    required this.householdRef,
+    this.task,
+    this.isEditing = false,
+  });
 
   @override
   State<AddTaskPage> createState() => _AddTaskPageState();
@@ -34,7 +37,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   late bool _isRepeat;
   late bool _isRotating;
 
-  DateTime? _selectedDeadline = null;
+  DateTime? _selectedDeadline;
   List<Subtask> _subtasks = [];
   Inhabitant? _assignee;
   String _repeatDays = "Daily";
@@ -87,7 +90,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
       _isDone = value ?? false;
       //if the user unchecked isDone, set all isDones for all subtasks to false
       //also vice versa
-      for (Subtask subtask in _subtasks) subtask.isDone = _isDone;
+      for (Subtask subtask in _subtasks) {
+        subtask.isDone = _isDone;
+      }
     });
   }
 
@@ -188,7 +193,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
     int? repeatValue = _getTaskRepeat();
 
-    //TODO: actual validation, but here or in service?
+    //TODO: actual validation, but here or in service? adam says in service ;)
     if (name.isNotEmpty && description.isNotEmpty && true) {
       DocumentReference? taskRef = await _taskProvider.addTask(
           assignee: _assignee?.id,
@@ -258,7 +263,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   Widget _buildDeleteButton() {
     return IconButton(
-        onPressed: () => _deleteTask(), icon: Icon(Icons.delete_forever));
+        onPressed: () => _deleteTask(), icon: const Icon(Icons.delete_forever));
   }
 
   Widget _buildTaskAddingButton() {
@@ -314,7 +319,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             onChanged: (value) => _toggleSubtaskCompletion(index),
           ),
           IconButton(
-            icon: Icon(Icons.close),
+            icon: const Icon(Icons.close),
             onPressed: () => _deleteSubtask(index),
             tooltip: 'Delete subtask',
           ),
@@ -326,7 +331,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget _buildRotatingCheckbox() {
     return Row(
       children: [
-        Text("Is Rotating:"),
+        const Text("Is Rotating:"),
         const SizedBox(width: 8),
         Checkbox(
           value: _isRotating,
@@ -347,7 +352,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget _buildRepeatingCheckbox() {
     return Row(
       children: [
-        Text("Is Repeating:"),
+        const Text("Is Repeating:"),
         const SizedBox(width: 8),
         Checkbox(
           value: _isRepeat,
@@ -375,7 +380,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             _repeatDays = value!;
           });
         },
-        hint: Text('Select Frequency'),
+        hint: const Text('Select Frequency'),
       );
     }
     return const SizedBox();
@@ -384,7 +389,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget _buildDoneCheckbox() {
     return Row(
       children: [
-        Text("Is Done:"),
+        const Text("Is Done:"),
         const SizedBox(width: 8),
         Checkbox(
           value: _isDone,
@@ -436,7 +441,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         ),
         TextButton(
           onPressed: () => _selectAssignee(context),
-          child: Text('Select Assignee'),
+          child: const Text('Select Assignee'),
         ),
       ],
     );

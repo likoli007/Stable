@@ -7,10 +7,11 @@ import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/service/inhabitant_service.dart';
 
 class TaskAssigneePickPage extends StatelessWidget {
-  TaskAssigneePickPage({Key? key, required this.users}) : super(key: key);
+  final List<DocumentReference> users;
+
+  TaskAssigneePickPage({super.key, required this.users});
 
   final _inhabitantService = GetIt.instance<InhabitantService>();
-  final List<DocumentReference> users;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class TaskAssigneePickPage extends StatelessWidget {
   Widget _buildInhabitantsFuture() {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pick a User'),
+        title: const Text('Pick a User'),
       ),
       body: LoadingFutureBuilder(
           future: _inhabitantService.getInhabitants(users),

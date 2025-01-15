@@ -11,7 +11,7 @@ class PageBody extends StatelessWidget {
   final bool showProfileButton;
   final bool showBackButton;
 
-  PageBody({
+  const PageBody({
     super.key,
     required this.title,
     required this.body,
@@ -38,7 +38,7 @@ class PageBody extends StatelessWidget {
                       size: 40,
                       user: FirebaseAuth.instance.currentUser!.uid,
                     )
-                  : Icon(Icons.account_circle),
+                  : const Icon(Icons.account_circle),
               onPressed: () {
                 showModalBottomSheet(
                   context: context,

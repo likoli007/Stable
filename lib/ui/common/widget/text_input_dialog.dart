@@ -50,37 +50,40 @@ class _TextInputDialogState extends State<TextInputDialog> {
             const SizedBox(height: STANDARD_GAP),
             _buildHouseholdNameTextField(),
             const SizedBox(height: STANDARD_GAP),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancel'),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (_textController.text.trim().isNotEmpty) {
-                      await widget.onSubmit(_textController.text.trim());
-                      Navigator.pop(context);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content:
-                                Text('Heeey, the input field cannot be empty')),
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                  child: Text(widget.buttonText),
-                ),
-              ],
-            ),
+            _buildButtons(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          ),
+          onPressed: () async {
+            if (_textController.text.trim().isNotEmpty) {
+              await widget.onSubmit(_textController.text.trim());
+              Navigator.pop(context);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                    content: Text('Heeey, the input field cannot be empty')),
+              );
+            }
+          },
+          child: Text(widget.buttonText),
+        ),
+      ],
     );
   }
 

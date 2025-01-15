@@ -4,7 +4,8 @@ class LoadingStreamBuilder<T> extends StatelessWidget {
   final Stream<T> stream;
   final Widget Function(BuildContext context, T data) builder;
 
-  const LoadingStreamBuilder({super.key, required this.stream, required this.builder});
+  const LoadingStreamBuilder(
+      {super.key, required this.stream, required this.builder});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,6 @@ class LoadingStreamBuilder<T> extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        // ignore: null_check_on_nullable_type_parameter
         return builder(context, snapshot.data!);
       },
     );

@@ -8,6 +8,8 @@ import 'package:stable/ui/common/util/shared_ui_constants.dart';
 import 'package:stable/service/inhabitant_service.dart';
 
 class RegisterScreen extends StatelessWidget {
+  RegisterScreen({super.key});
+
   final _userProvider = GetIt.instance<InhabitantService>();
 
   @override

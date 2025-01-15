@@ -59,6 +59,7 @@ class FullHouseholdsListPage extends StatelessWidget {
 
   Widget _buildSpeedDials(BuildContext context) {
     return SpeedDial(
+      //TODO extract this to a separate widget
       icon: Icons.add,
       activeIcon: Icons.close,
       shape: RoundedRectangleBorder(

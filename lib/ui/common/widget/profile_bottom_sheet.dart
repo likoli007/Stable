@@ -10,6 +10,7 @@ import 'package:stable/service/settings_controller.dart';
 
 class ProfileBottomSheet extends StatelessWidget {
   ProfileBottomSheet({super.key});
+
   final FirebaseAuthService _auth = GetIt.instance<FirebaseAuthService>();
   final _settingsController = GetIt.instance<SettingsController>();
 
@@ -27,7 +28,7 @@ class ProfileBottomSheet extends StatelessWidget {
               child: Column(children: [
                 _buildProfileSection(context),
                 const SizedBox(height: STANDARD_GAP),
-                _buildHouseholdButtonsSection(),
+                // TODO add color picker for user profile picture color
                 const SizedBox(height: STANDARD_GAP),
                 _buildThemeModeToggle(context),
               ]),
@@ -61,53 +62,18 @@ class ProfileBottomSheet extends StatelessWidget {
               textScaler: const TextScaler.linear(NAME_SCALER),
             ),
             ElevatedButton.icon(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-                Navigator.pushReplacementNamed(context, '/introduction');
-              },
+              label: const Text("Log out"),
               icon: const Icon(Icons.logout, color: Colors.white),
               style: ButtonStyle(
                 backgroundColor: WidgetStateProperty.all(Colors.red),
                 foregroundColor: WidgetStateProperty.all(Colors.white),
               ),
-              label: const Text("Log out"),
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+                Navigator.pushReplacementNamed(context, '/introduction');
+              },
             ),
           ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildHouseholdButtonsSection() {
-    return Column(
-      children: [
-        FullWidthButton(
-          label: "Household statistics",
-          icon: const Icon(Icons.bar_chart),
-          onPressed: () {
-            //TODO implement household statistics
-          },
-        ),
-        FullWidthButton(
-          label: "Invite to household",
-          icon: const Icon(Icons.person_add_alt_1),
-          onPressed: () {
-            //TODO implement invitation system
-          },
-        ),
-        FullWidthButton(
-          label: "Manage household",
-          icon: const Icon(Icons.manage_accounts),
-          onPressed: () {
-            //TODO implement household management (only visible to admin)
-          },
-        ),
-        FullWidthButton(
-          label: "Leave household",
-          icon: const Icon(Icons.no_meeting_room),
-          onPressed: () {
-            //TODO implement leaving household
-          },
         ),
       ],
     );

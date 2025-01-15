@@ -129,7 +129,6 @@ abstract class BaseColorScheme {
       ];
 }
 
-/// This is place where you should put all custom color scheme properties
 @immutable
 class AppColorScheme extends BaseColorScheme {
   AppColorScheme.fromMaterialColorScheme(

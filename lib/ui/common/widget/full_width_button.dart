@@ -23,6 +23,10 @@ class FullWidthButton extends StatelessWidget {
         width: double.infinity,
         height: BUTTON_HEIGHT,
         child: ElevatedButton.icon(
+          label: Text(
+            label,
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          ),
           icon: icon != null
               ? Icon(icon!.icon, color: Theme.of(context).colorScheme.onPrimary)
               : null,
@@ -31,10 +35,6 @@ class FullWidthButton extends StatelessWidget {
             alignment: alignment,
             backgroundColor: Theme.of(context).colorScheme.primary,
             foregroundColor: Theme.of(context).colorScheme.onPrimary,
-          ),
-          label: Text(
-            label,
-            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
           ),
         ),
       ),

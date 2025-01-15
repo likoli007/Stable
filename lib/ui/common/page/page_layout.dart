@@ -5,10 +5,10 @@ import 'package:stable/ui/page/task/user_task_page.dart';
 
 class PageLayout extends StatefulWidget {
   @override
-  _PageLayoutState createState() => _PageLayoutState();
+  PageLayoutState createState() => PageLayoutState();
 }
 
-class _PageLayoutState extends State<PageLayout> {
+class PageLayoutState extends State<PageLayout> {
   int _pageIndex = 0;
 
   @override

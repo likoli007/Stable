@@ -10,17 +10,14 @@ import 'package:stable/ui/page/household/household_task_history_page.dart';
 class HouseholdPage extends StatelessWidget {
   final Household household;
 
-  const HouseholdPage({Key? key, required this.household}) : super(key: key);
+  const HouseholdPage({super.key, required this.household});
 
   @override
   Widget build(BuildContext context) {
     return PageBody(
-      title: "${household.name}",
+      title: household.name,
       body: _buildHouseholdOverviewPage(context),
     );
-    // TODO add rotary task overview and settings
-    // TODO add unassigned task list (for inhabitants to claim)
-    //TODO household management shortcut (only visible to admin)
   }
 
   Widget _buildHouseholdOverviewPage(BuildContext context) {
@@ -37,7 +34,6 @@ class HouseholdPage extends StatelessWidget {
         ),
         const SizedBox(height: STANDARD_GAP),
         _buildSettingsButton(context),
-        const SizedBox(height: STANDARD_GAP),
         const SizedBox(height: STANDARD_GAP),
         _buildTaskOverviewButton(context),
         const SizedBox(height: STANDARD_GAP),
@@ -103,4 +99,7 @@ class HouseholdPage extends StatelessWidget {
       );
     });
   }
+  // TODO only show tasks here
+  // TODO SpeedDial with Rename, Manage Inhabitants, Leave, view failed tasks, share invite code
+  // TODO add rotary task overview and settings
 }

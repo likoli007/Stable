@@ -8,7 +8,8 @@ class OverviewPage extends StatelessWidget {
     return Container(
         // TODO add welcome message
         // TODO add an overview of the household (unfinished repeating tasks, rotary tasks)
-        // TODO add a center floating button to quickly add a new task
+        // TODO Tasks with deadline today
+        // TODO statistics maybe?
         );
   }
 }

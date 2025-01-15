@@ -30,7 +30,7 @@ class TaskService {
     Map<String, dynamic> doneField = {"isDone": t.isDone};
     _taskRepository.updateDocument(t.id, doneField);
 
-    //update all isDones for the whole Tasks
+    //TODO update all isDones for the whole Tasks
     List<Subtask> subtasks =
         await _subTaskRepository.getDocumentsByIds(t.subtasks);
     for (Subtask s in subtasks) {
@@ -38,7 +38,7 @@ class TaskService {
       _subTaskRepository.updateEntity(s.id, s);
     }
 
-    return null;
+    return;
   }
 
   Future<void> _percolateIsDone(Subtask s) async {

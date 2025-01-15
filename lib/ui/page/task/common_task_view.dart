@@ -13,39 +13,39 @@ import 'package:stable/service/task_service.dart';
 import 'package:stable/ui/page/task/add_task_page.dart';
 
 class CommonTaskView extends StatelessWidget {
+  final Household household;
+  final bool showAssignee;
+  final bool isFailedView;
+
   CommonTaskView(
-      {Key? key,
+      {super.key,
       required this.household,
       required this.showAssignee,
-      required this.isFailedView})
-      : super(key: key);
+      required this.isFailedView});
 
   final _taskProvider = GetIt.instance<TaskService>();
   final _householdProvider = GetIt.instance<HouseholdService>();
   final _inhabitantProvider = GetIt.instance<InhabitantService>();
 
-  Household household;
-
-  bool showAssignee;
-  bool isFailedView;
-
   @override
   Widget build(BuildContext context) {
     return LoadingStreamBuilder(
       stream: _taskProvider.getTasksStreamByRefs(
-          isFailedView ? household.taskHistory : household.tasks),
+        isFailedView ? household.taskHistory : household.tasks,
+      ),
       builder: _buildTaskView,
     );
   }
 
   Widget _buildTaskView(BuildContext context, List<Task> data) {
     final tasks = data;
+
     return ListView.builder(
       shrinkWrap: true,
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         final task = tasks[index];
-        //return _buildTaskTile(context, task);
+
         return ListTile(
           title: Text(task.name),
           subtitle: Text(task.description),
@@ -65,7 +65,7 @@ class CommonTaskView extends StatelessWidget {
     if (isFailedView) {
       return IconButton(
           onPressed: () => _removeTaskFromHistory(task),
-          icon: Icon(Icons.delete_forever));
+          icon: const Icon(Icons.delete_forever));
     }
     return IconButton(
       icon: Icon(task.isDone ? Icons.check_circle : Icons.circle),
@@ -73,7 +73,7 @@ class CommonTaskView extends StatelessWidget {
     );
   }
 
-  _removeTaskFromHistory(Task t) {
+  void _removeTaskFromHistory(Task t) {
     _householdProvider.removeTaskFromHistory(household.id, t.id);
     _taskProvider.removeTask(t.id);
   }
@@ -90,7 +90,7 @@ class CommonTaskView extends StatelessWidget {
   }
 
   Widget _buildSubTaskView(BuildContext context, List<Subtask> data) {
-    final subtasks = data;
+    final subtasks = data; // TODO Delete if stays unused
 
     if (subtasks.isNotEmpty) {
       return ListView.builder(
@@ -129,11 +129,11 @@ class CommonTaskView extends StatelessWidget {
     );
   }
 
-  _setDone(Task t) {
+  void _setDone(Task t) {
     _taskProvider.setIsDoneTask(t);
   }
 
-  _setSubtaskDone(Subtask s) {
+  void _setSubtaskDone(Subtask s) {
     _taskProvider.setIsDoneSubtask(s);
   }
 }
