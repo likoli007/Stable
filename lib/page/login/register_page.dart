@@ -14,23 +14,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SignInScreen(
-      subtitleBuilder: (context, action) => const Column(
-        children: [
-          Icon(Icons.face_2, size: 200),
-          SizedBox(height: STANDARD_GAP),
-          Text(
-            "You're just one step away!",
-            textScaler: TextScaler.linear(HEADLINE_SCALER),
-          ),
-          SizedBox(height: SMALL_GAP),
-          Text(
-            "In order to assign your work to your roommates, we need to know who you are. "
-            "Please, sign in with your Google account.",
-            textScaler: TextScaler.linear(INFO_PARAGRAPH_SCALER),
-          ),
-          SizedBox(height: STANDARD_GAP),
-        ],
-      ),
+      subtitleBuilder: (context, action) => _buildIntroductionText(),
       providers: [
         GoogleProvider(clientId: dotenv.env['GOOGLE_CLIENT_ID']!),
       ],
@@ -46,6 +30,26 @@ class RegisterScreen extends StatelessWidget {
         AuthStateChangeAction<SignedIn>((context, state) {
           Navigator.pushReplacementNamed(context, '/');
         }),
+      ],
+    );
+  }
+
+  Widget _buildIntroductionText() {
+    return const Column(
+      children: [
+        Icon(Icons.face_2, size: 200),
+        SizedBox(height: STANDARD_GAP),
+        Text(
+          "You're just one step away!",
+          textScaler: TextScaler.linear(HEADLINE_SCALER),
+        ),
+        SizedBox(height: SMALL_GAP),
+        Text(
+          "In order to assign your work to your roommates, we need to know who you are. "
+          "Please, sign in with your Google account.",
+          textScaler: TextScaler.linear(INFO_PARAGRAPH_SCALER),
+        ),
+        SizedBox(height: STANDARD_GAP),
       ],
     );
   }
