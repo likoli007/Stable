@@ -39,6 +39,13 @@ class ProfileBottomSheet extends StatelessWidget {
   }
 
   Widget _buildProfileSection(BuildContext context) {
+    // This is here only for not showing red error screen after logout
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      return const SizedBox.shrink();
+    }
+
     return Row(
       children: [
         UserProfilePicture(
