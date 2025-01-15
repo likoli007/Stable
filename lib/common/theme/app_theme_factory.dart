@@ -1,3 +1,4 @@
+// Copied from theming demo https://github.com/FiveDotTwelve/dynamic_colors/
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -1,3 +1,4 @@
+// Copied from theming demo https://github.com/FiveDotTwelve/dynamic_colors/
 import 'package:flutter/material.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
 
@@ -33,11 +34,9 @@ extension ColorPaletteExt on CorePalette {
       errorContainer: Color(scheme.errorContainer),
       onErrorContainer: Color(scheme.onErrorContainer),
       outline: Color(scheme.outline),
-      background: Color(scheme.background),
-      onBackground: Color(scheme.onBackground),
       surface: Color(scheme.surface),
       onSurface: Color(scheme.onSurface),
-      surfaceVariant: Color(scheme.surfaceVariant),
+      surfaceContainerHighest: Color(scheme.surfaceVariant),
       onSurfaceVariant: Color(scheme.onSurfaceVariant),
       inverseSurface: Color(scheme.inverseSurface),
       onInverseSurface: Color(scheme.inverseOnSurface),

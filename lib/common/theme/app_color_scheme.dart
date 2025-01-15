@@ -1,3 +1,4 @@
+// Copied from theming demo https://github.com/FiveDotTwelve/dynamic_colors/
 import 'package:flutter/material.dart';
 
 /// This class ensures that app color scheme is compatible with
