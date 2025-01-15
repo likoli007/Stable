@@ -4,7 +4,7 @@ import 'package:stable/common/util/shared_ui_constants.dart';
 import 'package:stable/common/widget/profile_bottom_sheet.dart';
 import 'package:stable/common/widget/user_profile_picture.dart';
 
-class PageBody extends StatefulWidget {
+class PageBody extends StatelessWidget {
   final String title;
   final Widget body;
   final FloatingActionButton? floatingActionButton;
@@ -21,59 +21,17 @@ class PageBody extends StatefulWidget {
   });
 
   @override
-  _PageBodyState createState() => _PageBodyState();
-
-  void update(
-      {required String title,
-      required Widget body,
-      FloatingActionButton? floatingActionButton}) {
-    _PageBodyState? state = _PageBodyState();
-    state.update(
-      title: title,
-      body: body,
-      floatingActionButton: floatingActionButton,
-    );
-  }
-}
-
-class _PageBodyState extends State<PageBody> {
-  late String _title;
-  late Widget _body;
-  FloatingActionButton? _floatingActionButton;
-
-  @override
-  void initState() {
-    super.initState();
-    _title = widget.title;
-    _body = widget.body;
-    _floatingActionButton = widget.floatingActionButton;
-  }
-
-  void update(
-      {required String title,
-      required Widget body,
-      FloatingActionButton? floatingActionButton}) {
-    if (mounted) {
-      setState(() {
-        _title = title;
-        _body = body;
-        _floatingActionButton = floatingActionButton;
-      });
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       // TODO add scrollable view
       appBar: AppBar(
-        title: Text(_title),
+        title: Text(title),
         centerTitle: true,
-        automaticallyImplyLeading: widget.showBackButton,
+        automaticallyImplyLeading: showBackButton,
         backgroundColor: Theme.of(context).colorScheme.surface,
         actions: [
           Visibility(
-            visible: widget.showProfileButton,
+            visible: showProfileButton,
             child: IconButton(
               icon: FirebaseAuth.instance.currentUser != null
                   ? UserProfilePicture(
@@ -93,10 +51,10 @@ class _PageBodyState extends State<PageBody> {
           ),
         ],
       ),
-      floatingActionButton: _floatingActionButton,
+      floatingActionButton: floatingActionButton,
       body: Padding(
         padding: const EdgeInsets.all(STANDARD_GAP),
-        child: _body,
+        child: body,
       ),
     );
   }
