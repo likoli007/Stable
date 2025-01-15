@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:stable/ui/common/widget/text_input_dialog.dart';
+import 'package:stable/ui/common/widget/dialog/text_input_dialog.dart';
 import 'package:stable/ui/page/household/household_list_page/empty_households_list_page.dart';
 import 'package:stable/service/household_service.dart';
 

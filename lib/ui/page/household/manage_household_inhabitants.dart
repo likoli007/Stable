@@ -8,18 +8,20 @@ import 'package:stable/ui/common/widget/builder/loading_future_builder.dart';
 import 'package:stable/ui/common/page/page_body.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
-import 'package:stable/ui/page/household/share_household_page.dart';
 
-class EditHouseholdPage extends StatefulWidget {
+class ManageHouseholdInhabitants extends StatefulWidget {
   final String householdReference;
 
-  const EditHouseholdPage({super.key, required this.householdReference});
+  const ManageHouseholdInhabitants(
+      {super.key, required this.householdReference});
 
   @override
-  EditHouseholdPageState createState() => EditHouseholdPageState();
+  ManageHouseholdInhabitantsState createState() =>
+      ManageHouseholdInhabitantsState();
 }
 
-class EditHouseholdPageState extends State<EditHouseholdPage> {
+class ManageHouseholdInhabitantsState
+    extends State<ManageHouseholdInhabitants> {
   late TextEditingController _nameController;
   List<String> _inhabitants = [];
 
@@ -38,26 +40,12 @@ class EditHouseholdPageState extends State<EditHouseholdPage> {
   Widget build(BuildContext context) {
     return PageBody(
       title: 'Edit Household',
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ShareHouseholdPage(
-                householdReference: widget.householdReference,
-              ),
-            ),
-          );
-        },
-        tooltip: 'Add Inhabitant',
-        child: Icon(Icons.add),
-      ),
       body: Column(
         children: [
           TextField(
             //TODO make a separate dialog out of this
             controller: _nameController,
-            decoration: InputDecoration(labelText: 'Household Name'),
+            decoration: const InputDecoration(labelText: 'Household Name'),
           ),
           Expanded(
             child: ReorderableListView(
@@ -81,7 +69,7 @@ class EditHouseholdPageState extends State<EditHouseholdPage> {
                       },
                     ),
                     trailing: IconButton(
-                      icon: Icon(Icons.delete),
+                      icon: const Icon(Icons.delete),
                       onPressed: () {
                         setState(() {
                           _inhabitants.remove(inhabitant);
