@@ -142,8 +142,4 @@ class CommonTaskView extends StatelessWidget {
   void _setDone(Task t) {
     _taskProvider.setIsDoneTask(t);
   }
-
-  void _setSubtaskDone(Subtask s) {
-    _taskProvider.setIsDoneSubtask(s);
-  }
 }
