@@ -10,6 +10,7 @@ import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/service/task_service.dart';
 import 'package:stable/ui/common/page/page_body.dart';
 import 'package:stable/ui/common/util/shared_ui_constants.dart';
+import 'package:stable/ui/common/widget/big_icon_page.dart';
 import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 
 class HouseholdStatisticsPage extends StatelessWidget {
@@ -62,6 +63,20 @@ class HouseholdStatisticsPage extends StatelessWidget {
 
     int doneTasks = tasks.where((task) => task.isDone).length;
     int failedTasks = failedTasksList.length;
+
+    if (failedTasks + doneTasks == 0) {
+      List<Widget> dummy = [];
+      return Center(
+        child: BigIconPage(
+          icon: const Icon(Icons.bar_chart, size: BIG_ICON_SIZE),
+          title: "I can't cook from nothing!",
+          text:
+              "There are no tasks in the household task history to make statistics from!"
+              'Make some tasks and complete them!',
+          buttons: dummy,
+        ),
+      );
+    }
 
     return Column(children: [
       _buildTotalTaskHistoryPieChart(doneTasks, failedTasks),
