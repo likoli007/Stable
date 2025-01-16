@@ -20,7 +20,6 @@ import 'package:stable/ui/page/task/common_task_view.dart';
 import 'package:stable/ui/page/household/household_task_history_page.dart';
 
 class HouseholdPage extends StatefulWidget {
-  // TODO add rotary task overview
   final Household household;
 
   const HouseholdPage({super.key, required this.household});
@@ -30,7 +29,7 @@ class HouseholdPage extends StatefulWidget {
 }
 
 class _HouseholdPageState extends State<HouseholdPage> {
-  late String _householdName;
+  late final String _householdName;
 
   final _householdService = GetIt.instance<HouseholdService>();
 
