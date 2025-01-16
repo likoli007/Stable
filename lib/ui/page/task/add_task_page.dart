@@ -260,7 +260,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Task'),
+        title: widget.isEditing ? Text('Edit Task') : Text('Add Task'),
         actions: [
           _buildDeleteButton(),
         ],
@@ -310,7 +310,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       onPressed: () {
         _handleActionButton();
       },
-      child: const Text('Add Task'),
+      child: widget.isEditing ? Text('Finish Editing') : Text('Add Task'),
     );
   }
 
