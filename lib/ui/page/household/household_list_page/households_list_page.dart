@@ -30,17 +30,17 @@ class HouseholdsListPage extends StatelessWidget {
     final int householdCount = data!.households.length;
     return householdCount == 0
         ? EmptyHouseholdsListPage(
-            showCreateHouseholdDialog: _showCreateHouseholdDialog(),
+            showCreateHouseholdDialog: _showCreateHouseholdDialog(context),
             showJoinHouseholdDialog: _showJoinHouseholdDialog(context),
           )
         : FullHouseholdsListPage(
-            showCreateHouseholdDialog: _showCreateHouseholdDialog(),
+            showCreateHouseholdDialog: _showCreateHouseholdDialog(context),
             showJoinHouseholdDialog: _showJoinHouseholdDialog(context),
             households: data.households,
           );
   }
 
-  Widget _showCreateHouseholdDialog() {
+  Widget _showCreateHouseholdDialog(BuildContext context) {
     return TextInputDialog(
       title: 'Create household',
       buttonText: 'Create',
@@ -49,13 +49,25 @@ class HouseholdsListPage extends StatelessWidget {
       textFieldInitialValue: "Household name",
       onSubmit: (name) async {
         String uid = FirebaseAuth.instance.currentUser!.uid;
-        DocumentReference householdReference =
-            await _householdService.createHousehold(userId: uid, name: name);
-        _inhabitantService.addHouseholdToInhabitant(
-          uid: uid,
-          newRef: householdReference,
-        );
-        // TODO add snackbar when success and when error
+        try {
+          DocumentReference householdReference =
+              await _householdService.createHousehold(userId: uid, name: name);
+          await _inhabitantService.addHouseholdToInhabitant(
+            uid: uid,
+            newRef: householdReference,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Start by inviting your friends to $name.'),
+            ),
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error: $e'),
+            ),
+          );
+        }
       },
     );
   }
@@ -75,7 +87,11 @@ class HouseholdsListPage extends StatelessWidget {
             groupId: groupId,
             userId: uid,
           );
-          // TODO add snackbar when success
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Welcome to a new household!.'),
+            ),
+          );
         } catch (e) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(

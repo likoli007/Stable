@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/service/household_service.dart';
-import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/ui/common/util/shared_ui_constants.dart';
 import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 import 'package:stable/ui/common/widget/dialog/confirmation_dialog.dart';
@@ -33,7 +32,6 @@ class _HouseholdPageState extends State<HouseholdPage> {
   late String _householdName;
 
   final _householdService = GetIt.instance<HouseholdService>();
-  final _inhabitantService = GetIt.instance<InhabitantService>();
 
   @override
   void initState() {
@@ -201,11 +199,26 @@ class _HouseholdPageState extends State<HouseholdPage> {
         Icon(Icons.sentiment_dissatisfied, size: 100),
       ],
       onConfirm: () async {
-        _householdService.leaveHousehold(
-          householdId: widget.household.id,
-          userId: FirebaseAuth.instance.currentUser!.uid,
-        );
-      }, // TODO add snackbar when success and when error
+        try {
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content:
+                  Text('Sorry to see you go! You were successfully removed.'),
+            ),
+          );
+          await _householdService.leaveHousehold(
+            householdId: widget.household.id,
+            userId: FirebaseAuth.instance.currentUser!.uid,
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error: $e'),
+            ),
+          );
+        }
+      },
     );
   }
 }
