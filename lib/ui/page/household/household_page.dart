@@ -120,15 +120,6 @@ class _HouseholdPageState extends State<HouseholdPage> {
         ),
         CustomSpeedDialChild(
           context: context,
-          icon: const Icon(Icons.drive_file_rename_outline_rounded),
-          label: 'Rename',
-          onTap: () => showDialog(
-            context: context,
-            builder: (context) => _showRenameHouseholdDialog(),
-          ),
-        ),
-        CustomSpeedDialChild(
-          context: context,
           icon: const Icon(Icons.stacked_bar_chart),
           label: 'View Statistics',
           onTap: () => Navigator.push(
@@ -138,6 +129,15 @@ class _HouseholdPageState extends State<HouseholdPage> {
                 householdReference: widget.household.id,
               ),
             ),
+          ),
+        ),
+        CustomSpeedDialChild(
+          context: context,
+          icon: const Icon(Icons.drive_file_rename_outline_rounded),
+          label: 'Rename',
+          onTap: () => showDialog(
+            context: context,
+            builder: (context) => _showRenameHouseholdDialog(),
           ),
         ),
         CustomSpeedDialChild(
