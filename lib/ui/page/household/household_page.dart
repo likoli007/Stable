@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
+import 'package:stable/service/household_service.dart';
 import 'package:stable/ui/common/util/shared_ui_constants.dart';
+import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 import 'package:stable/ui/common/widget/dialog/confirmation_dialog.dart';
 import 'package:stable/ui/common/widget/speed_dial/custom_speed_dial_child.dart';
 import 'package:stable/ui/common/widget/speed_dial/speed_dials.dart';
@@ -9,20 +12,38 @@ import 'package:share_plus/share_plus.dart';
 
 import 'package:stable/ui/common/page/page_body.dart';
 import 'package:stable/model/household/household.dart';
-import 'package:stable/ui/page/task/household_task_page.dart';
+import 'package:stable/ui/page/task/common_task_view.dart';
 import 'package:stable/ui/page/household/household_task_history_page.dart';
 
 class HouseholdPage extends StatelessWidget {
+  // TODO add rotary task overview
   final Household household;
 
-  const HouseholdPage({super.key, required this.household});
+  HouseholdPage({super.key, required this.household});
+
+  final _householdProvider = GetIt.instance<HouseholdService>();
 
   @override
   Widget build(BuildContext context) {
     return PageBody(
       title: household.name,
-      body: _buildHouseholdOverviewPage(context),
+      body: _buildHouseholdStream(),
       floatingActionButton: _buildSpeedDials(context),
+    );
+  }
+
+  Widget _buildHouseholdStream() {
+    return LoadingStreamBuilder<Household?>(
+      stream: _householdProvider.getHouseholdStream(household.id),
+      builder: _buildTaskStream,
+    );
+  }
+
+  Widget _buildTaskStream(BuildContext context, Household? data) {
+    return CommonTaskView(
+      household: data!,
+      showAssignee: true,
+      isFailedView: false,
     );
   }
 
@@ -125,60 +146,4 @@ class HouseholdPage extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildHouseholdOverviewPage(BuildContext context) {
-    return Column(
-      // TODO only show tasks here
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          household.name,
-          style: const TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: STANDARD_GAP),
-        const SizedBox(height: STANDARD_GAP),
-        _buildTaskOverviewButton(context),
-        const SizedBox(height: STANDARD_GAP),
-        Text("GroupId: ${household.groupId}")
-      ],
-    );
-  }
-
-  Widget _buildButton(String text, Icon icon, Function onPressed) {
-    // TODO delete
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton.icon(
-        onPressed: () {
-          onPressed.call();
-        },
-        icon: icon,
-        label: Text(text),
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: STANDARD_GAP),
-          textStyle: const TextStyle(fontSize: 18),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTaskOverviewButton(BuildContext context) {
-    //TODO DELETE
-    return _buildButton("View Tasks", const Icon(Icons.task), () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HouseholdTaskPage(
-            householdReference: household.id,
-          ),
-        ),
-      );
-    });
-  }
-
-  // TODO add rotary task overview
 }
