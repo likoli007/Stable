@@ -129,36 +129,6 @@ class CommonTaskView extends StatelessWidget {
     return UserProfilePicture(user: inhabitant!.id);
   }
 
-  Widget _buildSubTaskView(BuildContext context, List<Subtask> data) {
-    final subtasks = data; // TODO Delete if stays unused
-
-    if (subtasks.isNotEmpty) {
-      return ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: subtasks.length,
-        itemBuilder: (context, subIndex) {
-          final subtask = subtasks[subIndex];
-          return ListTile(
-            title: Text(subtask.description),
-            trailing: Checkbox(
-              value: subtask.isDone,
-              onChanged: (value) {
-                // Update subtask's isDone state in Firestore
-                _setSubtaskDone(subtask);
-              },
-            ),
-          );
-        },
-      );
-    }
-
-    return const Padding(
-      padding: EdgeInsets.all(SMALL_GAP),
-      child: Text('No subtasks'),
-    );
-  }
-
   void _editTask(BuildContext context, Task task) {
     Navigator.push(
       context,
