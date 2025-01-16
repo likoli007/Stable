@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stable/ui/common/page/page_body.dart';
+import 'package:stable/ui/common/util/shared_ui_constants.dart';
 import 'package:stable/ui/common/widget/big_icon_page.dart';
 import 'package:stable/ui/common/widget/full_width_button.dart';
 
@@ -19,7 +20,7 @@ class EmptyHouseholdsListPage extends StatelessWidget {
       title: "Your households",
       showBackButton: false,
       body: BigIconPage(
-        icon: const Icon(Icons.no_meeting_room, size: 200),
+        icon: const Icon(Icons.no_meeting_room, size: BIG_ICON_SIZE),
         title: "You have no household to manage, buddy.",
         text: "Join already existing household or create a "
             "new one and invite your friends. In case, you have any.",

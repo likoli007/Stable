@@ -42,7 +42,7 @@ class _HouseholdPageState extends State<HouseholdPage> {
   @override
   Widget build(BuildContext context) {
     return PageBody(
-      title: _householdName,
+      title: "$_householdName tasks",
       body: _buildHouseholdStream(),
       floatingActionButton: _buildSpeedDials(context),
     );
