@@ -8,6 +8,7 @@ import 'package:stable/model/task/task.dart';
 import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/ui/common/page/page_body.dart';
 import 'package:stable/ui/common/util/shared_ui_constants.dart';
+import 'package:stable/ui/common/widget/full_width_button.dart';
 import 'package:stable/ui/page/task/task_assignee_pick_page.dart';
 import 'package:stable/service/household_service.dart';
 
@@ -271,29 +272,50 @@ class _AddTaskPageState extends State<AddTaskPage> {
         onPressed: _handleSaveButton,
         child: const Icon(Icons.save),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildTaskNameInput(),
-          const SizedBox(height: SMALL_GAP),
-          _buildTaskDescriptionInput(),
-          const SizedBox(height: SMALL_GAP),
-          _buildDeadlinePicker(),
-          const SizedBox(height: SMALL_GAP),
-          _buildAssigneeSelectionWidget(),
-          const SizedBox(height: SMALL_GAP),
-          _buildDoneCheckbox(),
-          const SizedBox(height: SMALL_GAP),
-          _buildRepeatingCheckbox(),
-          const SizedBox(height: SMALL_GAP),
-          _buildRotatingCheckbox(),
-          const SizedBox(height: STANDARD_GAP),
-          const Center(child: Text('Subtasks')),
-          const SizedBox(height: SMALL_GAP),
-          _buildSubtaskAddingWidget(),
-          if (widget.isEditing) _buildDeleteButton(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildTaskNameInput(),
+            const SizedBox(height: SMALL_GAP),
+            _buildTaskDescriptionInput(),
+            const SizedBox(height: SMALL_GAP),
+            _buildDeadlinePicker(),
+            const SizedBox(height: SMALL_GAP),
+            _buildAssigneeSelectionWidget(),
+            const SizedBox(height: SMALL_GAP),
+            _buildDoneCheckbox(),
+            const SizedBox(height: SMALL_GAP),
+            _buildRepeatingCheckbox(),
+            const SizedBox(height: SMALL_GAP),
+            _buildRotatingCheckbox(),
+            const SizedBox(height: SMALL_GAP),
+            _buildRotationInfo(),
+            const SizedBox(height: STANDARD_GAP),
+            const Center(child: Text('Subtasks')),
+            const SizedBox(height: SMALL_GAP),
+            _buildSubtaskAddingWidget(),
+            if (widget.isEditing) _buildDeleteButton(),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildRotationInfo() {
+    return const Row(
+      children: [
+        Icon(Icons.info),
+        SizedBox(width: STANDARD_GAP),
+        Expanded(
+          child: Text(
+            "After deadline is reached, rotating tasks will be "
+            "assigned to the next person in the household. "
+            "This order can be changed in Manage household page.",
+            softWrap: true,
+          ),
+        ),
+      ],
     );
   }
 
@@ -312,20 +334,20 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   Widget _buildSubtaskAddingWidget() {
-    return Expanded(
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: _subtasks.length + 1,
-        itemBuilder: (context, index) {
-          if (index == _subtasks.length) {
-            return TextButton(
-              onPressed: _addSubtaskField,
-              child: const Text('Add Subtask'),
-            );
-          }
-          return _buildSubtaskInputWidget(index);
-        },
-      ),
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: _subtasks.length + 1,
+      itemBuilder: (context, index) {
+        if (index == _subtasks.length) {
+          return FullWidthButton(
+            onPressed: _addSubtaskField,
+            label: 'Add Subtask',
+            alignment: Alignment.center,
+            icon: const Icon(Icons.add),
+          );
+        }
+        return _buildSubtaskInputWidget(index);
+      },
     );
   }
 
