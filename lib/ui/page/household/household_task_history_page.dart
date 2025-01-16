@@ -16,9 +16,7 @@ class HouseholdTaskHistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageBody(title: 'Failed Tasks', body: _buildHouseholdStream()
-        // TODO add statistics and info about failed tasks
-        );
+    return PageBody(title: 'Failed Tasks', body: _buildHouseholdStream());
   }
 
   Widget _buildHouseholdStream() {
