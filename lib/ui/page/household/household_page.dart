@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:stable/ui/common/util/shared_ui_constants.dart';
+import 'package:stable/ui/common/widget/dialog/confirmation_dialog.dart';
 import 'package:stable/ui/common/widget/speed_dial/custom_speed_dial_child.dart';
 import 'package:stable/ui/common/widget/speed_dial/speed_dials.dart';
 import 'package:stable/ui/page/household/manage_household_inhabitants.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'package:stable/ui/common/page/page_body.dart';
 import 'package:stable/model/household/household.dart';
-import 'package:stable/ui/page/household/share_household_page.dart';
 import 'package:stable/ui/page/task/household_task_page.dart';
 import 'package:stable/ui/page/household/household_task_history_page.dart';
 
@@ -54,13 +56,9 @@ class HouseholdPage extends StatelessWidget {
           context: context,
           icon: const Icon(Icons.add_reaction),
           label: 'Invite your friend',
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ShareHouseholdPage(
-                groupId: household.id,
-              ),
-            ),
+          onTap: () => showDialog(
+            context: context,
+            builder: (context) => _showInviteDialog(context),
           ),
         ),
         CustomSpeedDialChild(
@@ -80,7 +78,10 @@ class HouseholdPage extends StatelessWidget {
           context: context,
           icon: const Icon(Icons.drive_file_rename_outline_rounded),
           label: 'Rename',
-          onTap: () {}, // TODO dialog
+          onTap: () => showDialog(
+            context: context,
+            builder: (context) => _showInviteDialog(context),
+          ),
         ),
         CustomSpeedDialChild(
           context: context,
@@ -94,8 +95,40 @@ class HouseholdPage extends StatelessWidget {
     );
   }
 
+  Widget _showInviteDialog(BuildContext context) {
+    return ConfirmationDialog(
+      title: 'Invite a friend',
+      buttonText: 'Share',
+      children: [
+        const Text(
+            'Share this invite code and tell your friends to join your household '
+            'by clicking + button in the Households page and entering the code '
+            'into "Join an existing household" dialog.'),
+        const SizedBox(height: STANDARD_GAP),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+                icon: const Icon(Icons.copy),
+                onPressed: () =>
+                    Clipboard.setData(ClipboardData(text: household.groupId))),
+            SelectableText(
+              household.groupId,
+              textScaler: const TextScaler.linear(HEADLINE_SCALER),
+            ),
+          ],
+        ),
+      ],
+      onConfirm: () => Share.share(
+        household.groupId,
+        subject: "Invite code for ${household.name}",
+      ),
+    );
+  }
+
   Widget _buildHouseholdOverviewPage(BuildContext context) {
     return Column(
+      // TODO only show tasks here
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
@@ -116,7 +149,7 @@ class HouseholdPage extends StatelessWidget {
   }
 
   Widget _buildButton(String text, Icon icon, Function onPressed) {
-    // TODO extract to a common widget
+    // TODO delete
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
@@ -134,6 +167,7 @@ class HouseholdPage extends StatelessWidget {
   }
 
   Widget _buildTaskOverviewButton(BuildContext context) {
+    //TODO DELETE
     return _buildButton("View Tasks", const Icon(Icons.task), () {
       Navigator.push(
         context,
@@ -146,7 +180,5 @@ class HouseholdPage extends StatelessWidget {
     });
   }
 
-  // TODO only show tasks here
-  // TODO add rotary task overview and settings
-  // TODO if no tasks, show a message, how to create a first one, bigIconPage
+  // TODO add rotary task overview
 }
