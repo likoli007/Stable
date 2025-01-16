@@ -68,3 +68,13 @@ class ColorConverter implements JsonConverter<Color, int> {
     return object.value;
   }
 }
+
+class TimestampConverter implements JsonConverter<DateTime, Timestamp> {
+  const TimestampConverter();
+
+  @override
+  DateTime fromJson(Timestamp timestamp) => timestamp.toDate();
+
+  @override
+  Timestamp toJson(DateTime date) => Timestamp.fromDate(date);
+}

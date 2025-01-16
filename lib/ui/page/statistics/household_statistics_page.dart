@@ -10,6 +10,7 @@ import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/service/task_service.dart';
 import 'package:stable/ui/common/page/page_body.dart';
 import 'package:stable/ui/common/util/shared_ui_constants.dart';
+import 'package:stable/ui/common/widget/big_icon_page.dart';
 import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 
 class HouseholdStatisticsPage extends StatelessWidget {
@@ -34,7 +35,7 @@ class HouseholdStatisticsPage extends StatelessWidget {
   }
 
   Widget _buildTaskStream(BuildContext context, Household? household) {
-    List<DocumentReference> totalTaskHistory = [];
+    final List<DocumentReference> totalTaskHistory = [];
 
     for (DocumentReference ref in household!.doneTaskHistory) {
       totalTaskHistory.add(ref);
@@ -52,7 +53,7 @@ class HouseholdStatisticsPage extends StatelessWidget {
     final Map<String, int> failedTaskCounts = {};
     final Iterable<Task> failedTasksList = tasks.where((task) => !task.isDone);
 
-    for (var task in failedTasksList) {
+    for (final Task task in failedTasksList) {
       final userId = task.assignee!.id;
       failedTaskCounts[userId] = (failedTaskCounts[userId] ?? 0) + 1;
     }
@@ -60,8 +61,22 @@ class HouseholdStatisticsPage extends StatelessWidget {
     final List<DocumentReference> users =
         failedTasksList.map((task) => task.assignee!).toSet().toList();
 
-    int doneTasks = tasks.where((task) => task.isDone).length;
-    int failedTasks = failedTasksList.length;
+    final int doneTasks = tasks.where((task) => task.isDone).length;
+    final int failedTasks = failedTasksList.length;
+
+    if (failedTasks + doneTasks == 0) {
+      final List<Widget> dummy = [];
+      return Center(
+        child: BigIconPage(
+          icon: const Icon(Icons.bar_chart, size: BIG_ICON_SIZE),
+          title: "I can't cook from nothing!",
+          text:
+              "There are no tasks in the household task history to make statistics from!"
+              'Make some tasks and complete them!',
+          buttons: dummy,
+        ),
+      );
+    }
 
     return Column(children: [
       _buildTotalTaskHistoryPieChart(doneTasks, failedTasks),

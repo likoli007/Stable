@@ -96,7 +96,7 @@ class DatabaseService<T> {
   }
 
   Future<T?> getDocumentByField(String fieldName, dynamic value) async {
-    QuerySnapshot<T> querySnapshot = await _collectionReference
+    final QuerySnapshot<T> querySnapshot = await _collectionReference
         .where(fieldName, isEqualTo: value)
         .limit(1)
         .get();

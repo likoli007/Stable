@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/ui/common/util/shared_ui_constants.dart';
@@ -16,13 +17,13 @@ import 'package:stable/ui/page/task/add_task_page.dart';
 
 class CommonTaskView extends StatelessWidget {
   final Household household;
-  final bool showAssignee;
+  final bool isUserView;
   final bool isFailedView;
 
   CommonTaskView(
       {super.key,
       required this.household,
-      required this.showAssignee,
+      required this.isUserView,
       required this.isFailedView});
 
   final _taskProvider = GetIt.instance<TaskService>();
@@ -40,9 +41,14 @@ class CommonTaskView extends StatelessWidget {
   }
 
   Widget _buildTaskView(BuildContext context, List<Task> data) {
-    final tasks = data;
+    final List<Task> tasks = isUserView
+        ? data
+            .where((task) =>
+                task.assignee!.id == FirebaseAuth.instance.currentUser!.uid)
+            .toList()
+        : data;
 
-    if (tasks.isEmpty) {
+    if (tasks.isEmpty && !isUserView) {
       return BigIconPage(
         icon: const Icon(Icons.sentiment_very_satisfied, size: BIG_ICON_SIZE),
         title: 'No tasks. Hooray!',
@@ -66,6 +72,10 @@ class CommonTaskView extends StatelessWidget {
           )
         ],
       );
+    } else if (tasks.isEmpty) {
+      return Center(
+        child: Text("No Tasks for you from this household!"),
+      );
     }
 
     return ListView.builder(
@@ -73,17 +83,19 @@ class CommonTaskView extends StatelessWidget {
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         final task = tasks[index];
-
         return ListTile(
+          contentPadding: EdgeInsets.symmetric(horizontal: 2.0),
           title: Text(task.name),
           subtitle: Text(task.description),
           trailing: _buildTaskTrailingButton(task),
           onTap: () => !isFailedView ? _editTask(context, task) : (),
-          leading: SizedBox(
-            height: 50,
-            width: 50,
-            child: _buildAssigneeInformation(task),
-          ),
+          leading: isUserView
+              ? null
+              : SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: _buildAssigneeInformation(task),
+                ),
         );
       },
     );
