@@ -476,7 +476,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          _assignee == null ? 'No assignee' : _assignee!.name,
+          _assignee == null ? 'No assignee' : "Assignee: ${_assignee!.name}",
         ),
         TextButton(
           onPressed: () => _selectAssignee(context),
