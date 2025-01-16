@@ -40,20 +40,23 @@ class _TextInputDialogState extends State<TextInputDialog> {
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(STANDARD_GAP),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              widget.title,
-              textScaler: const TextScaler.linear(INFO_PARAGRAPH_SCALER),
-            ),
-            const SizedBox(height: SMALL_GAP),
-            Text(widget.infoText),
-            const SizedBox(height: STANDARD_GAP),
-            _buildHouseholdNameTextField(),
-            const SizedBox(height: STANDARD_GAP),
-            _buildButtons(),
-          ],
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: PAGE_BODY_MAX_WIDTH / 2),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                widget.title,
+                textScaler: const TextScaler.linear(INFO_PARAGRAPH_SCALER),
+              ),
+              const SizedBox(height: SMALL_GAP),
+              Text(widget.infoText),
+              const SizedBox(height: STANDARD_GAP),
+              _buildHouseholdNameTextField(),
+              const SizedBox(height: STANDARD_GAP),
+              _buildButtons(),
+            ],
+          ),
         ),
       ),
     );

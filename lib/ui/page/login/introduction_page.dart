@@ -10,25 +10,29 @@ class IntroductionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
-            padding: const EdgeInsets.all(STANDARD_GAP * 1.5),
-            child: BigIconPage(
-              icon: const Icon(Icons.bedroom_baby, size: BIG_ICON_SIZE),
-              title: "Household tasks? No problem.",
-              text: "Dirty dishes, laundry, or piled-up trash? "
-                  "Create tasks, assign them to your household members, and keep track of their progress. "
-                  "Just sit back and relax — Stable will take care of the rest.",
-              buttons: [
-                FullWidthButton(
-                  icon: const Icon(Icons.bedroom_baby),
-                  label: "Enter the Stable",
-                  alignment: Alignment.center,
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RegisterScreen())),
-                ),
-              ],
-            )));
+        body: Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+                constraints:
+                    const BoxConstraints(maxWidth: PAGE_BODY_MAX_WIDTH),
+                padding: const EdgeInsets.all(STANDARD_GAP * 1.5),
+                child: BigIconPage(
+                  icon: const Icon(Icons.bedroom_baby, size: BIG_ICON_SIZE),
+                  title: "Household tasks? No problem.",
+                  text: "Dirty dishes, laundry, or piled-up trash? "
+                      "Create tasks, assign them to your household members, and keep track of their progress. "
+                      "Just sit back and relax — Stable will take care of the rest.",
+                  buttons: [
+                    FullWidthButton(
+                      icon: const Icon(Icons.bedroom_baby),
+                      label: "Enter the Stable",
+                      alignment: Alignment.center,
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RegisterScreen())),
+                    ),
+                  ],
+                ))));
   }
 }

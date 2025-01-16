@@ -54,9 +54,13 @@ class PageBody extends StatelessWidget {
         ],
       ),
       floatingActionButton: floatingActionButton,
-      body: Padding(
-        padding: const EdgeInsets.all(STANDARD_GAP),
-        child: body,
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: PAGE_BODY_MAX_WIDTH),
+          padding: const EdgeInsets.all(STANDARD_GAP),
+          child: body,
+        ),
       ),
     );
   }

@@ -259,7 +259,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
       Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill out all fields')),
+        const SnackBar(
+            content: Text('Task name, deadline and assignee are required')),
       );
     }
   }
@@ -496,7 +497,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          _assignee == null ? 'No assignee' : "Assignee: ${_assignee!.name}",
+          _assignee == null ? 'No assignee *' : "Assignee: ${_assignee!.name}",
         ),
         TextButton(
           onPressed: () => _selectAssignee(context),
