@@ -41,7 +41,14 @@ class CommonTaskView extends StatelessWidget {
   }
 
   Widget _buildTaskView(BuildContext context, List<Task> data) {
-    if (data.isEmpty) {
+    final List<Task> tasks = isUserView
+        ? data
+            .where((task) =>
+                task.assignee!.id == FirebaseAuth.instance.currentUser!.uid)
+            .toList()
+        : data;
+
+    if (tasks.isEmpty) {
       return BigIconPage(
         icon: const Icon(Icons.sentiment_very_satisfied, size: BIG_ICON_SIZE),
         title: 'No tasks. Hooray!',
@@ -66,13 +73,6 @@ class CommonTaskView extends StatelessWidget {
         ],
       );
     }
-
-    final List<Task> tasks = isUserView
-        ? data
-            .where((task) =>
-                task.assignee!.id == FirebaseAuth.instance.currentUser!.uid)
-            .toList()
-        : data;
 
     return ListView.builder(
       shrinkWrap: true,
