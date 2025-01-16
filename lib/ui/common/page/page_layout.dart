@@ -18,7 +18,6 @@ class PageLayoutState extends State<PageLayout> {
         child: IndexedStack(
           index: _pageIndex,
           children: <Widget>[
-            const OverviewPage(),
             HouseholdsListPage(),
             UserTaskPage(),
           ],
@@ -37,10 +36,6 @@ class PageLayoutState extends State<PageLayout> {
         });
       },
       items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
         BottomNavigationBarItem(
           icon: Icon(Icons.group),
           label: 'Households',
