@@ -17,7 +17,6 @@ class TaskUpdater {
   late final stream;
 
   TaskUpdater() {
-    print("TaskUpdater Instantiated!");
     final householdStream = _householdService.getHouseholdsStream();
 
     // Poll tasks periodically
@@ -28,13 +27,10 @@ class TaskUpdater {
   }
 
   void listenToUpdates() {
-    stream.listen(_autoUpdate, onError: (error) {
-      print('Stream error: $error');
-    });
+    stream.listen(_autoUpdate, onError: (error) {});
   }
 
   void _autoUpdate(List<Household> households) {
-    print("running update method");
     for (Household household in households) {
       if (household.tasks.isNotEmpty) {
         updateHouseholdRotation(household);
