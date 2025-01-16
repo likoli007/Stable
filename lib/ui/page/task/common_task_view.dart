@@ -18,12 +18,14 @@ class CommonTaskView extends StatelessWidget {
   final Household household;
   final bool isUserView;
   final bool isFailedView;
+  final ScrollPhysics? physics;
 
   CommonTaskView(
       {super.key,
       required this.household,
       required this.isUserView,
-      required this.isFailedView});
+      required this.isFailedView,
+      this.physics});
 
   final _taskProvider = GetIt.instance<TaskService>();
   final _householdProvider = GetIt.instance<HouseholdService>();
@@ -79,6 +81,7 @@ class CommonTaskView extends StatelessWidget {
 
     return ListView.builder(
       shrinkWrap: true,
+      physics: physics,
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         final task = tasks[index];

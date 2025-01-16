@@ -64,6 +64,7 @@ class UserTaskPage extends StatelessWidget {
               household: household,
               isUserView: true,
               isFailedView: false,
+              physics: const NeverScrollableScrollPhysics(),
             ),
           ),
         );
