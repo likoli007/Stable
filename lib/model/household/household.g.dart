@@ -22,7 +22,12 @@ Household _$HouseholdFromJson(Map<String, dynamic> json) => Household(
                   .fromJson(e as DocumentReference<Object?>))
               .toList() ??
           const [],
-      failedTaskHistory: (json['taskHistory'] as List<dynamic>?)
+      failedTaskHistory: (json['failedTaskHistory'] as List<dynamic>?)
+              ?.map((e) => const DocumentSerializer()
+                  .fromJson(e as DocumentReference<Object?>))
+              .toList() ??
+          const [],
+      doneTaskHistory: (json['doneTaskHistory'] as List<dynamic>?)
               ?.map((e) => const DocumentSerializer()
                   .fromJson(e as DocumentReference<Object?>))
               .toList() ??
@@ -36,7 +41,10 @@ Map<String, dynamic> _$HouseholdToJson(Household instance) => <String, dynamic>{
       'name': instance.name,
       'groupId': instance.groupId,
       'tasks': instance.tasks.map(const DocumentSerializer().toJson).toList(),
-      'taskHistory': instance.failedTaskHistory
+      'doneTaskHistory': instance.doneTaskHistory
+          .map(const DocumentSerializer().toJson)
+          .toList(),
+      'failedTaskHistory': instance.failedTaskHistory
           .map(const DocumentSerializer().toJson)
           .toList(),
     };

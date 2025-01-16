@@ -47,23 +47,18 @@ class TaskUpdater {
 
     for (Task t in tasks) {
       if (t.deadline!.isBefore(DateTime.now())) {
-        //check if task is finished, if not put it to failed task history
-        if (!t.isDone) {
-          //if it is not done, copy it to a new task and assign it to task history
-          DocumentReference? failedTaskRef = await _taskService.addTask(
-              assignee: t.assignee?.id.toString(),
-              name: t.name,
-              description: t.description,
-              isDone: t.isDone,
-              deadline: t.deadline,
-              repeat: null,
-              subtasks: [],
-              rotating: false);
+        DocumentReference? failedTaskRef = await _taskService.addTask(
+            assignee: t.assignee?.id.toString(),
+            name: t.name,
+            description: t.description,
+            isDone: t.isDone,
+            deadline: t.deadline,
+            repeat: null,
+            subtasks: [],
+            rotating: false);
 
-          _householdService.updateHouseholdHistory(
-              household.id, failedTaskRef!);
-          print("One task moved to history!");
-        }
+        _householdService.updateHouseholdHistory(
+            household.id, failedTaskRef!, t.isDone);
 
         if (t.repeat != null) {
           if (t.repeat != 0) {
