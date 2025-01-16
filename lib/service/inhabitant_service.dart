@@ -14,7 +14,7 @@ class InhabitantService {
       _inhabitantRepository.observeDocuments();
 
   Future<Inhabitant?> getInhabitant(String id) async =>
-      await _inhabitantRepository.getDocument(id); //TODO search only wanted id
+      await _inhabitantRepository.getDocument(id);
 
   Stream<Inhabitant?> getInhabitantStream(String id) {
     return _inhabitantRepository.observeDocument(id);
@@ -29,7 +29,7 @@ class InhabitantService {
     required String uid,
     required DocumentReference newRef,
   }) async {
-    Inhabitant? user = await _inhabitantRepository.getDocument(uid);
+    final Inhabitant? user = await _inhabitantRepository.getDocument(uid);
 
     if (user != null) {
       user.households.add(newRef);
@@ -41,7 +41,7 @@ class InhabitantService {
 
   Future<void> removeHouseholdFromInhabitant(
       {required String uid, required DocumentReference newRef}) async {
-    Inhabitant? user = await _inhabitantRepository.getDocument(uid);
+    final Inhabitant? user = await _inhabitantRepository.getDocument(uid);
 
     if (user != null) {
       user.households.remove(newRef);
@@ -57,7 +57,7 @@ class InhabitantService {
     required String displayName,
     required String uid,
   }) async {
-    Inhabitant newInhabitant = Inhabitant(
+    final Inhabitant newInhabitant = Inhabitant(
         id: 'placeholder',
         name: displayName,
         profileColor:
