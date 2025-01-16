@@ -54,7 +54,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
     _isRepeat = widget.task?.repeat != null ? true : false;
     _isRotating = widget.task?.rotating ?? false;
 
-    _loadSubtasks();
+    if (_isRepeat) {
+      _repeatDays = _getRepeatString();
+    }
   }
 
   Future<void> _loadSubtasks() async {
@@ -168,6 +170,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
       _changeTask();
     } else {
       _addTask();
+    }
+  }
+
+  String _getRepeatString() {
+    switch (widget.task!.repeat) {
+      case 1:
+        return 'Daily';
+      case 7:
+        return 'Weekly';
+      case 30:
+        return 'Monthly';
+      default:
+        return '5 Minutes';
     }
   }
 
