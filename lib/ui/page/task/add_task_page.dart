@@ -233,7 +233,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     int? repeatValue = _getTaskRepeat();
 
     //TODO: actual validation, but here or in service? adam says in service ;)
-    if (name.isNotEmpty && description.isNotEmpty && true) {
+    if (name.isNotEmpty && _assignee != null && _selectedDeadline != null) {
       DocumentReference? taskRef = await _taskProvider.addTask(
           assignee: _assignee?.id,
           name: name,
