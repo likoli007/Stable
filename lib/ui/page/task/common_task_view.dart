@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/ui/common/util/shared_ui_constants.dart';
+import 'package:stable/ui/common/widget/big_icon_page.dart';
 import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
+import 'package:stable/ui/common/widget/full_width_button.dart';
 import 'package:stable/ui/common/widget/user_profile_picture.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
@@ -39,6 +41,32 @@ class CommonTaskView extends StatelessWidget {
 
   Widget _buildTaskView(BuildContext context, List<Task> data) {
     final tasks = data;
+
+    if (tasks.isEmpty) {
+      return BigIconPage(
+        icon: const Icon(Icons.sentiment_very_satisfied, size: BIG_ICON_SIZE),
+        title: 'No tasks. Hooray!',
+        text: isFailedView
+            ? "No failed tasks? That's great! Keep it up!"
+            : "Don't be afraid, it does not mean you are out of work. "
+                'It means no one has assigned you any tasks yet. However you can outrun '
+                'your friends and create some tasks for them before they do!',
+        buttons: [
+          FullWidthButton(
+            label: "Add task",
+            icon: const Icon(Icons.add_task),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddTaskPage(
+                  householdRef: household.id,
+                ),
+              ),
+            ),
+          )
+        ],
+      );
+    }
 
     return ListView.builder(
       shrinkWrap: true,

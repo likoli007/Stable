@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/ui/common/page/page_body.dart';
-import 'package:stable/ui/common/util/shared_ui_constants.dart';
 import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/service/household_service.dart';

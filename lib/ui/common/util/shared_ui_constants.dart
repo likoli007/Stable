@@ -14,4 +14,6 @@ const MEDIUM_FONT_SIZE = 16.0;
 
 const BORDER_RADIUS = 20.0;
 
+const BIG_ICON_SIZE = 200.0;
+
 const THEME_MODES = [ThemeMode.light, ThemeMode.dark, ThemeMode.system];

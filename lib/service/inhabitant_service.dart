@@ -20,12 +20,26 @@ class InhabitantService {
     return _inhabitantRepository.observeDocument(id);
   }
 
-  Future<void> addHouseholdToInhabitant(
-      {required String uid, required DocumentReference newRef}) async {
+  Future<void> addHouseholdToInhabitant({
+    required String uid,
+    required DocumentReference newRef,
+  }) async {
     Inhabitant? user = await _inhabitantRepository.getDocument(uid);
 
     if (user != null) {
       user.households.add(newRef);
+      await _inhabitantRepository.updateEntity(uid, user);
+    } else {
+      throw Exception('Inhabitant not found for uid: $uid');
+    }
+  }
+
+  Future<void> removeHouseholdFromInhabitant(
+      {required String uid, required DocumentReference newRef}) async {
+    Inhabitant? user = await _inhabitantRepository.getDocument(uid);
+
+    if (user != null) {
+      user.households.remove(newRef);
       _inhabitantRepository.updateEntity(uid, user);
     }
   }
