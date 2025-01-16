@@ -20,7 +20,7 @@ class TaskUpdater {
     final householdStream = _householdService.getHouseholdsStream();
 
     // Poll tasks periodically
-    stream = Stream.periodic(Duration(seconds: 5))
+    stream = Stream.periodic(Duration(seconds: 30))
         .asyncMap((_) => householdStream.first);
 
     listenToUpdates();
@@ -39,11 +39,11 @@ class TaskUpdater {
   }
 
   Future<void> updateHouseholdRotation(Household household) async {
-    List<Task> tasks = await _taskService.getTasks(household.tasks);
+    final List<Task> tasks = await _taskService.getTasks(household.tasks);
 
     for (Task t in tasks) {
       if (t.deadline!.isBefore(DateTime.now())) {
-        DocumentReference? failedTaskRef = await _taskService.addTask(
+        final DocumentReference? failedTaskRef = await _taskService.addTask(
             assignee: t.assignee?.id.toString(),
             name: t.name,
             description: t.description,
