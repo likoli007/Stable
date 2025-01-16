@@ -16,18 +16,15 @@ class TaskAssigneePickPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageBody(
-        title: "Assign Inhabitant", body: _buildInhabitantsFuture());
+      title: "Assign inhabitants",
+      body: _buildInhabitantsFuture(),
+    );
   }
 
   Widget _buildInhabitantsFuture() {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pick a User'),
-      ),
-      body: LoadingFutureBuilder(
-          future: _inhabitantService.getInhabitants(users),
-          builder: _buildInhabitantSelection),
-    );
+    return LoadingFutureBuilder(
+        future: _inhabitantService.getInhabitants(users),
+        builder: _buildInhabitantSelection);
   }
 
   Widget _buildInhabitantSelection(
