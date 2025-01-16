@@ -105,9 +105,12 @@ class TaskService {
 
   Future<List<Subtask>> getRelevantSubtasks(Task t) async {
     List<DocumentReference> subtaskRefs = t.subtasks ?? [];
-    List<Subtask> subtaskList =
-        await _subTaskRepository.getDocumentsByIds(subtaskRefs);
 
+    List<Subtask> subtaskList = [];
+
+    if (subtaskRefs.isNotEmpty) {
+      subtaskList = await _subTaskRepository.getDocumentsByIds(subtaskRefs);
+    }
     return subtaskList;
   }
 
