@@ -95,23 +95,23 @@ class HouseholdService {
     required String userId,
   }) async {
     Household? targetHousehold = await getHouseholdByGroupId(groupId);
-    if (targetHousehold != null) {
-      // Add inhabitant to inhabitants list of a household
-      // TODO if inhabitant already in household give error
-      DocumentReference userRef =
-          FirebaseFirestore.instance.doc('User/$userId');
-      targetHousehold.inhabitants.add(userRef);
-      _householdRepository.updateEntity(targetHousehold.id, targetHousehold);
-
-      // Add household to list of households of an inhabitant
-      InhabitantService _userService = GetIt.instance<InhabitantService>();
-      DocumentReference householdRef =
-          FirebaseFirestore.instance.doc('Household/${targetHousehold.id}');
-      _userService.addHouseholdToInhabitant(
-        uid: userId,
-        newRef: householdRef,
-      );
+    if (targetHousehold == null) {
+      throw Exception('No household found with this invite code.');
     }
+    // Add inhabitant to inhabitants list of a household
+    // TODO if inhabitant already in household give error
+    DocumentReference userRef = FirebaseFirestore.instance.doc('User/$userId');
+    targetHousehold.inhabitants.add(userRef);
+    _householdRepository.updateEntity(targetHousehold.id, targetHousehold);
+
+    // Add household to list of households of an inhabitant
+    InhabitantService _userService = GetIt.instance<InhabitantService>();
+    DocumentReference householdRef =
+        FirebaseFirestore.instance.doc('Household/${targetHousehold.id}');
+    _userService.addHouseholdToInhabitant(
+      uid: userId,
+      newRef: householdRef,
+    );
   }
 
   Future<void> updateHouseholdHistory(
