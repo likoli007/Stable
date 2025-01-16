@@ -40,13 +40,15 @@ class UserTaskPage extends StatelessWidget {
   Widget _buildTaskView(BuildContext context, List<Household?> data) {
     return ListView.builder(
       itemCount: data.length,
+      padding: EdgeInsets.zero,
       itemBuilder: (context, index) {
         final household = data[index];
         return ListTile(
+          contentPadding: EdgeInsets.zero,
           title: Text(household!.name),
           subtitle: Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: STANDARD_GAP, vertical: SMALL_GAP),
+            padding:
+                const EdgeInsets.fromLTRB(SMALL_GAP, SMALL_GAP, 0, SMALL_GAP),
             child: CommonTaskView(
               household: household,
               isUserView: true,

@@ -83,8 +83,8 @@ class CommonTaskView extends StatelessWidget {
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         final task = tasks[index];
-
         return ListTile(
+          contentPadding: EdgeInsets.symmetric(horizontal: 2.0),
           title: Text(task.name),
           subtitle: Text(task.description),
           trailing: _buildTaskTrailingButton(task),
