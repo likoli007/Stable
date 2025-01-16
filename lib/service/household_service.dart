@@ -118,7 +118,7 @@ class HouseholdService {
       String householdId, DocumentReference ref) async {
     Household? household = await getHousehold(householdId);
     if (household != null) {
-      household.taskHistory.add(ref);
+      household.failedTaskHistory.add(ref);
       await _householdRepository.updateEntity(householdId, household);
     }
   }
@@ -147,8 +147,8 @@ class HouseholdService {
     Household? household = await getHousehold(householdRef);
     if (household != null) {
       DocumentReference ref = FirebaseFirestore.instance.doc('Task/${taskRef}');
-      int index = household.taskHistory.indexOf(ref);
-      household.taskHistory.removeAt(index);
+      int index = household.failedTaskHistory.indexOf(ref);
+      household.failedTaskHistory.removeAt(index);
       await _householdRepository.updateEntity(householdRef, household);
     }
   }
