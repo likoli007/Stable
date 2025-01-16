@@ -16,18 +16,31 @@ import 'package:stable/model/household/household.dart';
 import 'package:stable/ui/page/task/common_task_view.dart';
 import 'package:stable/ui/page/household/household_task_history_page.dart';
 
-class HouseholdPage extends StatelessWidget {
+class HouseholdPage extends StatefulWidget {
   // TODO add rotary task overview
   final Household household;
 
   HouseholdPage({super.key, required this.household});
 
+  @override
+  State<HouseholdPage> createState() => _HouseholdPageState();
+}
+
+class _HouseholdPageState extends State<HouseholdPage> {
+  late String _householdName;
+
   final _householdProvider = GetIt.instance<HouseholdService>();
+
+  @override
+  void initState() {
+    super.initState();
+    _householdName = widget.household.name;
+  }
 
   @override
   Widget build(BuildContext context) {
     return PageBody(
-      title: household.name,
+      title: _householdName,
       body: _buildHouseholdStream(),
       floatingActionButton: _buildSpeedDials(context),
     );
@@ -35,7 +48,7 @@ class HouseholdPage extends StatelessWidget {
 
   Widget _buildHouseholdStream() {
     return LoadingStreamBuilder<Household?>(
-      stream: _householdProvider.getHouseholdStream(household.id),
+      stream: _householdProvider.getHouseholdStream(widget.household.id),
       builder: _buildTaskStream,
     );
   }
@@ -69,7 +82,7 @@ class HouseholdPage extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => HouseholdTaskHistoryPage(
-                householdReference: household.id,
+                householdReference: widget.household.id,
               ),
             ),
           ),
@@ -91,7 +104,7 @@ class HouseholdPage extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => ManageHouseholdInhabitants(
-                householdReference: household.id,
+                householdReference: widget.household.id,
               ),
             ),
           ),
@@ -132,18 +145,18 @@ class HouseholdPage extends StatelessWidget {
           children: [
             IconButton(
                 icon: const Icon(Icons.copy),
-                onPressed: () =>
-                    Clipboard.setData(ClipboardData(text: household.groupId))),
+                onPressed: () => Clipboard.setData(
+                    ClipboardData(text: widget.household.groupId))),
             SelectableText(
-              household.groupId,
+              widget.household.groupId,
               textScaler: const TextScaler.linear(HEADLINE_SCALER),
             ),
           ],
         ),
       ],
       onConfirm: () => Share.share(
-        household.groupId,
-        subject: "Invite code for ${household.name}",
+        widget.household.groupId,
+        subject: "Invite code for ${widget.household.name}",
       ),
     );
   }
@@ -152,9 +165,12 @@ class HouseholdPage extends StatelessWidget {
     return TextInputDialog(
       title: 'Rename household',
       buttonText: 'Rename',
-      textFieldInitialValue: household.name,
+      textFieldInitialValue: widget.household.name,
       onSubmit: (name) async {
-        _householdProvider.updateHouseholdName(household.id, name);
+        _householdProvider.updateHouseholdName(widget.household.id, name);
+        setState(() {
+          _householdName = name;
+        });
       },
     );
   }

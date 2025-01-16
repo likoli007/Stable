@@ -43,7 +43,7 @@ class ManageHouseholdInhabitantsState
       body: Column(
         children: [
           TextField(
-            //TODO make a separate dialog out of this
+            //TODO DELETE
             controller: _nameController,
             decoration: const InputDecoration(labelText: 'Household Name'),
           ),
