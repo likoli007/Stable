@@ -65,6 +65,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
     if (widget.task?.assignee != null) {
       _loadAssignee(widget.task!.assignee!);
     }
+
+    _loadSubtasks();
   }
 
   Future<void> _loadAssignee(DocumentReference ref) async {
@@ -176,6 +178,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   Future<void> _changeTask() async {
+    int? repeatValue = _getTaskRepeat();
+
     if (widget.task != null) {
       widget.task?.isDone = _isDone;
       widget.task?.subtasks =
@@ -183,10 +187,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
       widget.task?.description = _descriptionController.text;
       widget.task?.name = _nameController.text;
       widget.task?.deadline = _selectedDeadline;
-      //TODO: widget.task?.assignees
-      //TODO: widget.task?.repeat
+      widget.task?.assignee =
+          FirebaseFirestore.instance.doc('User/${_assignee?.id}');
+      widget.task?.repeat = _isRepeat ? repeatValue : null;
+      widget.task?.rotating = _isRotating;
       _taskProvider.updateTask(widget.task);
     }
+    Navigator.pop(context);
   }
 
   void _handleActionButton() {
