@@ -61,8 +61,8 @@ class TaskUpdater {
           if (t.repeat != 0) {
             t.deadline = t.deadline?.add(Duration(days: t.repeat!));
           } else {
-            //DEBUG, TODO: REMOVE
-            t.deadline = t.deadline?.add(Duration(seconds: 10));
+            //
+            t.deadline = t.deadline?.add(Duration(minutes: 5));
             print(
                 "changed " + t.name + " to deadline: " + t.deadline.toString());
           }
