@@ -13,6 +13,7 @@ import 'package:share_plus/share_plus.dart';
 
 import 'package:stable/ui/common/page/page_body.dart';
 import 'package:stable/model/household/household.dart';
+import 'package:stable/ui/page/task/add_task_page.dart';
 import 'package:stable/ui/page/task/common_task_view.dart';
 import 'package:stable/ui/page/household/household_task_history_page.dart';
 
@@ -67,13 +68,19 @@ class _HouseholdPageState extends State<HouseholdPage> {
       activeIcon: Icons.more_vert,
       children: [
         CustomSpeedDialChild(
-          context: context,
-          icon: const Icon(Icons.add_task),
-          label: 'Add a new task',
-          backgroundColor: Colors.green,
-          foregroundColor: Colors.white,
-          onTap: () => {},
-        ),
+            context: context,
+            icon: const Icon(Icons.add_task),
+            label: 'Add a new task',
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
+            onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddTaskPage(
+                      householdRef: widget.household.id,
+                    ),
+                  ),
+                )),
         CustomSpeedDialChild(
           context: context,
           icon: const Icon(Icons.cancel),
