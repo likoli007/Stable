@@ -17,8 +17,6 @@ class DatabaseService<T> {
               toFirestore: (value, _) => _serializeJsonDocument(value, toJson),
             );
 
-  // TODO: add relevant functions as app is built
-
   Future<void> deleteDocument(String id) async {
     await _collectionReference.doc(id).delete();
   }

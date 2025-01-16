@@ -67,7 +67,7 @@ class InhabitantService {
   }
 
   Future<void> changeInhabitantColor(String uid, Color color) async {
-    Inhabitant? user = await _inhabitantRepository.getDocument(uid);
+    final Inhabitant? user = await _inhabitantRepository.getDocument(uid);
 
     if (user != null) {
       user.profileColor = color;

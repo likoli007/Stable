@@ -20,7 +20,6 @@ import 'package:stable/ui/page/task/common_task_view.dart';
 import 'package:stable/ui/page/household/household_task_history_page.dart';
 
 class HouseholdPage extends StatefulWidget {
-  // TODO add rotary task overview
   final Household household;
 
   const HouseholdPage({super.key, required this.household});
