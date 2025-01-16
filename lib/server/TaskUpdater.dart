@@ -57,6 +57,7 @@ class TaskUpdater {
             household.id, failedTaskRef!, t.isDone);
 
         if (t.repeat != null) {
+          t.isDone = false;
           if (t.repeat != 0) {
             t.deadline = t.deadline?.add(Duration(days: t.repeat!));
           } else {
