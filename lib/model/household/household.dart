@@ -16,8 +16,12 @@ class Household {
   String groupId;
   @DocumentSerializer()
   final List<DocumentReference> tasks;
+
   @DocumentSerializer()
-  final List<DocumentReference> taskHistory;
+  final List<DocumentReference> doneTaskHistory;
+
+  @DocumentSerializer()
+  final List<DocumentReference> failedTaskHistory;
 
   Household({
     required this.id,
@@ -26,7 +30,8 @@ class Household {
     required this.name,
     required this.groupId,
     this.tasks = const [],
-    this.taskHistory = const [],
+    this.failedTaskHistory = const [],
+    this.doneTaskHistory = const [],
   });
 
   factory Household.fromJson(Map<String, dynamic> json) =>

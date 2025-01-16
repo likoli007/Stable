@@ -33,7 +33,7 @@ class CommonTaskView extends StatelessWidget {
   Widget build(BuildContext context) {
     return LoadingStreamBuilder(
       stream: _taskProvider.getTasksStreamByRefs(
-        isFailedView ? household.taskHistory : household.tasks,
+        isFailedView ? household.failedTaskHistory : household.tasks,
       ),
       builder: _buildTaskView,
     );

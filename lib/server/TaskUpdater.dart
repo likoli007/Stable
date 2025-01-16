@@ -21,7 +21,7 @@ class TaskUpdater {
     final householdStream = _householdService.getHouseholdsStream();
 
     // Poll tasks periodically
-    stream = Stream.periodic(Duration(seconds: 30))
+    stream = Stream.periodic(Duration(seconds: 5))
         .asyncMap((_) => householdStream.first);
 
     listenToUpdates();
@@ -47,30 +47,25 @@ class TaskUpdater {
 
     for (Task t in tasks) {
       if (t.deadline!.isBefore(DateTime.now())) {
-        //check if task is finished, if not put it to failed task history
-        if (!t.isDone) {
-          //if it is not done, copy it to a new task and assign it to task history
-          DocumentReference? failedTaskRef = await _taskService.addTask(
-              assignee: t.assignee?.id.toString(),
-              name: t.name,
-              description: t.description,
-              isDone: t.isDone,
-              deadline: t.deadline,
-              repeat: null,
-              subtasks: [],
-              rotating: false);
+        DocumentReference? failedTaskRef = await _taskService.addTask(
+            assignee: t.assignee?.id.toString(),
+            name: t.name,
+            description: t.description,
+            isDone: t.isDone,
+            deadline: t.deadline,
+            repeat: null,
+            subtasks: [],
+            rotating: false);
 
-          _householdService.updateHouseholdHistory(
-              household.id, failedTaskRef!);
-          print("One task moved to history!");
-        }
+        _householdService.updateHouseholdHistory(
+            household.id, failedTaskRef!, t.isDone);
 
         if (t.repeat != null) {
           if (t.repeat != 0) {
             t.deadline = t.deadline?.add(Duration(days: t.repeat!));
           } else {
             //DEBUG, TODO: REMOVE
-            t.deadline = t.deadline?.add(Duration(minutes: 5));
+            t.deadline = t.deadline?.add(Duration(seconds: 10));
             print(
                 "changed " + t.name + " to deadline: " + t.deadline.toString());
           }
