@@ -6,6 +6,7 @@ class TextInputDialog extends StatefulWidget {
   final String infoText;
   final String buttonText;
   final int? maxInputLength;
+  final String? textFieldInitialValue;
   final Future<void> Function(String name) onSubmit;
 
   const TextInputDialog({
@@ -14,6 +15,7 @@ class TextInputDialog extends StatefulWidget {
     this.infoText = "",
     required this.buttonText,
     this.maxInputLength,
+    this.textFieldInitialValue,
     required this.onSubmit,
   });
 
@@ -92,8 +94,8 @@ class _TextInputDialogState extends State<TextInputDialog> {
       controller: _textController,
       focusNode: _focusNode,
       maxLength: widget.maxInputLength,
-      decoration: const InputDecoration(
-        labelText: 'Household name',
+      decoration: InputDecoration(
+        labelText: widget.textFieldInitialValue ?? "",
       ),
     );
   }

@@ -115,7 +115,7 @@ class CommonTaskView extends StatelessWidget {
 
     return const Padding(
       padding: EdgeInsets.all(SMALL_GAP),
-      child: Text('No subtasks'),
+      child: Text('No subtasks'), // TODO bigiconpage
     );
   }
 

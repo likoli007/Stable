@@ -46,6 +46,7 @@ class HouseholdsListPage extends StatelessWidget {
       buttonText: 'Create',
       infoText: "Pro tip: Add an emoji at the beginning of the name to better "
           "differentiate between several households. 😏",
+      textFieldInitialValue: "Household name",
       onSubmit: (name) async {
         String uid = FirebaseAuth.instance.currentUser!.uid;
         DocumentReference householdReference =
@@ -64,6 +65,7 @@ class HouseholdsListPage extends StatelessWidget {
       buttonText: 'Join',
       infoText: "You can join your friend's household. "
           "Navigate them to their household settings to share the household invite code with you.",
+      textFieldInitialValue: "Invite code",
       maxInputLength: 8,
       onSubmit: (groupId) async {
         String uid = FirebaseAuth.instance.currentUser!.uid;
