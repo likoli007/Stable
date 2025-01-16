@@ -11,10 +11,10 @@ class TaskService {
   const TaskService(this._taskRepository, this._subTaskRepository);
 
   Future<void> removeTask(String taskId) async {
-    Task? t = await _taskRepository.getDocument(taskId);
-    Task task = t!;
+    final Task? t = await _taskRepository.getDocument(taskId);
+    final Task task = t!;
     for (int i = 0; i < task.subtasks!.length; i++) {
-      DocumentReference? r = task.subtasks?[i];
+      final DocumentReference? r = task.subtasks?[i];
       _subTaskRepository.deleteDocument(r!.id.toString());
     }
     _taskRepository.deleteDocument(taskId);
@@ -27,13 +27,13 @@ class TaskService {
 
   Future<void>? setIsDoneTask(Task t) async {
     t.isDone = !t.isDone;
-    Map<String, dynamic> doneField = {"isDone": t.isDone};
+    final Map<String, dynamic> doneField = {"isDone": t.isDone};
     _taskRepository.updateDocument(t.id, doneField);
 
     if (t.subtasks != null && t.subtasks!.isNotEmpty) {
-      List<Subtask> subtasks =
+      final List<Subtask> subtasks =
           await _subTaskRepository.getDocumentsByIds(t.subtasks);
-      for (Subtask s in subtasks) {
+      for (final Subtask s in subtasks) {
         s.isDone = t.isDone;
         _subTaskRepository.updateEntity(s.id, s);
       }
@@ -42,8 +42,8 @@ class TaskService {
   }
 
   Future<void> _percolateIsDone(Subtask s) async {
-    String? ref = s.taskReference?.id.toString();
-    Task? t = await _taskRepository.getDocument(ref!);
+    final String? ref = s.taskReference?.id.toString();
+    final Task? t = await _taskRepository.getDocument(ref!);
     if (t == null) return;
     if (!s.isDone && t.isDone) {
       t.isDone = s.isDone;
@@ -51,10 +51,10 @@ class TaskService {
       return;
     }
 
-    List<Subtask> subtaskList =
+    final List<Subtask> subtaskList =
         await _subTaskRepository.getDocumentsByIds(t.subtasks);
     bool percolate = true;
-    for (Subtask subtask in subtaskList) {
+    for (final Subtask subtask in subtaskList) {
       if (!subtask.isDone) {
         percolate = false;
         break;
@@ -68,11 +68,10 @@ class TaskService {
 
   Future<void>? setIsDoneSubtask(Subtask s) {
     s.isDone = !s.isDone;
-    Map<String, dynamic> doneField = {"isDone": s.isDone};
+    final Map<String, dynamic> doneField = {"isDone": s.isDone};
     _subTaskRepository.updateDocument(s.id, doneField);
 
     _percolateIsDone(s);
-
     return null;
   }
 
@@ -80,13 +79,13 @@ class TaskService {
     required String description,
     required bool isDone,
   }) async {
-    Subtask subtask = Subtask(
+    final Subtask subtask = Subtask(
         id: "template",
         description: description,
         isDone: isDone,
         taskReference: null);
 
-    DocumentReference newSubTaskReference =
+    final DocumentReference newSubTaskReference =
         await _subTaskRepository.add(subtask);
 
     return newSubTaskReference;
@@ -103,7 +102,7 @@ class TaskService {
   }
 
   Future<List<Subtask>> getRelevantSubtasks(Task t) async {
-    List<DocumentReference> subtaskRefs = t.subtasks ?? [];
+    final List<DocumentReference> subtaskRefs = t.subtasks ?? [];
 
     List<Subtask> subtaskList = [];
 
@@ -119,10 +118,10 @@ class TaskService {
       return;
     }
 
-    List<Subtask> subtasks =
+    final List<Subtask> subtasks =
         await _subTaskRepository.getDocumentsByIds(subtaskRefs);
 
-    for (Subtask s in subtasks) {
+    for (final Subtask s in subtasks) {
       s.taskReference = taskRef;
       _subTaskRepository.updateEntity(s.id, s);
     }
@@ -144,14 +143,13 @@ class TaskService {
       return null;
     }
 
-    List<DocumentReference> subtaskReferences = [];
+    final List<DocumentReference> subtaskReferences = [];
     if (subtasks != null) {
       for (int i = 0; i < subtasks.length; i++) {
-        bool subIsDone = subtasks[i].isDone;
-        String subDescription = subtasks[i].description;
-        //TODO: checking of descriptions
+        final bool subIsDone = subtasks[i].isDone;
+        final String subDescription = subtasks[i].description;
 
-        DocumentReference? ref =
+        final DocumentReference? ref =
             await addSubTask(description: subDescription, isDone: subIsDone);
 
         if (ref != null) {
@@ -160,11 +158,11 @@ class TaskService {
       }
     }
 
-    DocumentReference? assigneeRef = assignee == null
+    final DocumentReference? assigneeRef = assignee == null
         ? null
         : FirebaseFirestore.instance.doc('User/$assignee');
 
-    Task newTask = Task(
+    final Task newTask = Task(
         id: "discard",
         assignee: assigneeRef,
         name: name,
@@ -175,7 +173,7 @@ class TaskService {
         subtasks: subtaskReferences,
         rotating: rotating!);
 
-    DocumentReference newId = await _taskRepository.add(newTask);
+    final DocumentReference newId = await _taskRepository.add(newTask);
 
     assignTaskReference(newTask.subtasks, newId);
 
@@ -187,7 +185,7 @@ class TaskService {
       Task t, List<Subtask> subtaskList) async {
     List<DocumentReference> result = [];
     for (int i = 0; i < subtaskList.length; i++) {
-      DocumentReference ref = await _subTaskRepository.setOrUpdate(
+      final DocumentReference ref = await _subTaskRepository.setOrUpdate(
           subtaskList[i], subtaskList[i].id);
       result.add(ref);
     }
