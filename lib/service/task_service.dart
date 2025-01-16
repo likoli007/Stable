@@ -30,7 +30,6 @@ class TaskService {
     Map<String, dynamic> doneField = {"isDone": t.isDone};
     _taskRepository.updateDocument(t.id, doneField);
 
-    //TODO update all isDones for the whole Tasks
     if (t.subtasks != null && t.subtasks!.isNotEmpty) {
       List<Subtask> subtasks =
           await _subTaskRepository.getDocumentsByIds(t.subtasks);
@@ -138,8 +137,6 @@ class TaskService {
       required int? repeat,
       required List<Subtask>? subtasks,
       required bool? rotating}) async {
-    //TODO validation checks and document reference handling
-
     if (name == null ||
         description == null ||
         deadline == null ||
