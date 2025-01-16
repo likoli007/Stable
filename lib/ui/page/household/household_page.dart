@@ -13,6 +13,7 @@ import 'package:share_plus/share_plus.dart';
 
 import 'package:stable/ui/common/page/page_body.dart';
 import 'package:stable/model/household/household.dart';
+import 'package:stable/ui/page/statistics/household_statistics_page.dart';
 import 'package:stable/ui/page/task/add_task_page.dart';
 import 'package:stable/ui/page/task/common_task_view.dart';
 import 'package:stable/ui/page/household/household_task_history_page.dart';
@@ -123,6 +124,19 @@ class _HouseholdPageState extends State<HouseholdPage> {
           onTap: () => showDialog(
             context: context,
             builder: (context) => _showRenameHouseholdDialog(),
+          ),
+        ),
+        CustomSpeedDialChild(
+          context: context,
+          icon: const Icon(Icons.stacked_bar_chart),
+          label: 'View Statistics',
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HouseholdStatisticsPage(
+                householdReference: widget.household.id,
+              ),
+            ),
           ),
         ),
         CustomSpeedDialChild(
