@@ -5,6 +5,7 @@ import 'package:stable/ui/common/widget/builder/loading_future_builder.dart';
 import 'package:stable/ui/common/page/page_body.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/service/inhabitant_service.dart';
+import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 
 class TaskAssigneePickPage extends StatelessWidget {
   final List<DocumentReference> users;
@@ -22,8 +23,8 @@ class TaskAssigneePickPage extends StatelessWidget {
   }
 
   Widget _buildInhabitantsFuture() {
-    return LoadingFutureBuilder(
-        future: _inhabitantService.getInhabitants(users),
+    return LoadingStreamBuilder(
+        stream: _inhabitantService.getInhabitants(users),
         builder: _buildInhabitantSelection);
   }
 

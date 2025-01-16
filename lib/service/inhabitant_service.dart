@@ -49,8 +49,8 @@ class InhabitantService {
     }
   }
 
-  Future<List<Inhabitant>> getInhabitants(List<DocumentReference> refs) {
-    return _inhabitantRepository.getDocumentsByIds(refs);
+  Stream<List<Inhabitant>> getInhabitants(List<DocumentReference> refs) {
+    return _inhabitantRepository.observeDocumentsByIds(refs);
   }
 
   void createInhabitantFromAuth({
