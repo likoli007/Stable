@@ -83,7 +83,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     if (ref == null) return null;
 
     Inhabitant? result =
-        await _inhabitantProvider.getInhabitant(ref!.id.toString());
+        await _inhabitantProvider.getInhabitant(ref.id.toString());
 
     return result;
   }

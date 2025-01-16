@@ -42,7 +42,6 @@ class ConfirmationDialog extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 
   Widget _buildButtons(BuildContext context) {
