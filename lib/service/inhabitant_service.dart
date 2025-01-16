@@ -65,4 +65,13 @@ class InhabitantService {
 
     await _inhabitantRepository.updateEntity(uid, newInhabitant);
   }
+
+  Future<void> changeInhabitantColor(String uid, Color color) async {
+    final Inhabitant? user = await _inhabitantRepository.getDocument(uid);
+
+    if (user != null) {
+      user.profileColor = color;
+      await _inhabitantRepository.updateEntity(uid, user);
+    }
+  }
 }

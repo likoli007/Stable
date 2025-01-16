@@ -11,19 +11,17 @@ import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 import 'package:stable/ui/common/widget/dialog/confirmation_dialog.dart';
 
-class ManageHouseholdInhabitants extends StatefulWidget {
+class HouseholdInhabitantsPage extends StatefulWidget {
   final String householdReference;
 
-  const ManageHouseholdInhabitants(
-      {super.key, required this.householdReference});
+  const HouseholdInhabitantsPage({super.key, required this.householdReference});
 
   @override
-  ManageHouseholdInhabitantsState createState() =>
-      ManageHouseholdInhabitantsState();
+  HouseholdInhabitantsPageState createState() =>
+      HouseholdInhabitantsPageState();
 }
 
-class ManageHouseholdInhabitantsState
-    extends State<ManageHouseholdInhabitants> {
+class HouseholdInhabitantsPageState extends State<HouseholdInhabitantsPage> {
   List<String> _inhabitants = [];
 
   final HouseholdService _householdService = GetIt.instance<HouseholdService>();

@@ -20,7 +20,7 @@ class LoadingStreamBuilder<T> extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        return builder(context, snapshot.data!);
+        return builder(context, snapshot.data as T);
       },
     );
   }

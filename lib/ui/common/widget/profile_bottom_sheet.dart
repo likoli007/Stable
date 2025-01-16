@@ -7,12 +7,15 @@ import 'package:stable/ui/common/util/shared_ui_constants.dart';
 import 'package:stable/ui/common/widget/full_width_button.dart';
 import 'package:stable/ui/common/widget/user_profile_picture.dart';
 import 'package:stable/service/settings_controller.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:stable/service/inhabitant_service.dart';
 
 class ProfileBottomSheet extends StatelessWidget {
   ProfileBottomSheet({super.key});
 
   final FirebaseAuthService _auth = GetIt.instance<FirebaseAuthService>();
   final _settingsController = GetIt.instance<SettingsController>();
+  final _inhabitantService = GetIt.instance<InhabitantService>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ class ProfileBottomSheet extends StatelessWidget {
               child: Column(children: [
                 _buildProfileSection(context),
                 const SizedBox(height: STANDARD_GAP),
-                // TODO add color picker for user profile picture color
+                _buildColorPickerButton(context),
                 const SizedBox(height: STANDARD_GAP),
                 _buildThemeModeToggle(context),
               ]),
@@ -40,7 +43,6 @@ class ProfileBottomSheet extends StatelessWidget {
   }
 
   Widget _buildProfileSection(BuildContext context) {
-    // This is here only for not showing red error screen after logout
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
@@ -77,6 +79,57 @@ class ProfileBottomSheet extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _buildColorPickerButton(BuildContext context) {
+    return FullWidthButton(
+      onPressed: () => _showColorPickerDialog(context),
+      label: 'Change profile color',
+      icon: const Icon(Icons.palette),
+    );
+  }
+
+  void _showColorPickerDialog(BuildContext context) {
+    Color selectedColor = Colors.blue; // Default color
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Pick a color'),
+          content: SingleChildScrollView(
+            child: ColorPicker(
+              pickerColor: selectedColor,
+              onColorChanged: (color) {
+                selectedColor = color;
+              },
+            ),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: const Text('Select'),
+              onPressed: () {
+                _changeInhabitantColor(selectedColor);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _changeInhabitantColor(Color color) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await _inhabitantService.changeInhabitantColor(user.uid, color);
+    }
   }
 
   Widget _buildThemeModeToggle(BuildContext context) {

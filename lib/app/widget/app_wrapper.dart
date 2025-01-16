@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:stable/auth/firebase_auth_service.dart';
 import 'package:stable/ui/common/page/page_layout.dart';
 import 'package:stable/model/settings/settings.dart';
+import 'package:stable/ui/page/household/household_list_page/households_list_page.dart';
 import 'package:stable/ui/page/login/introduction_page.dart';
 import 'package:stable/ui/page/task/user_task_page.dart';
 import 'package:stable/service/settings_controller.dart';
@@ -39,12 +40,10 @@ class AppWrapper extends StatelessWidget {
       darkTheme: darkThemeData.materialThemeData,
       initialRoute: _auth.user != null ? '/' : '/introduction',
       routes: {
-        '/introduction': (context) => IntroductionPage(),
-        '/': (context) => PageLayout(),
+        '/introduction': (context) => const IntroductionPage(),
+        '/': (context) => const PageLayout(),
         '/tasks': (context) => UserTaskPage(),
-        //'/tasks': (context) => HouseholdTaskPage(),
-        //TODO '/household': (context) => HouseholdPage(),
-        //TODO: Add routes
+        '/households': (context) => HouseholdsListPage(),
       },
     );
     return materialApp;

@@ -10,6 +10,7 @@ import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/ui/page/household/household_list_page/full_households_list_page.dart';
+import 'package:stable/ui/page/login/introduction_page.dart';
 
 class HouseholdsListPage extends StatelessWidget {
   HouseholdsListPage({super.key});
@@ -20,10 +21,18 @@ class HouseholdsListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LoadingStreamBuilder(
-        stream: _userProvider
-            .getInhabitantStream(FirebaseAuth.instance.currentUser!.uid),
-        builder: _homePageBuilder);
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      // User is not logged in, show login page
+      // (previously caused unexpected error)
+      return const IntroductionPage();
+    } else {
+      return LoadingStreamBuilder(
+          stream: _userProvider
+              .getInhabitantStream(FirebaseAuth.instance.currentUser!.uid),
+          builder: _homePageBuilder);
+    }
   }
 
   Widget _homePageBuilder(BuildContext context, Inhabitant? data) {

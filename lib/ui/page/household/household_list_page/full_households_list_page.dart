@@ -50,6 +50,7 @@ class FullHouseholdsListPage extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => HouseholdPage(household: household),
+              fullscreenDialog: false,
             ),
           ),
         );

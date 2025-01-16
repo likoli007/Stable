@@ -8,7 +8,6 @@ import 'package:stable/ui/common/widget/full_width_button.dart';
 import 'package:stable/ui/common/widget/user_profile_picture.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
-import 'package:stable/model/subtask/subtask.dart';
 import 'package:stable/model/task/task.dart';
 import 'package:stable/service/household_service.dart';
 import 'package:stable/service/inhabitant_service.dart';
@@ -19,12 +18,14 @@ class CommonTaskView extends StatelessWidget {
   final Household household;
   final bool isUserView;
   final bool isFailedView;
+  final ScrollPhysics? physics;
 
   CommonTaskView(
       {super.key,
       required this.household,
       required this.isUserView,
-      required this.isFailedView});
+      required this.isFailedView,
+      this.physics});
 
   final _taskProvider = GetIt.instance<TaskService>();
   final _householdProvider = GetIt.instance<HouseholdService>();
@@ -73,18 +74,19 @@ class CommonTaskView extends StatelessWidget {
         ],
       );
     } else if (tasks.isEmpty) {
-      return Center(
+      return const Center(
         child: Text("No Tasks for you from this household!"),
       );
     }
 
     return ListView.builder(
       shrinkWrap: true,
+      physics: physics,
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         final task = tasks[index];
         return ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 2.0),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 2.0),
           title: Text(task.name),
           subtitle: Text(task.description),
           trailing: _buildTaskTrailingButton(task),
@@ -129,36 +131,6 @@ class CommonTaskView extends StatelessWidget {
     return UserProfilePicture(user: inhabitant!.id);
   }
 
-  Widget _buildSubTaskView(BuildContext context, List<Subtask> data) {
-    final subtasks = data; // TODO Delete if stays unused
-
-    if (subtasks.isNotEmpty) {
-      return ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: subtasks.length,
-        itemBuilder: (context, subIndex) {
-          final subtask = subtasks[subIndex];
-          return ListTile(
-            title: Text(subtask.description),
-            trailing: Checkbox(
-              value: subtask.isDone,
-              onChanged: (value) {
-                // Update subtask's isDone state in Firestore
-                _setSubtaskDone(subtask);
-              },
-            ),
-          );
-        },
-      );
-    }
-
-    return const Padding(
-      padding: EdgeInsets.all(SMALL_GAP),
-      child: Text('No subtasks'),
-    );
-  }
-
   void _editTask(BuildContext context, Task task) {
     Navigator.push(
       context,
@@ -171,9 +143,5 @@ class CommonTaskView extends StatelessWidget {
 
   void _setDone(Task t) {
     _taskProvider.setIsDoneTask(t);
-  }
-
-  void _setSubtaskDone(Subtask s) {
-    _taskProvider.setIsDoneSubtask(s);
   }
 }

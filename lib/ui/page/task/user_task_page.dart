@@ -6,6 +6,7 @@ import 'package:stable/ui/common/util/shared_ui_constants.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
+import 'package:stable/ui/page/login/introduction_page.dart';
 import 'package:stable/ui/page/task/common_task_view.dart';
 import 'package:stable/service/household_service.dart';
 import 'package:stable/service/inhabitant_service.dart';
@@ -18,7 +19,18 @@ class UserTaskPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageBody(title: 'Tasks', body: _buildUserFuture());
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      // User is not logged in, show login page
+      // (previously caused unexpected error)
+      return const IntroductionPage();
+    } else {
+      return PageBody(
+        title: 'All your tasks',
+        body: _buildUserFuture(),
+      );
+    }
   }
 
   Widget _buildUserFuture() {
@@ -52,6 +64,7 @@ class UserTaskPage extends StatelessWidget {
               household: household,
               isUserView: true,
               isFailedView: false,
+              physics: const NeverScrollableScrollPhysics(),
             ),
           ),
         );

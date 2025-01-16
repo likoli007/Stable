@@ -14,8 +14,7 @@ import 'package:stable/ui/common/widget/big_icon_page.dart';
 import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 
 class HouseholdStatisticsPage extends StatelessWidget {
-  HouseholdStatisticsPage({Key? key, required this.householdReference})
-      : super(key: key);
+  HouseholdStatisticsPage({super.key, required this.householdReference});
 
   final String householdReference;
 
@@ -80,7 +79,7 @@ class HouseholdStatisticsPage extends StatelessWidget {
 
     return Column(children: [
       _buildTotalTaskHistoryPieChart(doneTasks, failedTasks),
-      SizedBox(
+      const SizedBox(
         height: BIG_GAP,
       ),
       _buildUserFailedTaskRanking(users, failedTaskCounts)
@@ -109,7 +108,7 @@ class HouseholdStatisticsPage extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          Text(
+          const Text(
             'Failed Tasks by Assignee',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
@@ -125,7 +124,7 @@ class HouseholdStatisticsPage extends StatelessWidget {
                     x: index,
                     barRods: [
                       BarChartRodData(
-                        toY: (data['failedCount'] as int)!.toDouble(),
+                        toY: (data['failedCount'] as int).toDouble(),
                         color: Colors.red,
                         width: 20,
                       ),
@@ -135,7 +134,7 @@ class HouseholdStatisticsPage extends StatelessWidget {
                 }).toList(),
                 titlesData: _buildAssigneeInfoBarNotation(barData),
                 borderData: FlBorderData(show: false),
-                gridData: FlGridData(show: true),
+                gridData: const FlGridData(show: true),
               ),
             ),
           ),
@@ -156,16 +155,16 @@ class HouseholdStatisticsPage extends StatelessWidget {
           reservedSize: 40,
           getTitlesWidget: (value, meta) {
             return Text(value.toInt().toString(),
-                style: TextStyle(fontSize: 12));
+                style: const TextStyle(fontSize: 12));
           },
         ),
       ),
-      rightTitles: AxisTitles(
+      rightTitles: const AxisTitles(
         sideTitles: SideTitles(
           showTitles: false,
         ),
       ),
-      topTitles: AxisTitles(
+      topTitles: const AxisTitles(
         sideTitles: SideTitles(
           showTitles: false,
         ),
@@ -180,7 +179,7 @@ class HouseholdStatisticsPage extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 10),
                 child: Text(
                   barData[value.toInt()]['name'],
-                  style: TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: 12),
                   textAlign: TextAlign.center,
                 ),
               );
@@ -197,7 +196,7 @@ class HouseholdStatisticsPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             'Task Completion Ratio',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
@@ -213,7 +212,7 @@ class HouseholdStatisticsPage extends StatelessWidget {
                     title:
                         '${((doneTasks / (doneTasks + failedTasks)) * 100).toStringAsFixed(1)}%',
                     radius: 50,
-                    titleStyle: TextStyle(fontSize: 14, color: Colors.white),
+                    titleStyle: const TextStyle(fontSize: 14, color: Colors.white),
                   ),
                   PieChartSectionData(
                     color: Colors.red,
@@ -221,7 +220,7 @@ class HouseholdStatisticsPage extends StatelessWidget {
                     title:
                         '${((failedTasks / (doneTasks + failedTasks)) * 100).toStringAsFixed(1)}%',
                     radius: 50,
-                    titleStyle: TextStyle(fontSize: 14, color: Colors.white),
+                    titleStyle: const TextStyle(fontSize: 14, color: Colors.white),
                   ),
                 ],
                 sectionsSpace: 2,

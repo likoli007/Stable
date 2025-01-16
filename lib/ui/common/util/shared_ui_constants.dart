@@ -16,4 +16,6 @@ const BORDER_RADIUS = 20.0;
 
 const BIG_ICON_SIZE = 200.0;
 
+const PAGE_BODY_MAX_WIDTH = 800.0;
+
 const THEME_MODES = [ThemeMode.light, ThemeMode.dark, ThemeMode.system];

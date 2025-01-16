@@ -9,7 +9,7 @@ import 'package:stable/ui/common/widget/dialog/confirmation_dialog.dart';
 import 'package:stable/ui/common/widget/dialog/text_input_dialog.dart';
 import 'package:stable/ui/common/widget/speed_dial/custom_speed_dial_child.dart';
 import 'package:stable/ui/common/widget/speed_dial/speed_dials.dart';
-import 'package:stable/ui/page/household/manage_household_inhabitants.dart';
+import 'package:stable/ui/page/household/household_inhabitants_page.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'package:stable/ui/common/page/page_body.dart';
@@ -111,19 +111,10 @@ class _HouseholdPageState extends State<HouseholdPage> {
           onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ManageHouseholdInhabitants(
+              builder: (context) => HouseholdInhabitantsPage(
                 householdReference: widget.household.id,
               ),
             ),
-          ),
-        ),
-        CustomSpeedDialChild(
-          context: context,
-          icon: const Icon(Icons.drive_file_rename_outline_rounded),
-          label: 'Rename',
-          onTap: () => showDialog(
-            context: context,
-            builder: (context) => _showRenameHouseholdDialog(),
           ),
         ),
         CustomSpeedDialChild(
@@ -137,6 +128,15 @@ class _HouseholdPageState extends State<HouseholdPage> {
                 householdReference: widget.household.id,
               ),
             ),
+          ),
+        ),
+        CustomSpeedDialChild(
+          context: context,
+          icon: const Icon(Icons.drive_file_rename_outline_rounded),
+          label: 'Rename',
+          onTap: () => showDialog(
+            context: context,
+            builder: (context) => _showRenameHouseholdDialog(),
           ),
         ),
         CustomSpeedDialChild(
