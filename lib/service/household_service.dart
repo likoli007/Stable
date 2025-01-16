@@ -32,18 +32,15 @@ class HouseholdService {
   }
 
   Future<Household?> getHousehold(String id) =>
-      _householdRepository.getDocument(id); //TODO search only wanted id
+      _householdRepository.getDocument(id);
 
   Future<Household?> getHouseholdByGroupId(String groupId) async {
     return await _householdRepository.getDocumentByField('groupId', groupId);
   }
 
-  // TODO addInhabitant(inhabitantId, householdId)
-
-  // TODO removeInhabitant(inhabitantId, householdId)
-
   Future<void> removeTask(String householdId, String taskId) async {
-    Household? household = await _householdRepository.getDocument(householdId);
+    final Household? household =
+        await _householdRepository.getDocument(householdId);
 
     for (int i = 0; i < household!.tasks.length; i++) {
       if (household.tasks[i].toString() == taskId) {
@@ -59,13 +56,14 @@ class HouseholdService {
     required String name,
   }) async {
     try {
-      DocumentReference ref = FirebaseFirestore.instance.doc('User/$userId');
+      final DocumentReference ref =
+          FirebaseFirestore.instance.doc('User/$userId');
 
-      String uuid = _uuid.v4();
-      String groupId =
+      final String uuid = _uuid.v4();
+      final String groupId =
           sha256.convert(utf8.encode(uuid)).toString().substring(0, 8);
 
-      DocumentReference newId = await _householdRepository.add(Household(
+      final DocumentReference newId = await _householdRepository.add(Household(
         id: 'placeholder',
         admin: ref,
         name: name,
@@ -80,7 +78,7 @@ class HouseholdService {
 
   Future<void> addTaskToHousehold(
       String household, DocumentReference taskRef) async {
-    Household? targetHousehold = await getHousehold(household);
+    final Household? targetHousehold = await getHousehold(household);
     if (targetHousehold != null) {
       targetHousehold.tasks.add(taskRef);
       _householdRepository.updateEntity(targetHousehold.id, targetHousehold);
@@ -89,7 +87,8 @@ class HouseholdService {
 
   Future<List<DocumentReference>> getHouseholdInhabitants(
       String householdRef) async {
-    Household? household = await _householdRepository.getDocument(householdRef);
+    final Household? household =
+        await _householdRepository.getDocument(householdRef);
 
     return household!.inhabitants;
   }
@@ -98,13 +97,12 @@ class HouseholdService {
     required String groupId,
     required String userId,
   }) async {
-    Household? targetHousehold = await getHouseholdByGroupId(groupId);
+    final Household? targetHousehold = await getHouseholdByGroupId(groupId);
     if (targetHousehold == null) {
       throw Exception('No household found with this invite code.');
     }
 
     // Add inhabitant to inhabitants list of a household
-    // TODO if inhabitant already in household give error
     final DocumentReference userRef =
         FirebaseFirestore.instance.doc('User/$userId');
     targetHousehold.inhabitants.add(userRef);
@@ -125,7 +123,7 @@ class HouseholdService {
     required String householdId,
     required String userId,
   }) async {
-    Household? targetHousehold = await getHousehold(householdId);
+    final Household? targetHousehold = await getHousehold(householdId);
     if (targetHousehold == null) {
       throw Exception('No household found.');
     }
@@ -151,7 +149,7 @@ class HouseholdService {
         GetIt.instance<InhabitantService>();
     final DocumentReference householdRef =
         FirebaseFirestore.instance.doc('Household/${targetHousehold.id}');
-    Inhabitant? user = await inhabitantService.getInhabitant(userId);
+    final Inhabitant? user = await inhabitantService.getInhabitant(userId);
     if (user == null) {
       throw Exception('User not found.');
     }
@@ -166,7 +164,7 @@ class HouseholdService {
 
   Future<void> updateHouseholdHistory(
       String householdId, DocumentReference ref, bool isDone) async {
-    Household? household = await getHousehold(householdId);
+    final Household? household = await getHousehold(householdId);
     if (household != null) {
       if (isDone) {
         household.doneTaskHistory.add(ref);
@@ -178,7 +176,7 @@ class HouseholdService {
   }
 
   Future<void> updateHouseholdName(String householdId, String newName) async {
-    Household? household = await getHousehold(householdId);
+    final Household? household = await getHousehold(householdId);
     if (household != null) {
       household.name = newName;
       await _householdRepository.updateEntity(householdId, household);
@@ -187,7 +185,7 @@ class HouseholdService {
 
   Future<void> updateHouseholdInhabitants(
       String householdId, List<String> newInhabitants) async {
-    Household? household = await getHousehold(householdId);
+    final Household? household = await getHousehold(householdId);
     if (household != null) {
       household.inhabitants = newInhabitants
           .map((ref) => FirebaseFirestore.instance.doc('User/$ref'))
@@ -198,7 +196,7 @@ class HouseholdService {
 
   Future<void> removeTaskFromHistory(
       String householdRef, String taskRef) async {
-    Household? household = await getHousehold(householdRef);
+    final Household? household = await getHousehold(householdRef);
     if (household != null) {
       DocumentReference ref = FirebaseFirestore.instance.doc('Task/${taskRef}');
       int index = household.failedTaskHistory.indexOf(ref);
