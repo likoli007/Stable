@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/ui/common/util/shared_ui_constants.dart';
@@ -16,13 +17,13 @@ import 'package:stable/ui/page/task/add_task_page.dart';
 
 class CommonTaskView extends StatelessWidget {
   final Household household;
-  final bool showAssignee;
+  final bool isUserView;
   final bool isFailedView;
 
   CommonTaskView(
       {super.key,
       required this.household,
-      required this.showAssignee,
+      required this.isUserView,
       required this.isFailedView});
 
   final _taskProvider = GetIt.instance<TaskService>();
@@ -40,9 +41,7 @@ class CommonTaskView extends StatelessWidget {
   }
 
   Widget _buildTaskView(BuildContext context, List<Task> data) {
-    final tasks = data;
-
-    if (tasks.isEmpty) {
+    if (data.isEmpty) {
       return BigIconPage(
         icon: const Icon(Icons.sentiment_very_satisfied, size: BIG_ICON_SIZE),
         title: 'No tasks. Hooray!',
@@ -67,6 +66,13 @@ class CommonTaskView extends StatelessWidget {
         ],
       );
     }
+
+    final List<Task> tasks = isUserView
+        ? data
+            .where((task) =>
+                task.assignee!.id == FirebaseAuth.instance.currentUser!.uid)
+            .toList()
+        : data;
 
     return ListView.builder(
       shrinkWrap: true,
