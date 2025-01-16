@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stable/ui/page/home/overview_page.dart';
 import 'package:stable/ui/page/household/household_list_page/households_list_page.dart';
 import 'package:stable/ui/page/task/user_task_page.dart';
 
