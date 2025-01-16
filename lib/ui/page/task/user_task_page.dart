@@ -41,20 +41,17 @@ class UserTaskPage extends StatelessWidget {
       itemCount: data.length,
       itemBuilder: (context, index) {
         final household = data[index];
-        return ExpansionTile(
-          maintainState: true,
+        return ListTile(
           title: Text(household!.name),
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: STANDARD_GAP, vertical: SMALL_GAP),
-              child: CommonTaskView(
-                household: household,
-                showAssignee: false,
-                isFailedView: false,
-              ),
+          subtitle: Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: STANDARD_GAP, vertical: SMALL_GAP),
+            child: CommonTaskView(
+              household: household,
+              showAssignee: false,
+              isFailedView: false,
             ),
-          ],
+          ),
         );
       },
     );
