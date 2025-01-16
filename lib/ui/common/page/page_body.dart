@@ -29,6 +29,8 @@ class PageBody extends StatelessWidget {
         centerTitle: true,
         automaticallyImplyLeading: showBackButton,
         backgroundColor: Theme.of(context).colorScheme.surface,
+        iconTheme:
+            IconThemeData(color: Theme.of(context).colorScheme.onSurface),
         actions: [
           Visibility(
             visible: showProfileButton,
