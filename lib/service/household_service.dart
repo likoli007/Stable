@@ -27,8 +27,8 @@ class HouseholdService {
     return _householdRepository.observeDocumentsByIds(ids);
   }
 
-  Future<List<Household>> getUserHouseholds(Inhabitant user) async {
-    return await _householdRepository.getDocumentsByIds(user.households);
+  Stream<List<Household>> getUserHouseholds(Inhabitant user) {
+    return _householdRepository.observeDocumentsByIds(user.households);
   }
 
   Future<Household?> getHousehold(String id) =>

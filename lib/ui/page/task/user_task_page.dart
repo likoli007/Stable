@@ -6,6 +6,7 @@ import 'package:stable/ui/common/util/shared_ui_constants.dart';
 import 'package:stable/ui/common/widget/builder/loading_future_builder.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
+import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 import 'package:stable/ui/page/task/common_task_view.dart';
 import 'package:stable/service/household_service.dart';
 import 'package:stable/service/inhabitant_service.dart';
@@ -22,16 +23,16 @@ class UserTaskPage extends StatelessWidget {
   }
 
   Widget _buildUserFuture() {
-    return LoadingFutureBuilder(
-      future:
-          _userProvider.getInhabitant(FirebaseAuth.instance.currentUser!.uid),
-      builder: _buildHouseholdsFuture,
+    return LoadingStreamBuilder(
+      stream: _userProvider
+          .getInhabitantStream(FirebaseAuth.instance.currentUser!.uid),
+      builder: _buildHouseholdsStream,
     );
   }
 
-  Widget _buildHouseholdsFuture(BuildContext context, Inhabitant? user) {
-    return LoadingFutureBuilder(
-      future: _householdProvider.getUserHouseholds(user!),
+  Widget _buildHouseholdsStream(BuildContext context, Inhabitant? user) {
+    return LoadingStreamBuilder(
+      stream: _householdProvider.getUserHouseholds(user!),
       builder: _buildTaskView,
     );
   }
