@@ -18,7 +18,10 @@ class UserTaskPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageBody(title: 'Tasks', body: _buildUserFuture());
+    return PageBody(
+      title: 'All your tasks',
+      body: _buildUserFuture(),
+    );
   }
 
   Widget _buildUserFuture() {
