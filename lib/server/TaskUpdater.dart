@@ -21,7 +21,7 @@ class TaskUpdater {
     final householdStream = _householdService.getHouseholdsStream();
 
     // Poll tasks periodically
-    stream = Stream.periodic(Duration(seconds: 30))
+    stream = Stream.periodic(Duration(seconds: 5))
         .asyncMap((_) => householdStream.first);
 
     listenToUpdates();
@@ -65,7 +65,7 @@ class TaskUpdater {
             t.deadline = t.deadline?.add(Duration(days: t.repeat!));
           } else {
             //DEBUG, TODO: REMOVE
-            t.deadline = t.deadline?.add(Duration(minutes: 5));
+            t.deadline = t.deadline?.add(Duration(seconds: 10));
             print(
                 "changed " + t.name + " to deadline: " + t.deadline.toString());
           }
