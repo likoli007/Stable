@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/model/subtask/subtask.dart';
 import 'package:stable/model/task/task.dart';
+import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/ui/page/task/task_assignee_pick_page.dart';
 import 'package:stable/service/household_service.dart';
 
@@ -12,6 +13,7 @@ import 'package:stable/service/task_service.dart';
 
 class AddTaskPage extends StatefulWidget {
   final Task? task;
+  final Inhabitant? assignee;
   final String householdRef;
   final bool isEditing;
 
@@ -19,6 +21,7 @@ class AddTaskPage extends StatefulWidget {
     super.key,
     required this.householdRef,
     this.task,
+    this.assignee = null,
     this.isEditing = false,
   });
 
@@ -29,6 +32,7 @@ class AddTaskPage extends StatefulWidget {
 class _AddTaskPageState extends State<AddTaskPage> {
   final _taskProvider = GetIt.instance<TaskService>();
   final _householdProvider = GetIt.instance<HouseholdService>();
+  final _inhabitantProvider = GetIt.instance<InhabitantService>();
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
@@ -57,6 +61,26 @@ class _AddTaskPageState extends State<AddTaskPage> {
     if (_isRepeat) {
       _repeatDays = _getRepeatString();
     }
+
+    if (widget.task?.assignee != null) {
+      _loadAssignee(widget.task!.assignee!);
+    }
+  }
+
+  Future<void> _loadAssignee(DocumentReference ref) async {
+    Inhabitant? inhabitant = await _getAssigneeInfo(ref);
+    setState(() {
+      _assignee = inhabitant;
+    });
+  }
+
+  Future<Inhabitant?> _getAssigneeInfo(DocumentReference? ref) async {
+    if (ref == null) return null;
+
+    Inhabitant? result =
+        await _inhabitantProvider.getInhabitant(ref!.id.toString());
+
+    return result;
   }
 
   Future<void> _loadSubtasks() async {
