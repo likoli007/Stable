@@ -35,7 +35,7 @@ class HouseholdStatisticsPage extends StatelessWidget {
   }
 
   Widget _buildTaskStream(BuildContext context, Household? household) {
-    List<DocumentReference> totalTaskHistory = [];
+    final List<DocumentReference> totalTaskHistory = [];
 
     for (DocumentReference ref in household!.doneTaskHistory) {
       totalTaskHistory.add(ref);
@@ -53,7 +53,7 @@ class HouseholdStatisticsPage extends StatelessWidget {
     final Map<String, int> failedTaskCounts = {};
     final Iterable<Task> failedTasksList = tasks.where((task) => !task.isDone);
 
-    for (var task in failedTasksList) {
+    for (final Task task in failedTasksList) {
       final userId = task.assignee!.id;
       failedTaskCounts[userId] = (failedTaskCounts[userId] ?? 0) + 1;
     }
@@ -61,11 +61,11 @@ class HouseholdStatisticsPage extends StatelessWidget {
     final List<DocumentReference> users =
         failedTasksList.map((task) => task.assignee!).toSet().toList();
 
-    int doneTasks = tasks.where((task) => task.isDone).length;
-    int failedTasks = failedTasksList.length;
+    final int doneTasks = tasks.where((task) => task.isDone).length;
+    final int failedTasks = failedTasksList.length;
 
     if (failedTasks + doneTasks == 0) {
-      List<Widget> dummy = [];
+      final List<Widget> dummy = [];
       return Center(
         child: BigIconPage(
           icon: const Icon(Icons.bar_chart, size: BIG_ICON_SIZE),
