@@ -138,8 +138,13 @@ class HouseholdService {
 
     // Remove inhabitant from inhabitants list of a household
     targetHousehold.inhabitants.remove(userRef);
-    await _householdRepository.updateEntity(
-        targetHousehold.id, targetHousehold);
+    //if household is now empty, remove the household
+    if (targetHousehold.inhabitants.isEmpty) {
+      await _householdRepository.deleteDocument(targetHousehold.id);
+    } else {
+      await _householdRepository.updateEntity(
+          targetHousehold.id, targetHousehold);
+    }
 
     // Remove household from list of households of an inhabitant
     final InhabitantService inhabitantService =
