@@ -20,6 +20,11 @@ class InhabitantService {
     return _inhabitantRepository.observeDocument(id);
   }
 
+  Stream<List<Inhabitant>> getInhabitansStreamByIds(
+      List<DocumentReference> refs) {
+    return _inhabitantRepository.observeDocumentsByIds(refs);
+  }
+
   Future<void> addHouseholdToInhabitant({
     required String uid,
     required DocumentReference newRef,
