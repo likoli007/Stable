@@ -40,8 +40,8 @@ class AppWrapper extends StatelessWidget {
       darkTheme: darkThemeData.materialThemeData,
       initialRoute: _auth.user != null ? '/' : '/introduction',
       routes: {
-        '/introduction': (context) => IntroductionPage(),
-        '/': (context) => PageLayout(),
+        '/introduction': (context) => const IntroductionPage(),
+        '/': (context) => const PageLayout(),
         '/tasks': (context) => UserTaskPage(),
         '/households': (context) => HouseholdsListPage(),
       },

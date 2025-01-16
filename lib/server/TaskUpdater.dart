@@ -20,7 +20,7 @@ class TaskUpdater {
     final householdStream = _householdService.getHouseholdsStream();
 
     // Poll tasks periodically
-    stream = Stream.periodic(Duration(seconds: 30))
+    stream = Stream.periodic(const Duration(seconds: 30))
         .asyncMap((_) => householdStream.first);
 
     listenToUpdates();
@@ -62,21 +62,16 @@ class TaskUpdater {
             t.deadline = t.deadline?.add(Duration(days: t.repeat!));
           } else {
             //
-            t.deadline = t.deadline?.add(Duration(minutes: 5));
+            t.deadline = t.deadline?.add(const Duration(minutes: 5));
             print(
-                "changed " + t.name + " to deadline: " + t.deadline.toString());
+                "changed ${t.name} to deadline: ${t.deadline}");
           }
           if (t.rotating) {
             DocumentReference? currentAssignee = t.assignee;
             int index = household.inhabitants.indexOf(currentAssignee!);
             t.assignee = household
                 .inhabitants[(index + 1) % household.inhabitants.length];
-            print("rotated assignee for " +
-                t.name +
-                " from " +
-                currentAssignee.toString() +
-                " to " +
-                t.assignee.toString());
+            print("rotated assignee for ${t.name} from $currentAssignee to ${t.assignee}");
           }
           _taskService.updateTask(t);
         } else {

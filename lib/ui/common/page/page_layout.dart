@@ -3,6 +3,8 @@ import 'package:stable/ui/page/household/household_list_page/households_list_pag
 import 'package:stable/ui/page/task/user_task_page.dart';
 
 class PageLayout extends StatefulWidget {
+  const PageLayout({super.key});
+
   @override
   PageLayoutState createState() => PageLayoutState();
 }
