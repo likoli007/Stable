@@ -49,7 +49,7 @@ class UserTaskPage extends StatelessWidget {
                 horizontal: STANDARD_GAP, vertical: SMALL_GAP),
             child: CommonTaskView(
               household: household,
-              isUserView: false,
+              isUserView: true,
               isFailedView: false,
             ),
           ),

@@ -48,7 +48,7 @@ class CommonTaskView extends StatelessWidget {
             .toList()
         : data;
 
-    if (tasks.isEmpty) {
+    if (tasks.isEmpty && !isUserView) {
       return BigIconPage(
         icon: const Icon(Icons.sentiment_very_satisfied, size: BIG_ICON_SIZE),
         title: 'No tasks. Hooray!',
@@ -72,6 +72,10 @@ class CommonTaskView extends StatelessWidget {
           )
         ],
       );
+    } else if (tasks.isEmpty) {
+      return Center(
+        child: Text("No Tasks for you from this household!"),
+      );
     }
 
     return ListView.builder(
@@ -85,11 +89,13 @@ class CommonTaskView extends StatelessWidget {
           subtitle: Text(task.description),
           trailing: _buildTaskTrailingButton(task),
           onTap: () => !isFailedView ? _editTask(context, task) : (),
-          leading: SizedBox(
-            height: 50,
-            width: 50,
-            child: _buildAssigneeInformation(task),
-          ),
+          leading: isUserView
+              ? null
+              : SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: _buildAssigneeInformation(task),
+                ),
         );
       },
     );

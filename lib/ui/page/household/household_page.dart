@@ -59,7 +59,7 @@ class _HouseholdPageState extends State<HouseholdPage> {
   Widget _buildTaskStream(BuildContext context, Household? data) {
     return CommonTaskView(
       household: data!,
-      isUserView: true,
+      isUserView: false,
       isFailedView: false,
     );
   }
