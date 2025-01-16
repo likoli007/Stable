@@ -5,6 +5,7 @@ import 'package:stable/service/household_service.dart';
 import 'package:stable/ui/common/util/shared_ui_constants.dart';
 import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 import 'package:stable/ui/common/widget/dialog/confirmation_dialog.dart';
+import 'package:stable/ui/common/widget/dialog/text_input_dialog.dart';
 import 'package:stable/ui/common/widget/speed_dial/custom_speed_dial_child.dart';
 import 'package:stable/ui/common/widget/speed_dial/speed_dials.dart';
 import 'package:stable/ui/page/household/manage_household_inhabitants.dart';
@@ -101,7 +102,7 @@ class HouseholdPage extends StatelessWidget {
           label: 'Rename',
           onTap: () => showDialog(
             context: context,
-            builder: (context) => _showInviteDialog(context),
+            builder: (context) => _showRenameHouseholdDialog(),
           ),
         ),
         CustomSpeedDialChild(
@@ -144,6 +145,17 @@ class HouseholdPage extends StatelessWidget {
         household.groupId,
         subject: "Invite code for ${household.name}",
       ),
+    );
+  }
+
+  Widget _showRenameHouseholdDialog() {
+    return TextInputDialog(
+      title: 'Rename household',
+      buttonText: 'Rename',
+      textFieldInitialValue: household.name,
+      onSubmit: (name) async {
+        _householdProvider.updateHouseholdName(household.id, name);
+      },
     );
   }
 }
