@@ -6,6 +6,8 @@ import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/model/subtask/subtask.dart';
 import 'package:stable/model/task/task.dart';
 import 'package:stable/service/inhabitant_service.dart';
+import 'package:stable/ui/common/page/page_body.dart';
+import 'package:stable/ui/common/util/shared_ui_constants.dart';
 import 'package:stable/ui/page/task/task_assignee_pick_page.dart';
 import 'package:stable/service/household_service.dart';
 
@@ -21,7 +23,7 @@ class AddTaskPage extends StatefulWidget {
     super.key,
     required this.householdRef,
     this.task,
-    this.assignee = null,
+    this.assignee,
     this.isEditing = false,
   });
 
@@ -116,8 +118,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   void _toggleTaskCompletion(bool? value) {
     setState(() {
       _isDone = value ?? false;
-      //if the user unchecked isDone, set all isDones for all subtasks to false
-      //also vice versa
+      // If the user unchecked isDone, set all isDone for all subtasks
+      // to false or vice versa
       for (Subtask subtask in _subtasks) {
         subtask.isDone = _isDone;
       }
@@ -133,7 +135,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
       }
     }
     setState(() {
-      print(percolate);
       _isDone = percolate;
     });
   }
@@ -146,7 +147,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   // function for helping user pick their own deadline date
-  // TODO: move to its own spot?
   Future<void> _pickDeadline() async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -196,7 +196,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     Navigator.pop(context);
   }
 
-  void _handleActionButton() {
+  void _handleSaveButton() {
     if (widget.isEditing) {
       _changeTask();
     } else {
@@ -265,38 +265,34 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: widget.isEditing ? Text('Edit Task') : Text('Add Task'),
-        actions: [
-          _buildDeleteButton(),
-        ],
+    return PageBody(
+      title: widget.isEditing ? 'Edit Task' : 'Add Task',
+      floatingActionButton: FloatingActionButton(
+        onPressed: _handleSaveButton,
+        child: const Icon(Icons.save),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildTaskNameInput(),
-            const SizedBox(height: 16),
-            _buildTaskDescriptionInput(),
-            const SizedBox(height: 16),
-            _buildDoneCheckbox(),
-            const SizedBox(height: 16),
-            _buildDeadlinePicker(),
-            const SizedBox(height: 16),
-            _buildRepeatingCheckbox(),
-            const SizedBox(height: 16),
-            _buildRotatingCheckbox(),
-            const SizedBox(height: 16),
-            _buildAssigneeSelectionWidget(),
-            const SizedBox(height: 16),
-            const Text('Subtasks:'),
-            const SizedBox(height: 8),
-            _buildSubtaskAddingWidget(),
-            _buildTaskAddingButton(),
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildTaskNameInput(),
+          const SizedBox(height: SMALL_GAP),
+          _buildTaskDescriptionInput(),
+          const SizedBox(height: SMALL_GAP),
+          _buildDeadlinePicker(),
+          const SizedBox(height: SMALL_GAP),
+          _buildAssigneeSelectionWidget(),
+          const SizedBox(height: SMALL_GAP),
+          _buildDoneCheckbox(),
+          const SizedBox(height: SMALL_GAP),
+          _buildRepeatingCheckbox(),
+          const SizedBox(height: SMALL_GAP),
+          _buildRotatingCheckbox(),
+          const SizedBox(height: STANDARD_GAP),
+          const Center(child: Text('Subtasks')),
+          const SizedBox(height: SMALL_GAP),
+          _buildSubtaskAddingWidget(),
+          if (widget.isEditing) _buildDeleteButton(),
+        ],
       ),
     );
   }
@@ -308,16 +304,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   Widget _buildDeleteButton() {
-    return IconButton(
-        onPressed: () => _deleteTask(), icon: const Icon(Icons.delete_forever));
-  }
-
-  Widget _buildTaskAddingButton() {
-    return ElevatedButton(
-      onPressed: () {
-        _handleActionButton();
-      },
-      child: widget.isEditing ? Text('Finish Editing') : Text('Add Task'),
+    return ElevatedButton.icon(
+      onPressed: () => _deleteTask(),
+      icon: const Icon(Icons.delete),
+      label: const Text('Delete task'),
     );
   }
 
@@ -377,8 +367,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget _buildRotatingCheckbox() {
     return Row(
       children: [
-        const Text("Is Rotating:"),
-        const SizedBox(width: 8),
+        const Text("Set as rotating"),
+        const Spacer(),
         Checkbox(
           value: _isRotating,
           onChanged: (value) {
@@ -398,15 +388,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget _buildRepeatingCheckbox() {
     return Row(
       children: [
-        const Text("Is Repeating:"),
-        const SizedBox(width: 8),
+        const Text("Set as repeating"),
+        const Spacer(),
+        _buildRepeatingTaskSelection(),
         Checkbox(
           value: _isRepeat,
           onChanged: (value) {
             _toggleTaskRepetition(value);
           },
         ),
-        _buildRepeatingTaskSelection(),
       ],
     );
   }
@@ -415,7 +405,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     if (_isRepeat) {
       return DropdownButton<String>(
         value: _repeatDays,
-        items: ['Daily', 'Weekly', 'Monthly', '5 Minutes']
+        items: ['Daily', 'Weekly', 'Monthly']
             .map((frequency) => DropdownMenuItem<String>(
                   value: frequency,
                   child: Text(frequency),
@@ -435,8 +425,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget _buildDoneCheckbox() {
     return Row(
       children: [
-        const Text("Is Done:"),
-        const SizedBox(width: 8),
+        const Text("Set as completed"),
+        const Spacer(),
         Checkbox(
           value: _isDone,
           onChanged: (value) {
@@ -457,7 +447,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget _buildTaskNameInput() {
     return TextField(
       controller: _nameController,
-      decoration: const InputDecoration(labelText: 'Task Name'),
+      decoration: const InputDecoration(labelText: 'Task Name *'),
     );
   }
 
@@ -467,12 +457,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
       children: [
         Text(
           _selectedDeadline == null
-              ? 'No Deadline Chosen'
+              ? 'Deadline *'
               : 'Deadline: ${DateFormat('yyyy-MM-dd – kk:mm').format(_selectedDeadline!)}',
         ),
         TextButton(
           onPressed: _pickDeadline,
-          child: const Text('Pick Deadline'),
+          child: Text(
+              _selectedDeadline == null ? 'Pick Deadline' : 'Change Deadline'),
         ),
       ],
     );
@@ -487,7 +478,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
         ),
         TextButton(
           onPressed: () => _selectAssignee(context),
-          child: const Text('Select Assignee'),
+          child:
+              Text(_assignee == null ? 'Select Assignee' : "Change Assignee"),
         ),
       ],
     );
