@@ -5,10 +5,10 @@ import 'package:stable/service/household_service.dart';
 import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/ui/common/util/shared_ui_constants.dart';
 
-import 'package:stable/ui/common/widget/builder/loading_future_builder.dart';
 import 'package:stable/ui/common/page/page_body.dart';
 import 'package:stable/model/household/household.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
+import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 import 'package:stable/ui/common/widget/dialog/confirmation_dialog.dart';
 
 class HouseholdInhabitantsPage extends StatefulWidget {
@@ -69,8 +69,8 @@ class HouseholdInhabitantsPageState extends State<HouseholdInhabitantsPage> {
         for (final inhabitant in _inhabitants)
           ListTile(
             key: UniqueKey(),
-            title: LoadingFutureBuilder<Inhabitant?>(
-              future: _inhabitantService.getInhabitant(inhabitant),
+            title: LoadingStreamBuilder<Inhabitant?>(
+              stream: _inhabitantService.getInhabitantStream(inhabitant),
               builder: (context, data) {
                 return Text(data?.name ?? "Error occurred");
               },

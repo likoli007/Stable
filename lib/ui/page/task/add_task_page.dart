@@ -73,7 +73,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   Future<void> _loadAssignee(DocumentReference ref) async {
-    Inhabitant? inhabitant = await _getAssigneeInfo(ref);
+    final Inhabitant? inhabitant = await _getAssigneeInfo(ref);
     setState(() {
       _assignee = inhabitant;
     });
@@ -82,7 +82,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Future<Inhabitant?> _getAssigneeInfo(DocumentReference? ref) async {
     if (ref == null) return null;
 
-    Inhabitant? result =
+    final Inhabitant? result =
         await _inhabitantProvider.getInhabitant(ref.id.toString());
 
     return result;
@@ -179,7 +179,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   Future<void> _changeTask() async {
-    int? repeatValue = _getTaskRepeat();
+    final int? repeatValue = _getTaskRepeat();
 
     if (widget.task != null) {
       widget.task?.isDone = _isDone;
@@ -238,11 +238,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
     final name = _nameController.text;
     final description = _descriptionController.text;
 
-    int? repeatValue = _getTaskRepeat();
+    final int? repeatValue = _getTaskRepeat();
 
-    //TODO: actual validation, but here or in service? adam says in service ;)
     if (name.isNotEmpty && _assignee != null && _selectedDeadline != null) {
-      DocumentReference? taskRef = await _taskProvider.addTask(
+      final DocumentReference? taskRef = await _taskProvider.addTask(
           assignee: _assignee?.id,
           name: name,
           description: description,
@@ -509,7 +508,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   Future<void> _selectAssignee(BuildContext context) async {
-    List<DocumentReference> inhabitants =
+    final List<DocumentReference> inhabitants =
         await _householdProvider.getHouseholdInhabitants(widget.householdRef);
 
     final Inhabitant? selectedUser = await Navigator.push(

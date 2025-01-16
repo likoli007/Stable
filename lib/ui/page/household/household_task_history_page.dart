@@ -28,6 +28,6 @@ class HouseholdTaskHistoryPage extends StatelessWidget {
 
   Widget _buildTaskStream(BuildContext context, Household? data) {
     return CommonTaskView(
-        household: data!, showAssignee: true, isFailedView: true);
+        household: data!, isUserView: false, isFailedView: true);
   }
 }

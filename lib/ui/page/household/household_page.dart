@@ -29,7 +29,7 @@ class HouseholdPage extends StatefulWidget {
 }
 
 class _HouseholdPageState extends State<HouseholdPage> {
-  late String _householdName;
+  late final String _householdName;
 
   final _householdService = GetIt.instance<HouseholdService>();
 
@@ -58,7 +58,7 @@ class _HouseholdPageState extends State<HouseholdPage> {
   Widget _buildTaskStream(BuildContext context, Household? data) {
     return CommonTaskView(
       household: data!,
-      showAssignee: true,
+      isUserView: false,
       isFailedView: false,
     );
   }
