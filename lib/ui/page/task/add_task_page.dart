@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/model/subtask/subtask.dart';
 import 'package:stable/model/task/task.dart';
+import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/ui/page/task/task_assignee_pick_page.dart';
 import 'package:stable/service/household_service.dart';
 
@@ -12,6 +13,7 @@ import 'package:stable/service/task_service.dart';
 
 class AddTaskPage extends StatefulWidget {
   final Task? task;
+  final Inhabitant? assignee;
   final String householdRef;
   final bool isEditing;
 
@@ -19,6 +21,7 @@ class AddTaskPage extends StatefulWidget {
     super.key,
     required this.householdRef,
     this.task,
+    this.assignee = null,
     this.isEditing = false,
   });
 
@@ -29,6 +32,7 @@ class AddTaskPage extends StatefulWidget {
 class _AddTaskPageState extends State<AddTaskPage> {
   final _taskProvider = GetIt.instance<TaskService>();
   final _householdProvider = GetIt.instance<HouseholdService>();
+  final _inhabitantProvider = GetIt.instance<InhabitantService>();
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
@@ -54,7 +58,31 @@ class _AddTaskPageState extends State<AddTaskPage> {
     _isRepeat = widget.task?.repeat != null ? true : false;
     _isRotating = widget.task?.rotating ?? false;
 
+    if (_isRepeat) {
+      _repeatDays = _getRepeatString();
+    }
+
+    if (widget.task?.assignee != null) {
+      _loadAssignee(widget.task!.assignee!);
+    }
+
     _loadSubtasks();
+  }
+
+  Future<void> _loadAssignee(DocumentReference ref) async {
+    Inhabitant? inhabitant = await _getAssigneeInfo(ref);
+    setState(() {
+      _assignee = inhabitant;
+    });
+  }
+
+  Future<Inhabitant?> _getAssigneeInfo(DocumentReference? ref) async {
+    if (ref == null) return null;
+
+    Inhabitant? result =
+        await _inhabitantProvider.getInhabitant(ref!.id.toString());
+
+    return result;
   }
 
   Future<void> _loadSubtasks() async {
@@ -150,6 +178,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   Future<void> _changeTask() async {
+    int? repeatValue = _getTaskRepeat();
+
     if (widget.task != null) {
       widget.task?.isDone = _isDone;
       widget.task?.subtasks =
@@ -157,10 +187,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
       widget.task?.description = _descriptionController.text;
       widget.task?.name = _nameController.text;
       widget.task?.deadline = _selectedDeadline;
-      //TODO: widget.task?.assignees
-      //TODO: widget.task?.repeat
+      widget.task?.assignee =
+          FirebaseFirestore.instance.doc('User/${_assignee?.id}');
+      widget.task?.repeat = _isRepeat ? repeatValue : null;
+      widget.task?.rotating = _isRotating;
       _taskProvider.updateTask(widget.task);
     }
+    Navigator.pop(context);
   }
 
   void _handleActionButton() {
@@ -168,6 +201,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
       _changeTask();
     } else {
       _addTask();
+    }
+  }
+
+  String _getRepeatString() {
+    switch (widget.task!.repeat) {
+      case 1:
+        return 'Daily';
+      case 7:
+        return 'Weekly';
+      case 30:
+        return 'Monthly';
+      default:
+        return '5 Minutes';
     }
   }
 
@@ -194,7 +240,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     int? repeatValue = _getTaskRepeat();
 
     //TODO: actual validation, but here or in service? adam says in service ;)
-    if (name.isNotEmpty && description.isNotEmpty && true) {
+    if (name.isNotEmpty && _assignee != null && _selectedDeadline != null) {
       DocumentReference? taskRef = await _taskProvider.addTask(
           assignee: _assignee?.id,
           name: name,
@@ -221,7 +267,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Task'),
+        title: widget.isEditing ? Text('Edit Task') : Text('Add Task'),
         actions: [
           _buildDeleteButton(),
         ],
@@ -271,7 +317,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       onPressed: () {
         _handleActionButton();
       },
-      child: const Text('Add Task'),
+      child: widget.isEditing ? Text('Finish Editing') : Text('Add Task'),
     );
   }
 
@@ -437,7 +483,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          _assignee == null ? 'No assignee' : _assignee!.name,
+          _assignee == null ? 'No assignee' : "Assignee: ${_assignee!.name}",
         ),
         TextButton(
           onPressed: () => _selectAssignee(context),
