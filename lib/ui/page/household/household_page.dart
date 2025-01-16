@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/service/household_service.dart';
+import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/ui/common/util/shared_ui_constants.dart';
 import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 import 'package:stable/ui/common/widget/dialog/confirmation_dialog.dart';
@@ -21,7 +23,7 @@ class HouseholdPage extends StatefulWidget {
   // TODO add rotary task overview
   final Household household;
 
-  HouseholdPage({super.key, required this.household});
+  const HouseholdPage({super.key, required this.household});
 
   @override
   State<HouseholdPage> createState() => _HouseholdPageState();
@@ -30,7 +32,8 @@ class HouseholdPage extends StatefulWidget {
 class _HouseholdPageState extends State<HouseholdPage> {
   late String _householdName;
 
-  final _householdProvider = GetIt.instance<HouseholdService>();
+  final _householdService = GetIt.instance<HouseholdService>();
+  final _inhabitantService = GetIt.instance<InhabitantService>();
 
   @override
   void initState() {
@@ -49,7 +52,7 @@ class _HouseholdPageState extends State<HouseholdPage> {
 
   Widget _buildHouseholdStream() {
     return LoadingStreamBuilder<Household?>(
-      stream: _householdProvider.getHouseholdStream(widget.household.id),
+      stream: _householdService.getHouseholdStream(widget.household.id),
       builder: _buildTaskStream,
     );
   }
@@ -131,7 +134,10 @@ class _HouseholdPageState extends State<HouseholdPage> {
           label: 'Leave',
           backgroundColor: Colors.red,
           foregroundColor: Colors.white,
-          onTap: () {}, //TODO dialog - are you sure?
+          onTap: () => showDialog(
+            context: context,
+            builder: (context) => _showLeaveDialog(context),
+          ),
         ),
       ],
     );
@@ -174,11 +180,32 @@ class _HouseholdPageState extends State<HouseholdPage> {
       buttonText: 'Rename',
       textFieldInitialValue: widget.household.name,
       onSubmit: (name) async {
-        _householdProvider.updateHouseholdName(widget.household.id, name);
+        _householdService.updateHouseholdName(widget.household.id, name);
         setState(() {
           _householdName = name;
         });
       },
+    );
+  }
+
+  Widget _showLeaveDialog(BuildContext context) {
+    return ConfirmationDialog(
+      title: 'Leave a household',
+      buttonText: 'Leave',
+      confirmButtonForegroundColor: Colors.white,
+      confirmButtonBackgroundColor: Colors.red,
+      children: const [
+        Text('No worries, nothing crazy. '
+            'You will just need an invite code to access this household again.'),
+        SizedBox(height: STANDARD_GAP),
+        Icon(Icons.sentiment_dissatisfied, size: 100),
+      ],
+      onConfirm: () async {
+        _householdService.leaveHousehold(
+          householdId: widget.household.id,
+          userId: FirebaseAuth.instance.currentUser!.uid,
+        );
+      }, // TODO add snackbar when success and when error
     );
   }
 }

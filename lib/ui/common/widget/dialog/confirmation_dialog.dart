@@ -5,6 +5,8 @@ class ConfirmationDialog extends StatelessWidget {
   final String title;
   final List<Widget> children;
   final String buttonText;
+  final Color? confirmButtonForegroundColor;
+  final Color? confirmButtonBackgroundColor;
   final Function() onConfirm;
 
   const ConfirmationDialog({
@@ -12,6 +14,8 @@ class ConfirmationDialog extends StatelessWidget {
     required this.title,
     required this.children,
     required this.buttonText,
+    this.confirmButtonForegroundColor,
+    this.confirmButtonBackgroundColor,
     required this.onConfirm,
   });
 
@@ -48,8 +52,10 @@ class ConfirmationDialog extends StatelessWidget {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+            backgroundColor: confirmButtonBackgroundColor ??
+                Theme.of(context).colorScheme.primary,
+            foregroundColor: confirmButtonForegroundColor ??
+                Theme.of(context).colorScheme.onPrimary,
           ),
           onPressed: () {
             Navigator.pop(context);

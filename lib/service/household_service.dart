@@ -98,17 +98,46 @@ class HouseholdService {
     if (targetHousehold == null) {
       throw Exception('No household found with this invite code.');
     }
+
     // Add inhabitant to inhabitants list of a household
     // TODO if inhabitant already in household give error
-    DocumentReference userRef = FirebaseFirestore.instance.doc('User/$userId');
+    final DocumentReference userRef =
+        FirebaseFirestore.instance.doc('User/$userId');
     targetHousehold.inhabitants.add(userRef);
     _householdRepository.updateEntity(targetHousehold.id, targetHousehold);
 
     // Add household to list of households of an inhabitant
-    InhabitantService _userService = GetIt.instance<InhabitantService>();
-    DocumentReference householdRef =
+    final InhabitantService inhabitantService =
+        GetIt.instance<InhabitantService>();
+    final DocumentReference householdRef =
         FirebaseFirestore.instance.doc('Household/${targetHousehold.id}');
-    _userService.addHouseholdToInhabitant(
+    inhabitantService.addHouseholdToInhabitant(
+      uid: userId,
+      newRef: householdRef,
+    );
+  }
+
+  Future<void> leaveHousehold({
+    required String householdId,
+    required String userId,
+  }) async {
+    Household? targetHousehold = await getHousehold(householdId);
+    if (targetHousehold == null) {
+      throw Exception('No household found.');
+    }
+
+    // Remove inhabitant from inhabitants list of a household
+    final DocumentReference userRef =
+        FirebaseFirestore.instance.doc('User/$userId');
+    targetHousehold.inhabitants.remove(userRef);
+    _householdRepository.updateEntity(targetHousehold.id, targetHousehold);
+
+    // Remove household from list of households of an inhabitant
+    final InhabitantService inhabitantService =
+        GetIt.instance<InhabitantService>();
+    final DocumentReference householdRef =
+        FirebaseFirestore.instance.doc('Household/${targetHousehold.id}');
+    inhabitantService.removeHouseholdFromInhabitant(
       uid: userId,
       newRef: householdRef,
     );

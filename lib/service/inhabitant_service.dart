@@ -30,6 +30,16 @@ class InhabitantService {
     }
   }
 
+  Future<void> removeHouseholdFromInhabitant(
+      {required String uid, required DocumentReference newRef}) async {
+    Inhabitant? user = await _inhabitantRepository.getDocument(uid);
+
+    if (user != null) {
+      user.households.remove(newRef);
+      _inhabitantRepository.updateEntity(uid, user);
+    }
+  }
+
   Future<List<Inhabitant>> getInhabitants(List<DocumentReference> refs) {
     return _inhabitantRepository.getDocumentsByIds(refs);
   }

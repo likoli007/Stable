@@ -55,6 +55,7 @@ class HouseholdsListPage extends StatelessWidget {
           uid: uid,
           newRef: householdReference,
         );
+        // TODO add snackbar when success and when error
       },
     );
   }
@@ -74,6 +75,7 @@ class HouseholdsListPage extends StatelessWidget {
             groupId: groupId,
             userId: uid,
           );
+          // TODO add snackbar when success
         } catch (e) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
