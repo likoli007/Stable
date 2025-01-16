@@ -31,13 +31,14 @@ class TaskService {
     _taskRepository.updateDocument(t.id, doneField);
 
     //TODO update all isDones for the whole Tasks
-    List<Subtask> subtasks =
-        await _subTaskRepository.getDocumentsByIds(t.subtasks);
-    for (Subtask s in subtasks) {
-      s.isDone = t.isDone;
-      _subTaskRepository.updateEntity(s.id, s);
+    if (t.subtasks != null && t.subtasks!.isNotEmpty) {
+      List<Subtask> subtasks =
+          await _subTaskRepository.getDocumentsByIds(t.subtasks);
+      for (Subtask s in subtasks) {
+        s.isDone = t.isDone;
+        _subTaskRepository.updateEntity(s.id, s);
+      }
     }
-
     return;
   }
 
@@ -104,9 +105,12 @@ class TaskService {
 
   Future<List<Subtask>> getRelevantSubtasks(Task t) async {
     List<DocumentReference> subtaskRefs = t.subtasks ?? [];
-    List<Subtask> subtaskList =
-        await _subTaskRepository.getDocumentsByIds(subtaskRefs);
 
+    List<Subtask> subtaskList = [];
+
+    if (subtaskRefs.isNotEmpty) {
+      subtaskList = await _subTaskRepository.getDocumentsByIds(subtaskRefs);
+    }
     return subtaskList;
   }
 
