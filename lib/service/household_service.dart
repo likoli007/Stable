@@ -58,20 +58,24 @@ class HouseholdService {
     required String userId,
     required String name,
   }) async {
-    DocumentReference ref = FirebaseFirestore.instance.doc('User/$userId');
+    try {
+      DocumentReference ref = FirebaseFirestore.instance.doc('User/$userId');
 
-    String uuid = _uuid.v4();
-    String groupId =
-        sha256.convert(utf8.encode(uuid)).toString().substring(0, 8);
+      String uuid = _uuid.v4();
+      String groupId =
+          sha256.convert(utf8.encode(uuid)).toString().substring(0, 8);
 
-    DocumentReference newId = await _householdRepository.add(Household(
-      id: 'placeholder',
-      admin: ref,
-      name: name,
-      inhabitants: [ref],
-      groupId: groupId,
-    ));
-    return newId;
+      DocumentReference newId = await _householdRepository.add(Household(
+        id: 'placeholder',
+        admin: ref,
+        name: name,
+        inhabitants: [ref],
+        groupId: groupId,
+      ));
+      return newId;
+    } catch (e) {
+      throw Exception('Failed to create household: $e');
+    }
   }
 
   Future<void> addTaskToHousehold(
@@ -98,17 +102,58 @@ class HouseholdService {
     if (targetHousehold == null) {
       throw Exception('No household found with this invite code.');
     }
+
     // Add inhabitant to inhabitants list of a household
     // TODO if inhabitant already in household give error
-    DocumentReference userRef = FirebaseFirestore.instance.doc('User/$userId');
+    final DocumentReference userRef =
+        FirebaseFirestore.instance.doc('User/$userId');
     targetHousehold.inhabitants.add(userRef);
     _householdRepository.updateEntity(targetHousehold.id, targetHousehold);
 
     // Add household to list of households of an inhabitant
-    InhabitantService _userService = GetIt.instance<InhabitantService>();
-    DocumentReference householdRef =
+    final InhabitantService inhabitantService =
+        GetIt.instance<InhabitantService>();
+    final DocumentReference householdRef =
         FirebaseFirestore.instance.doc('Household/${targetHousehold.id}');
-    _userService.addHouseholdToInhabitant(
+    inhabitantService.addHouseholdToInhabitant(
+      uid: userId,
+      newRef: householdRef,
+    );
+  }
+
+  Future<void> leaveHousehold({
+    required String householdId,
+    required String userId,
+  }) async {
+    Household? targetHousehold = await getHousehold(householdId);
+    if (targetHousehold == null) {
+      throw Exception('No household found.');
+    }
+
+    final DocumentReference userRef =
+        FirebaseFirestore.instance.doc('User/$userId');
+    if (!targetHousehold.inhabitants.contains(userRef)) {
+      throw Exception('User not found in household.');
+    }
+
+    // Remove inhabitant from inhabitants list of a household
+    targetHousehold.inhabitants.remove(userRef);
+    await _householdRepository.updateEntity(
+        targetHousehold.id, targetHousehold);
+
+    // Remove household from list of households of an inhabitant
+    final InhabitantService inhabitantService =
+        GetIt.instance<InhabitantService>();
+    final DocumentReference householdRef =
+        FirebaseFirestore.instance.doc('Household/${targetHousehold.id}');
+    Inhabitant? user = await inhabitantService.getInhabitant(userId);
+    if (user == null) {
+      throw Exception('User not found.');
+    }
+    if (!user.households.contains(householdRef)) {
+      throw Exception('Household not found in user\'s list.');
+    }
+    await inhabitantService.removeHouseholdFromInhabitant(
       uid: userId,
       newRef: householdRef,
     );
