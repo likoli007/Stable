@@ -3,11 +3,13 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stable/model/household/household.dart';
+import 'package:stable/model/inhabitant/inhabitant.dart';
 import 'package:stable/model/task/task.dart';
 import 'package:stable/service/household_service.dart';
 import 'package:stable/service/inhabitant_service.dart';
 import 'package:stable/service/task_service.dart';
 import 'package:stable/ui/common/page/page_body.dart';
+import 'package:stable/ui/common/util/shared_ui_constants.dart';
 import 'package:stable/ui/common/widget/builder/loading_stream_builder.dart';
 
 class HouseholdStatisticsPage extends StatelessWidget {
@@ -18,7 +20,7 @@ class HouseholdStatisticsPage extends StatelessWidget {
 
   final _householdProvider = GetIt.instance<HouseholdService>();
   final _taskProvider = GetIt.instance<TaskService>();
-  final _inhabitantProvider =GetIt.instance<InhabitantService>();
+  final _inhabitantProvider = GetIt.instance<InhabitantService>();
 
   @override
   Widget build(BuildContext context) {
@@ -48,29 +50,131 @@ class HouseholdStatisticsPage extends StatelessWidget {
 
   Widget _buildStatisticsPage(BuildContext context, List<Task> tasks) {
     final Map<String, int> failedTaskCounts = {};
-    final Iterable<Task>failedTasksList = tasks.where((task) => !task.isDone);
+    final Iterable<Task> failedTasksList = tasks.where((task) => !task.isDone);
 
     for (var task in failedTasksList) {
       final userId = task.assignee!.id;
       failedTaskCounts[userId] = (failedTaskCounts[userId] ?? 0) + 1;
     }
 
-    final List<String> users = failedTasksList
-        .map((task) => task.assignee!.id)
-        .toSet() // Ensures uniqueness
-        .toList();
+    final List<DocumentReference> users =
+        failedTasksList.map((task) => task.assignee!).toSet().toList();
 
     int doneTasks = tasks.where((task) => task.isDone).length;
     int failedTasks = failedTasksList.length;
 
     return Column(children: [
       _buildTotalTaskHistoryPieChart(doneTasks, failedTasks),
-      _buildUserFailedTaskRanking(users)
+      SizedBox(
+        height: BIG_GAP,
+      ),
+      _buildUserFailedTaskRanking(users, failedTaskCounts)
     ]);
   }
 
-  Widget _buildUserFailedTaskRanking(List<String> assigneeInfo){
-    return LoadingStreamBuilder(stream: _inhabitantProvider., builder: builder)
+  Widget _buildUserFailedTaskRanking(List<DocumentReference> assigneeInfo,
+      Map<String, int> failedTaskCountss) {
+    return LoadingStreamBuilder(
+        stream: _inhabitantProvider.getInhabitansStreamByIds(assigneeInfo),
+        builder: (context, assigneeList) => _buildAssigneeInfoBarGraph(
+            context, assigneeList, failedTaskCountss));
+  }
+
+  Widget _buildAssigneeInfoBarGraph(BuildContext context,
+      List<Inhabitant> inhabitants, Map<String, int> failedTaskCounts) {
+    final List<Map<String, dynamic>> barData = inhabitants.map((inhabitant) {
+      final int failedCount = failedTaskCounts[inhabitant.id] ?? 0;
+      return {
+        'name': inhabitant.name,
+        'failedCount': failedCount,
+      };
+    }).toList();
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          Text(
+            'Failed Tasks by Assignee',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 300,
+            child: BarChart(
+              BarChartData(
+                barGroups: barData.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final data = entry.value;
+                  return BarChartGroupData(
+                    x: index,
+                    barRods: [
+                      BarChartRodData(
+                        toY: (data['failedCount'] as int)!.toDouble(),
+                        color: Colors.red,
+                        width: 20,
+                      ),
+                    ],
+                    showingTooltipIndicators: [],
+                  );
+                }).toList(),
+                titlesData: _buildAssigneeInfoBarNotation(barData),
+                borderData: FlBorderData(show: false),
+                gridData: FlGridData(show: true),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //this was taken from example of fl_graph, in the future could be split into multiple functions that each build one side
+  //unnecessary for now
+  FlTitlesData _buildAssigneeInfoBarNotation(
+      List<Map<String, dynamic>> barData) {
+    return FlTitlesData(
+      leftTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: true,
+          interval: 1,
+          reservedSize: 40,
+          getTitlesWidget: (value, meta) {
+            return Text(value.toInt().toString(),
+                style: TextStyle(fontSize: 12));
+          },
+        ),
+      ),
+      rightTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: false,
+        ),
+      ),
+      topTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: false,
+        ),
+      ),
+      bottomTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: true,
+          reservedSize: 60,
+          getTitlesWidget: (value, meta) {
+            if (value.toInt() >= 0 && value.toInt() < barData.length) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text(
+                  barData[value.toInt()]['name'],
+                  style: TextStyle(fontSize: 12),
+                  textAlign: TextAlign.center,
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        ),
+      ),
+    );
   }
 
   Widget _buildTotalTaskHistoryPieChart(int doneTasks, int failedTasks) {
