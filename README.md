@@ -1,6 +1,6 @@
-# stable
+# Stable
 
-Household Tasks Managing App for PV292
+Household Tasks Managing App, imported from university GitLab
 
 ## Getting Started
 
